@@ -6,3 +6,10 @@ cc_library(
     hdrs = ["bitboard.h"],
     deps = [],
 )
+
+cc_library(
+    name = "position",
+    srcs = ["position.cc"],
+    hdrs = ["position.h"],
+    deps = [":bitboard"],
+)
