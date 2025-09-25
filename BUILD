@@ -11,5 +11,15 @@ cc_library(
     name = "position",
     srcs = ["position.cc"],
     hdrs = ["position.h"],
-    deps = [":bitboard"],
+    deps = [
+        ":bitboard",
+        ":types",
+    ],
+)
+
+cc_library(
+    name = "types",
+    srcs = [],
+    hdrs = ["types.h"],
+    deps = [],
 )
