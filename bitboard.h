@@ -15,6 +15,9 @@ using Bitboard = std::uint64_t;
 
 namespace rank {
 
+// N.B.: Integer literals used with Bitboard must be at least 64-bit to
+// prevent overflow during bitwise operations. The ULL suffix ensures the
+// literal is unsigned long long, which is guaranteed to be at least 64 bits.
 constexpr Bitboard k1 = 0xFFULL;
 constexpr Bitboard k2 = k1 << 8;
 constexpr Bitboard k3 = k2 << 8;
