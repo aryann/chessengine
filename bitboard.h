@@ -82,9 +82,11 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
             out = std::format_to(out, "{}:", rank + 1);
             for (int file = 0; file < 8; ++file) {
                 auto square = static_cast<chessengine::Square>(rank * 8 + file);
-                out = std::format_to(
-                        out,
-                        chessengine::GetBit(bitboard, square) ? " 1" : " .");
+                if (chessengine::GetBit(bitboard, square)) {
+                    out = std::format_to(out, " 1");
+                } else {
+                    out = std::format_to(out, " .");
+                }
             }
             out = std::format_to(out, "\n");
         }
