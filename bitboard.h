@@ -2,7 +2,9 @@
 #define CHESS_ENGINE_BITBOARD_H_
 
 #include <cstdint>
+#include <format>
 #include <initializer_list>
+#include <string>
 
 namespace chessengine {
 
@@ -11,31 +13,32 @@ namespace chessengine {
 // The least significant bit is A1. The most significant bit is H8.
 using Bitboard = std::uint64_t;
 
+namespace rank {
+
+constexpr Bitboard k1 = 0xFFULL;
+constexpr Bitboard k2 = k1 << 8;
+constexpr Bitboard k3 = k2 << 8;
+constexpr Bitboard k4 = k3 << 8;
+constexpr Bitboard k5 = k4 << 8;
+constexpr Bitboard k6 = k5 << 8;
+constexpr Bitboard k7 = k6 << 8;
+constexpr Bitboard k8 = k7 << 8;
+
+} // rank
+
 namespace file {
 
-constexpr Bitboard kA = 0xFF;
-constexpr Bitboard kB = kA << 8;
-constexpr Bitboard kC = kB << 8;
-constexpr Bitboard kD = kC << 8;
-constexpr Bitboard kE = kD << 8;
-constexpr Bitboard kF = kE << 8;
-constexpr Bitboard kG = kF << 8;
-constexpr Bitboard kH = kG << 8;
+constexpr Bitboard kA = 0x101010101010101ULL;
+constexpr Bitboard kB = kA << 1;
+constexpr Bitboard kC = kB << 1;
+constexpr Bitboard kD = kC << 1;
+constexpr Bitboard kE = kD << 1;
+constexpr Bitboard kF = kE << 1;
+constexpr Bitboard kG = kF << 1;
+constexpr Bitboard kH = kG << 1;
 
 } // file
 
-namespace rank {
-
-constexpr Bitboard k1 = 0x101010101010101;
-constexpr Bitboard k2 = k1 << 1;
-constexpr Bitboard k3 = k2 << 1;
-constexpr Bitboard k4 = k3 << 1;
-constexpr Bitboard k5 = k4 << 1;
-constexpr Bitboard k6 = k5 << 1;
-constexpr Bitboard k7 = k6 << 1;
-constexpr Bitboard k8 = k7 << 1;
-
-} // rank
 
 enum Square : std::uint8_t {
     A1, A2, A3, A4, A5, A6, A7, A8,
@@ -49,19 +52,52 @@ enum Square : std::uint8_t {
 };
 
 constexpr Bitboard ToBitboard(Square square) {
-    return 1 << square;
+    return 1ULL << square;
 }
 
 constexpr Bitboard ToBitboard(std::initializer_list<Square> squares) {
     Bitboard bitboard = 0;
     for (Square square: squares) {
-        bitboard |= 1 << square;
+        bitboard |= 1ULL << square;
     }
     return bitboard;
 }
 
+inline bool GetBit(Bitboard bitboard, Square square) {
+    return bitboard & (1ULL << square);
+}
 
 } // namespace chessengine
+
+// A std::formatter specialization for printing a Bitboard.
+//
+// See https://en.cppreference.com/w/cpp/utility/format/formatter.html for
+// more details.
+template<>
+struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
+    static auto format(chessengine::Bitboard bitboard, std::format_context &context) {
+        auto out = context.out();
+
+        for (int rank = 7; rank >= 0; --rank) {
+            out = std::format_to(out, "{}:", rank + 1);
+            for (int file = 0; file < 8; ++file) {
+                auto square = static_cast<chessengine::Square>(rank * 8 + file);
+                out = std::format_to(
+                        out,
+                        chessengine::GetBit(bitboard, square) ? " 1" : " .");
+            }
+            out = std::format_to(out, "\n");
+        }
+
+        out = std::format_to(out, "  ");
+        for (int file = 0; file < 8; ++file) {
+            out = std::format_to(out, " {:c}", 'a' + file);
+        }
+        out = std::format_to(out, "\n");
+
+        return out;
+    }
+};
 
 #endif // CHESS_ENGINE_BITBOARD_H_
 
