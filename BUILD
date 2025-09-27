@@ -40,6 +40,7 @@ cc_test(
     srcs = ["bitboard_test.cc"],
     deps = [
         ":bitboard",
+        ":testing",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -52,6 +53,18 @@ cc_library(
     deps = [
         ":bitboard",
         ":types",
+    ],
+)
+
+cc_library(
+    name = "testing",
+    testonly = True,
+    srcs = [],
+    hdrs = ["testing.h"],
+    deps = [
+        ":bitboard",
+        "@abseil-cpp//absl/strings",
+        "@googletest//:gtest",
     ],
 )
 

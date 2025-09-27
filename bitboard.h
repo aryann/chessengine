@@ -41,9 +41,6 @@ constexpr Bitboard kF = kE << 1;
 constexpr Bitboard kG = kF << 1;
 constexpr Bitboard kH = kG << 1;
 
-constexpr Bitboard kNotA = ~kA;
-constexpr Bitboard kNotH = ~kH;
-
 } // file
 
 template<Direction D>

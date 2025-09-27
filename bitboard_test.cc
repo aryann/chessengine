@@ -1,11 +1,18 @@
 #include "bitboard.h"
+#include "testing.h"
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include "absl/strings/str_split.h"
 
 namespace chessengine {
 namespace {
 
 using testing::Eq;
+
+TEST(Matcher, Ok) {
+    EXPECT_THAT(rank::k1, MatchesBitboard(rank::k1));
+}
 
 TEST(Formatter, Ranks) {
     EXPECT_THAT(std::format("{}", rank::k1),
