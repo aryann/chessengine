@@ -8,8 +8,86 @@ namespace {
 
 using testing::Eq;
 
-TEST(Attacks, Pawns) {
-    EXPECT_THAT(1, Eq(1));
+TEST(Attacks, WhitePawns) {
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][A2]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: . X . . . . . .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][B2]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: X . X . . . . .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][H2]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: . . . . . . X .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
+
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][A1]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: . . . . . . . .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][E1]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: . . . . . . . .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
+
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][A8]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: . . . . . . . .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
+    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][H8]), Eq(
+                    "8: . . . . . . . .\n"
+                    "7: . . . . . . . .\n"
+                    "6: . . . . . . . .\n"
+                    "5: . . . . . . . .\n"
+                    "4: . . . . . . . .\n"
+                    "3: . . . . . . . .\n"
+                    "2: . . . . . . . .\n"
+                    "1: . . . . . . . .\n"
+                    "   a b c d e f g h\n"
+                ));
 }
 
 } // namespace
