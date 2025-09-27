@@ -7,8 +7,17 @@
 
 namespace chessengine {
 
+consteval void MakeWhitePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A2; square < A8; ++square) {
+        Bitboard start = ToBitboard(static_cast<Square>(square));
+        attacks[square] = (start << 7 & file::kNotH) | (start << 9 & file::kNotA);
+    }
+}
+
 consteval auto MakePseudoAttacks() {
-    std::array<std::array<Bitboard, NUM_SQUARES>, NUM_PIECES> attacks{};
+    std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks{};
+
+    MakeWhitePawnAttacks(attacks[kWhitePawn]);
     return attacks;
 }
 
