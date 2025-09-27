@@ -12,6 +12,8 @@ consteval auto MakePseudoAttacks() {
     return attacks;
 }
 
+// N.B.: Since MakePseudoAttacks() is consteval, the attack array will be
+// evaluated at compile time.
 inline constexpr auto kPseudoAttacks = MakePseudoAttacks();
 
 } // namespace chessengine

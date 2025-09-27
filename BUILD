@@ -16,6 +16,16 @@ cc_binary(
     deps = [":attacks"],
 )
 
+cc_test(
+    name = "attacks_test",
+    srcs = ["attacks_test.cc"],
+    deps = [
+        ":attacks",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "bitboard",
     srcs = ["bitboard.cc"],
