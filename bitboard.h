@@ -86,7 +86,7 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
             for (int file = 0; file < 8; ++file) {
                 auto square = static_cast<chessengine::Square>(rank * 8 + file);
                 if (chessengine::GetBit(bitboard, square)) {
-                    out = std::format_to(out, " 1");
+                    out = std::format_to(out, " X");
                 } else {
                     out = std::format_to(out, " .");
                 }
