@@ -14,10 +14,18 @@ consteval void MakeWhitePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) 
     }
 }
 
+consteval void MakeBlackPawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A2; square < A8; ++square) {
+        Bitboard start = ToBitboard(static_cast<Square>(square));
+        attacks[square] = Shift<kSouthEast>(start) | Shift<kSouthWest>(start);
+    }
+}
+
 consteval auto MakePseudoAttacks() {
     std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks{};
 
     MakeWhitePawnAttacks(attacks[kWhitePawn]);
+    MakeBlackPawnAttacks(attacks[kBlackPawn]);
     return attacks;
 }
 

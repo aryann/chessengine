@@ -56,6 +56,14 @@ constexpr Bitboard Shift(Bitboard start) {
         return start << 9 & ~file::kA;
     }
 
+    if constexpr (D == kSouthEast) {
+        return start >> 9 & ~file::kH;
+    }
+
+    if constexpr (D == kSouthWest) {
+        return start >> 7 & ~file::kA;
+    }
+
     return 0ULL;
 }
 
