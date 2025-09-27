@@ -46,6 +46,20 @@ constexpr Bitboard kNotH = ~kH;
 
 } // file
 
+template<Direction D>
+constexpr Bitboard Shift(Bitboard start) {
+    if constexpr (D == kNorthEast) {
+        return start << 7 & ~file::kH;
+    }
+
+    if constexpr (D == kNorthWest) {
+        return start << 9 & ~file::kA;
+    }
+
+    return 0ULL;
+}
+
+
 constexpr Bitboard ToBitboard(Square square) {
     return 1ULL << square;
 }

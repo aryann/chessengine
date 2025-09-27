@@ -22,6 +22,19 @@ enum Color : std::uint8_t {
     kBlack = 1,
 };
 
+enum Direction : std::int8_t {
+    kNorth,
+    kSouth,
+
+    kEast,
+    kWest,
+
+    kNorthEast,
+    kNorthWest,
+    kSouthEast,
+    kSouthWest,
+};
+
 enum Piece : std::uint8_t {
     kWhitePawn,
     kBlackPawn,
