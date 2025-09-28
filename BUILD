@@ -58,6 +58,25 @@ cc_library(
 )
 
 cc_library(
+    name = "move",
+    srcs = ["move.cc"],
+    hdrs = ["move.h"],
+    deps = [
+        ":types",
+    ],
+)
+
+cc_test(
+    name = "move_test",
+    srcs = ["move_test.cc"],
+    deps = [
+        ":move",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
     name = "testing",
     testonly = True,
     srcs = [],

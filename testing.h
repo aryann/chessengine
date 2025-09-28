@@ -11,7 +11,7 @@
 
 namespace chessengine {
 
-constexpr Bitboard FromString(std::string_view input) {
+static constexpr Bitboard FromString(std::string_view input) {
     Bitboard bitboard = 0ULL;
     int rank = 7;
     int file = 0;
