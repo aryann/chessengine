@@ -18,9 +18,10 @@ enum Square : std::uint8_t {
     kNumSquares,
 };
 
-enum Color : std::uint8_t {
-    kWhite = 0,
-    kBlack = 1,
+enum Side : std::uint8_t {
+    kWhite,
+    kBlack,
+    kNumSides,
 };
 
 enum Direction : std::int8_t {

@@ -15,17 +15,10 @@ public:
     explicit Position(std::string_view fen_string);
 
 private:
-    Bitboard pawns_;
-    Bitboard rooks_;
-    Bitboard knights_;
-    Bitboard bishops_;
-    Bitboard queens_;
-    Bitboard kings_;
+    std::array<Bitboard, kNumPieces> pieces_;
+    std::array<Bitboard, kNumSides> sides_;
 
-    Bitboard white_pieces_;
-    Bitboard black_pieces_;
-
-    Color side_to_move_;
+    Side side_to_move_;
     std::optional<Square> en_passant_target_;
 
     // TODO(aryann): Add castling rights.
