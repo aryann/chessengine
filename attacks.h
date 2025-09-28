@@ -8,7 +8,7 @@
 namespace chessengine {
 
 consteval void MakeWhitePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A2; square < A8; ++square) {
+    for (int square = A8; square < A1; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
         attacks[square] = kEmptyBoard
                           | Shift<kNorthEast>(start)
@@ -17,7 +17,7 @@ consteval void MakeWhitePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) 
 }
 
 consteval void MakeBlackPawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A2; square < A8; ++square) {
+    for (int square = A7; square < kNumSquares; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
         attacks[square] = kEmptyBoard
                           | Shift<kSouthEast>(start)
@@ -26,7 +26,7 @@ consteval void MakeBlackPawnAttacks(std::array<Bitboard, kNumSquares> &attacks) 
 }
 
 consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A1; square < kNumSquares; ++square) {
+    for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
         attacks[square] = kEmptyBoard
                           | Shift<kNorth>(Shift<kNorthEast>(start))
@@ -41,7 +41,7 @@ consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
 }
 
 consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A1; square < kNumSquares; ++square) {
+    for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
         attacks[square] = kEmptyBoard
                           | Shift<kNorth>(start)

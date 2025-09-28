@@ -11,7 +11,21 @@ namespace chessengine {
 
 // Represents an 8x8 chess board.
 //
-// The least significant bit is A1. The most significant bit is H8.
+// Squares map to bits in the bitboard as follows, with square A8 corresponding
+// to the least significant bit (LSB), and H1 to the most significant bit (MSB).
+//
+//   8:   0   1   2   3   4   5   6   7
+//   7:   8   9  10  11  12  13  14  15
+//   6:  16  17  18  19  20  21  22  23
+//   5:  24  25  26  27  28  29  30  31
+//   4:  32  33  34  35  36  37  38  39
+//   3:  40  41  42  43  44  45  46  47
+//   2:  48  49  50  51  52  53  54  55
+//   1:  56  57  58  59  60  61  62  63
+//       a   b   c   d   e   f   g   h
+//
+// This layout matches the typical visual representation of a board, improving
+// code readability and debuggability.
 using Bitboard = std::uint64_t;
 
 constexpr Bitboard kEmptyBoard = 0ULL;
@@ -21,14 +35,14 @@ namespace rank {
 // N.B.: Integer literals used with Bitboard must be at least 64-bit to
 // prevent overflow during bitwise operations. The ULL suffix ensures the
 // literal is unsigned long long, which is guaranteed to be at least 64 bits.
-constexpr Bitboard k1 = 0xFFULL;
-constexpr Bitboard k2 = k1 << 8;
-constexpr Bitboard k3 = k2 << 8;
-constexpr Bitboard k4 = k3 << 8;
-constexpr Bitboard k5 = k4 << 8;
-constexpr Bitboard k6 = k5 << 8;
-constexpr Bitboard k7 = k6 << 8;
-constexpr Bitboard k8 = k7 << 8;
+constexpr Bitboard k8 = 0xFFULL;
+constexpr Bitboard k7 = k8 << 8;
+constexpr Bitboard k6 = k7 << 8;
+constexpr Bitboard k5 = k6 << 8;
+constexpr Bitboard k4 = k5 << 8;
+constexpr Bitboard k3 = k4 << 8;
+constexpr Bitboard k2 = k3 << 8;
+constexpr Bitboard k1 = k2 << 8;
 
 } // rank
 
@@ -48,34 +62,33 @@ constexpr Bitboard kH = kG << 1;
 template<Direction D>
 constexpr Bitboard Shift(Bitboard start) {
     if constexpr (D == kNorth) {
-        return start << 8;
+        return start >> 8;
     }
 
-    if constexpr (D == kSouth) {
-        return start >> 8;
+    if constexpr (D == kNorthEast) {
+        return start >> 7 & ~file::kA;
     }
 
     if constexpr (D == kEast) {
         return start << 1 & ~file::kA;
     }
 
+    if constexpr (D == kSouthEast) {
+        return start << 9 & ~file::kA;
+    }
+    if constexpr (D == kSouth) {
+        return start << 8;
+    }
+
+    if constexpr (D == kSouthWest) {
+        return start << 7 & ~file::kH;
+    }
+
     if constexpr (D == kWest) {
         return start >> 1 & ~file::kH;
     }
 
-    if constexpr (D == kNorthEast) {
-        return start << 9 & ~file::kA;
-    }
-
     if constexpr (D == kNorthWest) {
-        return start << 7 & ~file::kH;
-    }
-
-    if constexpr (D == kSouthEast) {
-        return start >> 7 & ~file::kA;
-    }
-
-    if constexpr (D == kSouthWest) {
         return start >> 9 & ~file::kH;
     }
 
@@ -118,10 +131,10 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
     static auto format(chessengine::Bitboard bitboard, std::format_context &context) {
         auto out = context.out();
 
-        for (int rank = 7; rank >= 0; --rank) {
-            out = std::format_to(out, "{}:", rank + 1);
-            for (int file = 0; file < 8; ++file) {
-                auto square = static_cast<chessengine::Square>(rank * 8 + file);
+        for (int row = 0; row < 8; ++row) {
+            out = std::format_to(out, "{}:", 8 - row);
+            for (int col = 0; col < 8; ++col) {
+                auto square = static_cast<chessengine::Square>(row * 8 + col);
                 if (chessengine::Get(bitboard, square)) {
                     out = std::format_to(out, " X");
                 } else {
@@ -132,8 +145,8 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
         }
 
         out = std::format_to(out, "  ");
-        for (int file = 0; file < 8; ++file) {
-            out = std::format_to(out, " {:c}", 'a' + file);
+        for (int col = 0; col < 8; ++col) {
+            out = std::format_to(out, " {:c}", 'a' + col);
         }
         out = std::format_to(out, "\n");
 

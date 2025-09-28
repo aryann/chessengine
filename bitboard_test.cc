@@ -132,6 +132,294 @@ TEST(Bitboard, GetSetClear) {
     EXPECT_THAT(Get(board, B1), IsTrue());
 }
 
+TEST(Bitboard, ShiftNorth) {
+    EXPECT_THAT(Shift<kNorth>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . X . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorth>(ToBitboard(D8)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftNorthEast) {
+    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . X . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(H8)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(H7)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(G8)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftEast) {
+    EXPECT_THAT(Shift<kEast>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . X . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kEast>(ToBitboard(H4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftSouthEast) {
+    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . X . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(H1)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(H2)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(G1)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftSouth) {
+    EXPECT_THAT(Shift<kSouth>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouth>(ToBitboard(D1)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftSouthWest) {
+    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . X . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(A1)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(B1)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(A2)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftWest) {
+    EXPECT_THAT(Shift<kWest>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . X . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kWest>(ToBitboard(A4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Bitboard, ShiftNorthWest) {
+    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(D4)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . X . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(A8)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(A7)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(B8)), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
 } // namespace
 } // namespace chessengine
 

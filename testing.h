@@ -13,28 +13,16 @@ namespace chessengine {
 
 static constexpr Bitboard FromString(std::string_view input) {
     Bitboard bitboard = kEmptyBoard;
-    int rank = 7;
-    int file = 0;
+    int square = 0;
 
-    int i = 0;
-    while (i < input.size()) {
-        const char curr = input[i];
-        ++i;
-
+    for (const char curr: input) {
         if (curr != '.' && curr != 'X') {
             continue;
         }
-
         if (curr == 'X') {
-            auto square = static_cast<Square>(rank * 8 + file);
-            bitboard |= Set(bitboard, square);
+            bitboard |= Set(bitboard, static_cast<Square>(square));
         }
-
-        ++file;
-        if (file == 8) {
-            --rank;
-            file = 0;
-        }
+        ++square;
     }
 
     return bitboard;
