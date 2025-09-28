@@ -77,6 +77,10 @@ constexpr Bitboard ToBitboard(std::initializer_list<Square> squares) {
     return bitboard;
 }
 
+constexpr Bitboard Set(Bitboard bitboard, Square square) {
+    return bitboard | ToBitboard(square);
+}
+
 inline bool GetBit(Bitboard bitboard, Square square) {
     return bitboard & (1ULL << square);
 }

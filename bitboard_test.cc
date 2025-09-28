@@ -1,94 +1,85 @@
-#include "bitboard.h"
-#include "testing.h"
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include "absl/strings/str_split.h"
+#include "bitboard.h"
+#include "testing.h"
 
 namespace chessengine {
 namespace {
 
 using testing::Eq;
 
-TEST(Matcher, Ok) {
-    EXPECT_THAT(rank::k1, MatchesBitboard(rank::k1));
-}
 
 TEST(Formatter, Ranks) {
-    EXPECT_THAT(std::format("{}", rank::k1),
-                Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: X X X X X X X X\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(rank::k1, EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: X X X X X X X X"
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", rank::k5),
-                Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: X X X X X X X X\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(rank::k5, EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: X X X X X X X X"
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", rank::k8),
-                Eq(
-                    "8: X X X X X X X X\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(rank::k8, EqualsBitboard(
+                    "8: X X X X X X X X"
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
 }
 
 TEST(Formatter, Files) {
-    EXPECT_THAT(std::format("{}", file::kA),
-                Eq(
-                    "8: X . . . . . . .\n"
-                    "7: X . . . . . . .\n"
-                    "6: X . . . . . . .\n"
-                    "5: X . . . . . . .\n"
-                    "4: X . . . . . . .\n"
-                    "3: X . . . . . . .\n"
-                    "2: X . . . . . . .\n"
-                    "1: X . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(file::kA, EqualsBitboard(
+                    "8: X . . . . . . ."
+                    "7: X . . . . . . ."
+                    "6: X . . . . . . ."
+                    "5: X . . . . . . ."
+                    "4: X . . . . . . ."
+                    "3: X . . . . . . ."
+                    "2: X . . . . . . ."
+                    "1: X . . . . . . ."
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", file::kD),
-                Eq(
-                    "8: . . . X . . . .\n"
-                    "7: . . . X . . . .\n"
-                    "6: . . . X . . . .\n"
-                    "5: . . . X . . . .\n"
-                    "4: . . . X . . . .\n"
-                    "3: . . . X . . . .\n"
-                    "2: . . . X . . . .\n"
-                    "1: . . . X . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(file::kD, EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: . . . X . . . ."
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . X . . . ."
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", file::kH),
-                Eq(
-                    "8: . . . . . . . X\n"
-                    "7: . . . . . . . X\n"
-                    "6: . . . . . . . X\n"
-                    "5: . . . . . . . X\n"
-                    "4: . . . . . . . X\n"
-                    "3: . . . . . . . X\n"
-                    "2: . . . . . . . X\n"
-                    "1: . . . . . . . X\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(file::kH, EqualsBitboard(
+                    "8: . . . . . . . X"
+                    "7: . . . . . . . X"
+                    "6: . . . . . . . X"
+                    "5: . . . . . . . X"
+                    "4: . . . . . . . X"
+                    "3: . . . . . . . X"
+                    "2: . . . . . . . X"
+                    "1: . . . . . . . X"
+                    "   a b c d e f g h"
                 ));
 }
 
@@ -99,17 +90,16 @@ TEST(Formatter, Corners) {
     board |= file::kA & back_ranks;
     board |= file::kH & back_ranks;
 
-    EXPECT_THAT(std::format("{}", board),
-                Eq(
-                    "8: X . . . . . . X\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: X . . . . . . X\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(board, EqualsBitboard(
+                    "8: X . . . . . . X"
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: X . . . . . . X"
+                    "   a b c d e f g h"
                 ));
 }
 

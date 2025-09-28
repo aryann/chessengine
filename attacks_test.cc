@@ -2,6 +2,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include "testing.h"
 
 namespace chessengine {
 namespace {
@@ -9,84 +10,84 @@ namespace {
 using testing::Eq;
 
 TEST(Attacks, WhitePawns) {
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][A2]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . X . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][A2], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . X . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][B2]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: X . X . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][B2], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: X . X . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][H2]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . X .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
-                ));
-
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][A1]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
-                ));
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][E1]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][H2], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . X ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][A8]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][A1], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
-    EXPECT_THAT(std::format("{}", kPseudoAttacks[kWhitePawn][H8]), Eq(
-                    "8: . . . . . . . .\n"
-                    "7: . . . . . . . .\n"
-                    "6: . . . . . . . .\n"
-                    "5: . . . . . . . .\n"
-                    "4: . . . . . . . .\n"
-                    "3: . . . . . . . .\n"
-                    "2: . . . . . . . .\n"
-                    "1: . . . . . . . .\n"
-                    "   a b c d e f g h\n"
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][E1], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][A8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(kPseudoAttacks[kWhitePawn][H8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
                 ));
 }
 

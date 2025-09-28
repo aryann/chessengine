@@ -1,4 +1,5 @@
 #include "position.h"
+
 #include "bitboard.h"
 
 namespace chessengine {

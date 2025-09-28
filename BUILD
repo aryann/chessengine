@@ -21,6 +21,7 @@ cc_test(
     srcs = ["attacks_test.cc"],
     deps = [
         ":attacks",
+        ":testing",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
