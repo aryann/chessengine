@@ -21,11 +21,28 @@ consteval void MakeBlackPawnAttacks(std::array<Bitboard, kNumSquares> &attacks) 
     }
 }
 
+consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A1; square < kNumSquares; ++square) {
+        Bitboard start = ToBitboard(static_cast<Square>(square));
+        attacks[square] = (
+            Shift<kNorth>(Shift<kNorthEast>(start)) |
+            Shift<kEast>(Shift<kNorthEast>(start)) |
+            Shift<kEast>(Shift<kSouthEast>(start)) |
+            Shift<kSouth>(Shift<kSouthEast>(start)) |
+            Shift<kSouth>(Shift<kSouthWest>(start)) |
+            Shift<kWest>(Shift<kSouthWest>(start)) |
+            Shift<kWest>(Shift<kNorthWest>(start)) |
+            Shift<kNorth>(Shift<kNorthWest>(start))
+        );
+    }
+}
+
 consteval auto MakePseudoAttacks() {
     std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks{};
 
     MakeWhitePawnAttacks(attacks[kWhitePawn]);
     MakeBlackPawnAttacks(attacks[kBlackPawn]);
+    MakeKnightAttacks(attacks[kKnight]);
     return attacks;
 }
 

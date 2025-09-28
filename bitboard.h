@@ -45,20 +45,36 @@ constexpr Bitboard kH = kG << 1;
 
 template<Direction D>
 constexpr Bitboard Shift(Bitboard start) {
-    if constexpr (D == kNorthEast) {
-        return start << 7 & ~file::kH;
+    if constexpr (D == kNorth) {
+        return start << 8;
     }
 
-    if constexpr (D == kNorthWest) {
+    if constexpr (D == kSouth) {
+        return start >> 8;
+    }
+
+    if constexpr (D == kEast) {
+        return start << 1 & ~file::kA;
+    }
+
+    if constexpr (D == kWest) {
+        return start >> 1 & ~file::kH;
+    }
+
+    if constexpr (D == kNorthEast) {
         return start << 9 & ~file::kA;
     }
 
+    if constexpr (D == kNorthWest) {
+        return start << 7 & ~file::kH;
+    }
+
     if constexpr (D == kSouthEast) {
-        return start >> 9 & ~file::kH;
+        return start >> 7 & ~file::kA;
     }
 
     if constexpr (D == kSouthWest) {
-        return start >> 7 & ~file::kA;
+        return start >> 9 & ~file::kH;
     }
 
     return 0ULL;
