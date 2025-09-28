@@ -10,46 +10,48 @@ namespace chessengine {
 consteval void MakeWhitePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A2; square < A8; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
-        attacks[square] = Shift<kNorthEast>(start) | Shift<kNorthWest>(start);
+        attacks[square] = kEmptyBoard
+                          | Shift<kNorthEast>(start)
+                          | Shift<kNorthWest>(start);
     }
 }
 
 consteval void MakeBlackPawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A2; square < A8; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
-        attacks[square] = Shift<kSouthEast>(start) | Shift<kSouthWest>(start);
+        attacks[square] = kEmptyBoard
+                          | Shift<kSouthEast>(start)
+                          | Shift<kSouthWest>(start);
     }
 }
 
 consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A1; square < kNumSquares; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
-        attacks[square] = (
-            Shift<kNorth>(Shift<kNorthEast>(start)) |
-            Shift<kEast>(Shift<kNorthEast>(start)) |
-            Shift<kEast>(Shift<kSouthEast>(start)) |
-            Shift<kSouth>(Shift<kSouthEast>(start)) |
-            Shift<kSouth>(Shift<kSouthWest>(start)) |
-            Shift<kWest>(Shift<kSouthWest>(start)) |
-            Shift<kWest>(Shift<kNorthWest>(start)) |
-            Shift<kNorth>(Shift<kNorthWest>(start))
-        );
+        attacks[square] = kEmptyBoard
+                          | Shift<kNorth>(Shift<kNorthEast>(start))
+                          | Shift<kEast>(Shift<kNorthEast>(start))
+                          | Shift<kEast>(Shift<kSouthEast>(start))
+                          | Shift<kSouth>(Shift<kSouthEast>(start))
+                          | Shift<kSouth>(Shift<kSouthWest>(start))
+                          | Shift<kWest>(Shift<kSouthWest>(start))
+                          | Shift<kWest>(Shift<kNorthWest>(start))
+                          | Shift<kNorth>(Shift<kNorthWest>(start));
     }
 }
 
 consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A1; square < kNumSquares; ++square) {
         Bitboard start = ToBitboard(static_cast<Square>(square));
-        attacks[square] = (
-            Shift<kNorth>(start) |
-            Shift<kNorthEast>(start) |
-            Shift<kEast>(start) |
-            Shift<kSouthEast>(start) |
-            Shift<kSouth>(start) |
-            Shift<kSouthWest>(start) |
-            Shift<kWest>(start) |
-            Shift<kNorthWest>(start)
-        );
+        attacks[square] = kEmptyBoard
+                          | Shift<kNorth>(start)
+                          | Shift<kNorthEast>(start)
+                          | Shift<kEast>(start)
+                          | Shift<kSouthEast>(start)
+                          | Shift<kSouth>(start)
+                          | Shift<kSouthWest>(start)
+                          | Shift<kWest>(start)
+                          | Shift<kNorthWest>(start);
     }
 }
 

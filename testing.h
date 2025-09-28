@@ -12,7 +12,7 @@
 namespace chessengine {
 
 static constexpr Bitboard FromString(std::string_view input) {
-    Bitboard bitboard = 0ULL;
+    Bitboard bitboard = kEmptyBoard;
     int rank = 7;
     int file = 0;
 

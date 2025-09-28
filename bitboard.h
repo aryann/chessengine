@@ -14,6 +14,8 @@ namespace chessengine {
 // The least significant bit is A1. The most significant bit is H8.
 using Bitboard = std::uint64_t;
 
+constexpr Bitboard kEmptyBoard = 0ULL;
+
 namespace rank {
 
 // N.B.: Integer literals used with Bitboard must be at least 64-bit to
@@ -77,7 +79,7 @@ constexpr Bitboard Shift(Bitboard start) {
         return start >> 9 & ~file::kH;
     }
 
-    return 0ULL;
+    return kEmptyBoard;
 }
 
 
@@ -86,7 +88,7 @@ constexpr Bitboard ToBitboard(Square square) {
 }
 
 constexpr Bitboard ToBitboard(std::initializer_list<Square> squares) {
-    Bitboard bitboard = 0;
+    Bitboard bitboard = kEmptyBoard;
     for (Square square: squares) {
         bitboard |= 1ULL << square;
     }
