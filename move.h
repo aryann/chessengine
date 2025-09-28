@@ -9,17 +9,19 @@ namespace chessengine {
 
 class Move {
 public:
-    Move(Square from, Square to):
+    constexpr Move(Square from, Square to):
         bits_(from + (to << 6)) {
     }
 
-    Square from() const {
+    constexpr Square from() const {
         return static_cast<Square>(bits_ & 0b111111);
     }
 
-    Square to() const {
+    constexpr Square to() const {
         return static_cast<Square>((bits_ >> 6) & 0b111111);
     }
+
+    constexpr bool operator==(const Move &other) const = default;
 
 private:
     // Stores the move state:
