@@ -8,10 +8,11 @@
 namespace chessengine {
 namespace {
 
-using testing::Eq;
+using ::testing::Eq;
+using ::testing::IsFalse;
+using ::testing::IsTrue;
 
-
-TEST(Formatter, Ranks) {
+TEST(Bitboard, Ranks) {
     EXPECT_THAT(rank::k1, EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
@@ -47,7 +48,7 @@ TEST(Formatter, Ranks) {
                 ));
 }
 
-TEST(Formatter, Files) {
+TEST(Bitboard, Files) {
     EXPECT_THAT(file::kA, EqualsBitboard(
                     "8: X . . . . . . ."
                     "7: X . . . . . . ."
@@ -83,7 +84,7 @@ TEST(Formatter, Files) {
                 ));
 }
 
-TEST(Formatter, Corners) {
+TEST(Bitboard, Corners) {
     Bitboard back_ranks = rank::k1 | rank::k8;
 
     Bitboard board = 0;
@@ -101,6 +102,34 @@ TEST(Formatter, Corners) {
                     "1: X . . . . . . X"
                     "   a b c d e f g h"
                 ));
+}
+
+TEST(Bitboard, GetSetClear) {
+    Bitboard board = rank::k1;
+
+    EXPECT_THAT(Get(board, A1), IsTrue());
+    EXPECT_THAT(Get(board, B1), IsTrue());
+    EXPECT_THAT(Get(board, C1), IsTrue());
+    EXPECT_THAT(Get(board, D1), IsTrue());
+    EXPECT_THAT(Get(board, E1), IsTrue());
+    EXPECT_THAT(Get(board, F1), IsTrue());
+    EXPECT_THAT(Get(board, G1), IsTrue());
+    EXPECT_THAT(Get(board, H1), IsTrue());
+
+    EXPECT_THAT(Get(board, A2), IsFalse());
+    EXPECT_THAT(Get(board, B3), IsFalse());
+    EXPECT_THAT(Get(board, C4), IsFalse());
+    EXPECT_THAT(Get(board, D5), IsFalse());
+    EXPECT_THAT(Get(board, E6), IsFalse());
+    EXPECT_THAT(Get(board, F7), IsFalse());
+    EXPECT_THAT(Get(board, G8), IsFalse());
+    EXPECT_THAT(Get(board, H8), IsFalse());
+
+    board = Clear(board, B1);
+    EXPECT_THAT(Get(board, B1), IsFalse());
+
+    board = Set(board, B1);
+    EXPECT_THAT(Get(board, B1), IsTrue());
 }
 
 } // namespace

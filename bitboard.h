@@ -95,12 +95,16 @@ constexpr Bitboard ToBitboard(std::initializer_list<Square> squares) {
     return bitboard;
 }
 
+constexpr bool Get(Bitboard bitboard, Square square) {
+    return bitboard & (1ULL << square);
+}
+
 constexpr Bitboard Set(Bitboard bitboard, Square square) {
     return bitboard | ToBitboard(square);
 }
 
-inline bool GetBit(Bitboard bitboard, Square square) {
-    return bitboard & (1ULL << square);
+constexpr Bitboard Clear(Bitboard bitboard, Square square) {
+    return bitboard & (~ToBitboard(square));
 }
 
 } // namespace chessengine
@@ -118,7 +122,7 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
             out = std::format_to(out, "{}:", rank + 1);
             for (int file = 0; file < 8; ++file) {
                 auto square = static_cast<chessengine::Square>(rank * 8 + file);
-                if (chessengine::GetBit(bitboard, square)) {
+                if (chessengine::Get(bitboard, square)) {
                     out = std::format_to(out, " X");
                 } else {
                     out = std::format_to(out, " .");
