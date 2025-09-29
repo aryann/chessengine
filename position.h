@@ -22,6 +22,8 @@ public:
     // Return the piece at the given square.
     [[nodiscard]] Piece piece(Square square) const;
 
+    [[nodiscard]] Side side(Square square) const;
+
 private:
     std::array<Bitboard, kNumPieces> pieces_;
     std::array<Bitboard, kNumSides> sides_;
@@ -37,6 +39,32 @@ private:
 
 } // namespace chessengine
 
+namespace {
+
+std::string GetSquare(const chessengine::Position &position, chessengine::Square square) {
+    chessengine::Side side = position.side(square);
+    switch (position.piece(square)) {
+        case chessengine::kBlackPawn:
+            return "♟";
+        case chessengine::kWhitePawn:
+            return "♙";
+        case chessengine::kKnight:
+            return side == chessengine::kWhite ? "♘" : "♞";
+        case chessengine::kBishop:
+            return side == chessengine::kWhite ? "♗" : "♝";
+        case chessengine::kRook:
+            return side == chessengine::kWhite ? "♖" : "♜";
+        case chessengine::kQueen:
+            return side == chessengine::kWhite ? "♕" : "♛";
+        case chessengine::kKing:
+            return side == chessengine::kWhite ? "♔" : "♚";
+        default:
+            return ".";
+    }
+}
+
+}
+
 template<>
 struct std::formatter<chessengine::Position> : std::formatter<std::string> {
     static auto format(chessengine::Position position, std::format_context &context) {
@@ -46,17 +74,7 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
             out = std::format_to(out, "{}:", 8 - row);
             for (int col = 0; col < 8; ++col) {
                 auto square = static_cast<chessengine::Square>(row * 8 + col);
-
-                switch (position.piece(square)) {
-                    case chessengine::kBlackPawn:
-                        out = std::format_to(out, " ♟");
-                        break;
-                    case chessengine::kWhitePawn:
-                        out = std::format_to(out, " ♙");
-                        break;
-                    default:
-                        out = std::format_to(out, " .");
-                }
+                out = std::format_to(out, " {}", GetSquare(position, square));
             }
 
             out = std::format_to(out, "\n");

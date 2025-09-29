@@ -15,6 +15,7 @@ Position::Position():
     pieces_[kBlackPawn] = rank::k7;
     pieces_[kKnight] = {B1, G1, B8, G8};
     pieces_[kBishop] = {C1, F1, C8, F8};
+    pieces_[kRook] = {A1, H1, A8, H8};
     pieces_[kQueen] = {D1, D8};
     pieces_[kKing] = {E1, E8};
 
@@ -27,13 +28,38 @@ Position::Position():
     if (pieces_[kBlackPawn] & square) {
         return kBlackPawn;
     }
-
     if (pieces_[kWhitePawn] & square) {
         return kWhitePawn;
+    }
+    if (pieces_[kKnight] & square) {
+        return kKnight;
+    }
+    if (pieces_[kBishop] & square) {
+        return kBishop;
+    }
+    if (pieces_[kRook] & square) {
+        return kRook;
+    }
+    if (pieces_[kQueen] & square) {
+        return kQueen;
+    }
+    if (pieces_[kKing] & square) {
+        return kKing;
     }
 
     return kEmptyPiece;
 }
+
+[[nodiscard]] Side Position::side(Square square) const {
+    if (sides_[kWhite] & square) {
+        return kWhite;
+    }
+    if (sides_[kBlack] & square) {
+        return kBlack;
+    }
+    return kEmptySide;
+}
+
 
 namespace {
 
