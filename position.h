@@ -19,6 +19,9 @@ public:
     // value is invalid.
     static std::expected<Position, std::string> Make(std::string_view fen);
 
+    // Return the piece at the given square.
+    [[nodiscard]] Piece piece(Square square) const;
+
 private:
     std::array<Bitboard, kNumPieces> pieces_;
     std::array<Bitboard, kNumSides> sides_;
@@ -33,6 +36,40 @@ private:
 };
 
 } // namespace chessengine
+
+template<>
+struct std::formatter<chessengine::Position> : std::formatter<std::string> {
+    static auto format(chessengine::Position position, std::format_context &context) {
+        auto out = context.out();
+
+        for (int row = 0; row < 8; ++row) {
+            out = std::format_to(out, "{}:", 8 - row);
+            for (int col = 0; col < 8; ++col) {
+                auto square = static_cast<chessengine::Square>(row * 8 + col);
+
+                switch (position.piece(square)) {
+                    case chessengine::kBlackPawn:
+                        out = std::format_to(out, " ♟");
+                        break;
+                    case chessengine::kWhitePawn:
+                        out = std::format_to(out, " ♙");
+                        break;
+                    default:
+                        out = std::format_to(out, " .");
+                }
+            }
+
+            out = std::format_to(out, "\n");
+        }
+
+        out = std::format_to(out, "  ");
+        for (int col = 0; col < 8; ++col) {
+            out = std::format_to(out, " {:c}", 'a' + col);
+        }
+        out = std::format_to(out, "\n");
+        return out;
+    }
+};
 
 #endif // CHESS_ENGINE_POSITION_H_
 

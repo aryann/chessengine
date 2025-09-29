@@ -22,6 +22,7 @@ enum Side : std::uint8_t {
     kWhite,
     kBlack,
     kNumSides,
+    kEmptySide,
 };
 
 enum Direction : std::int8_t {
@@ -44,6 +45,7 @@ enum Piece : std::uint8_t {
     kQueen,
     kKing,
     kNumPieces,
+    kEmptyPiece,
 };
 
 } // namespace chessengine

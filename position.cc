@@ -23,6 +23,18 @@ Position::Position():
     sides_[kBlack] = rank::k7 | rank::k8;
 }
 
+[[nodiscard]] Piece Position::piece(Square square) const {
+    if (pieces_[kBlackPawn] & square) {
+        return kBlackPawn;
+    }
+
+    if (pieces_[kWhitePawn] & square) {
+        return kWhitePawn;
+    }
+
+    return kEmptyPiece;
+}
+
 namespace {
 
 std::expected<void, std::string> FillPiece(char curr, Square square, std::array<Bitboard, kNumPieces> &pieces) {
@@ -34,6 +46,8 @@ std::expected<void, std::string> FillPiece(char curr, Square square, std::array<
         pieces[kKnight].Set(square);
     } else if (curr == 'b' || curr == 'B') {
         pieces[kBishop].Set(square);
+    } else if (curr == 'r' || curr == 'R') {
+        pieces[kRook].Set(square);
     } else if (curr == 'q' || curr == 'Q') {
         pieces[kQueen].Set(square);
     } else if (curr == 'k' || curr == 'K') {

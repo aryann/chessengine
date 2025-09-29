@@ -58,6 +58,14 @@ cc_library(
     ],
 )
 
+cc_binary(
+    name = "position_main",
+    srcs = ["position_main.cc"],
+    deps = [
+        ":position",
+    ],
+)
+
 cc_library(
     name = "move",
     srcs = ["move.cc"],

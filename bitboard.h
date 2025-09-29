@@ -53,6 +53,10 @@ public:
         return Bitboard(data_ & other.data_);
     }
 
+    constexpr Bitboard operator&(Square square) const {
+        return Bitboard(data_ & (1ULL << square));
+    }
+
     constexpr Bitboard operator|(const Bitboard &other) const {
         return Bitboard(data_ | other.data_);
     }
