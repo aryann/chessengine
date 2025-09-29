@@ -11,7 +11,7 @@ namespace chessengine {
 
 class Position {
 public:
-    Position();
+    static Position Make();
 
     // Parses a Forsyth–Edwards Notation (FEN) string to create a `Position`.
     //
@@ -19,12 +19,15 @@ public:
     // value is invalid.
     static std::expected<Position, std::string> Make(std::string_view fen);
 
-    // Return the piece at the given square.
+    // Returns the piece at the given square.
     [[nodiscard]] Piece piece(Square square) const;
 
+    // Returns the side at the given square.
     [[nodiscard]] Side side(Square square) const;
 
 private:
+    Position() = default;
+
     std::array<Bitboard, kNumPieces> pieces_;
     std::array<Bitboard, kNumSides> sides_;
 
