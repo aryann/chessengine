@@ -9,17 +9,15 @@
 
 namespace chessengine {
 
-enum class ParseError {
-    kInvalidFenString,
-};
-
 class Position {
 public:
     Position();
 
-    explicit Position(std::string_view fen_string);
-
-    // static std::expected<Position, ParseError> Make(std::string_view fen_string);
+    // Parses a Forsyth–Edwards Notation (FEN) string to create a `Position`.
+    //
+    // Returns an error string with a descriptive message if and only if the FEN
+    // value is invalid.
+    static std::expected<Position, std::string> Make(std::string_view fen);
 
 private:
     std::array<Bitboard, kNumPieces> pieces_;

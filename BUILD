@@ -54,6 +54,7 @@ cc_library(
     deps = [
         ":bitboard",
         ":types",
+        "@abseil-cpp//absl/strings",
     ],
 )
 

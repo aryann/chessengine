@@ -102,6 +102,14 @@ public:
         return data_ != 0;
     }
 
+    constexpr void Set(Square square) {
+        data_ |= 1ULL << square;
+    }
+
+    constexpr void Clear(Square square) {
+        data_ &= ~(1ULL << square);
+    }
+
     template<Direction D>
     [[nodiscard]] constexpr Bitboard Shift() const;
 
@@ -111,8 +119,8 @@ private:
     std::uint64_t data_;
 };
 
-
 constexpr Bitboard kEmptyBoard;
+
 
 namespace rank {
 
