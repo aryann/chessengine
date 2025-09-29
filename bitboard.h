@@ -26,16 +26,100 @@ namespace chessengine {
 //
 // This layout matches the typical visual representation of a board, improving
 // code readability and debuggability.
-using Bitboard = std::uint64_t;
+class Bitboard {
+public:
+    constexpr explicit Bitboard(std::uint64_t data) :
+        data_(data) {
+    }
 
-constexpr Bitboard kEmptyBoard = 0ULL;
+    constexpr Bitboard() :
+        data_(0ULL) {
+    }
+
+    constexpr explicit Bitboard(Square square):
+        data_(1ULL << square) {
+    }
+
+    constexpr Bitboard(std::initializer_list<Square> squares):
+        data_(0ULL) {
+        for (Square square: squares) {
+            data_ |= 1ULL << square;
+        }
+    }
+
+    constexpr bool operator==(const Bitboard &other) const = default;
+
+    constexpr Bitboard operator&(const Bitboard &other) const {
+        return Bitboard(data_ & other.data_);
+    }
+
+    constexpr Bitboard operator|(const Bitboard &other) const {
+        return Bitboard(data_ | other.data_);
+    }
+
+    constexpr Bitboard operator^(const Bitboard &other) const {
+        return Bitboard(data_ ^ other.data_);
+    }
+
+    constexpr Bitboard operator~() const {
+        return Bitboard(~data_);
+    }
+
+    constexpr Bitboard &operator&=(const Bitboard &other) {
+        data_ &= other.data_;
+        return *this;
+    }
+
+    constexpr Bitboard &operator|=(const Bitboard &other) {
+        data_ |= other.data_;
+        return *this;
+    }
+
+    constexpr Bitboard &operator^=(const Bitboard &other) {
+        data_ ^= other.data_;
+        return *this;
+    }
+
+    constexpr Bitboard operator<<(int bits) const {
+        return Bitboard(data_ << bits);
+    }
+
+    constexpr Bitboard operator>>(int bits) const {
+        return Bitboard(data_ >> bits);
+    }
+
+    constexpr Bitboard operator<<=(int bits) {
+        data_ <<= bits;
+        return *this;
+    }
+
+    constexpr Bitboard operator>>=(int bits) {
+        data_ >>= bits;
+        return *this;
+    }
+
+    constexpr explicit operator bool() const {
+        return data_ != 0;
+    }
+
+    template<Direction D>
+    [[nodiscard]] constexpr Bitboard Shift() const;
+
+    [[nodiscard]] constexpr auto data() const { return data_; }
+
+private:
+    std::uint64_t data_;
+};
+
+
+constexpr Bitboard kEmptyBoard;
 
 namespace rank {
 
 // N.B.: Integer literals used with Bitboard must be at least 64-bit to
 // prevent overflow during bitwise operations. The ULL suffix ensures the
 // literal is unsigned long long, which is guaranteed to be at least 64 bits.
-constexpr Bitboard k8 = 0xFFULL;
+constexpr Bitboard k8(0xFFULL);
 constexpr Bitboard k7 = k8 << 8;
 constexpr Bitboard k6 = k7 << 8;
 constexpr Bitboard k5 = k6 << 8;
@@ -48,7 +132,7 @@ constexpr Bitboard k1 = k2 << 8;
 
 namespace file {
 
-constexpr Bitboard kA = 0x101010101010101ULL;
+constexpr Bitboard kA(0x101010101010101ULL);
 constexpr Bitboard kB = kA << 1;
 constexpr Bitboard kC = kB << 1;
 constexpr Bitboard kD = kC << 1;
@@ -60,64 +144,51 @@ constexpr Bitboard kH = kG << 1;
 } // file
 
 template<Direction D>
-constexpr Bitboard Shift(Bitboard start) {
+constexpr Bitboard Bitboard::Shift() const {
     if constexpr (D == kNorth) {
-        return start >> 8;
+        return *this >> 8;
     }
 
     if constexpr (D == kNorthEast) {
-        return start >> 7 & ~file::kA;
+        return *this >> 7 & ~file::kA;
     }
 
     if constexpr (D == kEast) {
-        return start << 1 & ~file::kA;
+        return *this << 1 & ~file::kA;
     }
 
     if constexpr (D == kSouthEast) {
-        return start << 9 & ~file::kA;
+        return *this << 9 & ~file::kA;
     }
     if constexpr (D == kSouth) {
-        return start << 8;
+        return *this << 8;
     }
 
     if constexpr (D == kSouthWest) {
-        return start << 7 & ~file::kH;
+        return *this << 7 & ~file::kH;
     }
 
     if constexpr (D == kWest) {
-        return start >> 1 & ~file::kH;
+        return *this >> 1 & ~file::kH;
     }
 
     if constexpr (D == kNorthWest) {
-        return start >> 9 & ~file::kH;
+        return *this >> 9 & ~file::kH;
     }
 
     return kEmptyBoard;
 }
 
-
-constexpr Bitboard ToBitboard(Square square) {
-    return 1ULL << square;
-}
-
-constexpr Bitboard ToBitboard(std::initializer_list<Square> squares) {
-    Bitboard bitboard = kEmptyBoard;
-    for (Square square: squares) {
-        bitboard |= 1ULL << square;
-    }
-    return bitboard;
-}
-
 constexpr bool Get(Bitboard bitboard, Square square) {
-    return bitboard & (1ULL << square);
+    return bool(bitboard & Bitboard(square));
 }
 
 constexpr Bitboard Set(Bitboard bitboard, Square square) {
-    return bitboard | ToBitboard(square);
+    return bitboard | Bitboard(square);
 }
 
 constexpr Bitboard Clear(Bitboard bitboard, Square square) {
-    return bitboard & (~ToBitboard(square));
+    return bitboard & (~Bitboard(square));
 }
 
 } // namespace chessengine

@@ -8,6 +8,7 @@
 
 #include "absl/strings/str_split.h"
 #include "absl/strings/str_cat.h"
+#include "bitboard.h"
 
 namespace chessengine {
 
@@ -28,7 +29,9 @@ static constexpr Bitboard FromString(std::string_view input) {
     return bitboard;
 }
 
-MATCHER_P(EqualsBitboard, expected, absl::StrCat(FromString(expected))) {
+void PrintTo(const Bitboard &bitboard, std::ostream *os);
+
+MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", FromString(expected).data())) {
     Bitboard expected_bitboard = FromString(expected);
     if (arg == expected_bitboard) {
         return true;

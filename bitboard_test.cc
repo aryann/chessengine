@@ -87,7 +87,7 @@ TEST(Bitboard, Files) {
 TEST(Bitboard, Corners) {
     Bitboard back_ranks = rank::k1 | rank::k8;
 
-    Bitboard board = 0;
+    Bitboard board;
     board |= file::kA & back_ranks;
     board |= file::kH & back_ranks;
 
@@ -133,7 +133,7 @@ TEST(Bitboard, GetSetClear) {
 }
 
 TEST(Bitboard, ShiftNorth) {
-    EXPECT_THAT(Shift<kNorth>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kNorth>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -144,7 +144,7 @@ TEST(Bitboard, ShiftNorth) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorth>(ToBitboard(D8)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D8).Shift<kNorth>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -158,7 +158,7 @@ TEST(Bitboard, ShiftNorth) {
 }
 
 TEST(Bitboard, ShiftNorthEast) {
-    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kNorthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -169,7 +169,7 @@ TEST(Bitboard, ShiftNorthEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(H8)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(H8).Shift<kNorthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -180,7 +180,7 @@ TEST(Bitboard, ShiftNorthEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(H7)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(H7).Shift<kNorthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -191,7 +191,7 @@ TEST(Bitboard, ShiftNorthEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorthEast>(ToBitboard(G8)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(G8).Shift<kNorthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -205,7 +205,7 @@ TEST(Bitboard, ShiftNorthEast) {
 }
 
 TEST(Bitboard, ShiftEast) {
-    EXPECT_THAT(Shift<kEast>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -216,7 +216,7 @@ TEST(Bitboard, ShiftEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kEast>(ToBitboard(H4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(H4).Shift<kEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -230,7 +230,7 @@ TEST(Bitboard, ShiftEast) {
 }
 
 TEST(Bitboard, ShiftSouthEast) {
-    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kSouthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -241,7 +241,7 @@ TEST(Bitboard, ShiftSouthEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(H1)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(H1).Shift<kSouthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -252,7 +252,7 @@ TEST(Bitboard, ShiftSouthEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(H2)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(H2).Shift<kSouthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -263,7 +263,7 @@ TEST(Bitboard, ShiftSouthEast) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouthEast>(ToBitboard(G1)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(G1).Shift<kSouthEast>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -277,7 +277,7 @@ TEST(Bitboard, ShiftSouthEast) {
 }
 
 TEST(Bitboard, ShiftSouth) {
-    EXPECT_THAT(Shift<kSouth>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kSouth>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -288,7 +288,7 @@ TEST(Bitboard, ShiftSouth) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouth>(ToBitboard(D1)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D1).Shift<kSouth>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -302,7 +302,7 @@ TEST(Bitboard, ShiftSouth) {
 }
 
 TEST(Bitboard, ShiftSouthWest) {
-    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kSouthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -313,7 +313,7 @@ TEST(Bitboard, ShiftSouthWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(A1)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(A1).Shift<kSouthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -324,7 +324,7 @@ TEST(Bitboard, ShiftSouthWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(B1)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(B1).Shift<kSouthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -335,7 +335,7 @@ TEST(Bitboard, ShiftSouthWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kSouthWest>(ToBitboard(A2)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(A2).Shift<kSouthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -349,7 +349,7 @@ TEST(Bitboard, ShiftSouthWest) {
 }
 
 TEST(Bitboard, ShiftWest) {
-    EXPECT_THAT(Shift<kWest>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -360,7 +360,7 @@ TEST(Bitboard, ShiftWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kWest>(ToBitboard(A4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(A4).Shift<kWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -374,7 +374,7 @@ TEST(Bitboard, ShiftWest) {
 }
 
 TEST(Bitboard, ShiftNorthWest) {
-    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(D4)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(D4).Shift<kNorthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -385,7 +385,7 @@ TEST(Bitboard, ShiftNorthWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(A8)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(A8).Shift<kNorthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -396,7 +396,7 @@ TEST(Bitboard, ShiftNorthWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(A7)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(A7).Shift<kNorthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -407,7 +407,7 @@ TEST(Bitboard, ShiftNorthWest) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(Shift<kNorthWest>(ToBitboard(B8)), EqualsBitboard(
+    EXPECT_THAT(Bitboard(B8).Shift<kNorthWest>(), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."

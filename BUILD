@@ -79,7 +79,7 @@ cc_test(
 cc_library(
     name = "testing",
     testonly = True,
-    srcs = [],
+    srcs = ["testing.cc"],
     hdrs = ["testing.h"],
     deps = [
         ":bitboard",

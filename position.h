@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_POSITION_H_
 #define CHESS_ENGINE_POSITION_H_
 
+#include <expected>
 #include <string_view>
 
 #include "bitboard.h"
@@ -8,11 +9,17 @@
 
 namespace chessengine {
 
+enum class ParseError {
+    kInvalidFenString,
+};
+
 class Position {
 public:
     Position();
 
     explicit Position(std::string_view fen_string);
+
+    // static std::expected<Position, ParseError> Make(std::string_view fen_string);
 
 private:
     std::array<Bitboard, kNumPieces> pieces_;
