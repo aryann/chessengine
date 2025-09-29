@@ -58,6 +58,16 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "position_test",
+    srcs = ["position_test.cc"],
+    deps = [
+        ":position",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_binary(
     name = "position_main",
     srcs = ["position_main.cc"],
