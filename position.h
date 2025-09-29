@@ -47,25 +47,13 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
     static auto format(chessengine::Position position, std::format_context &context) {
 
         auto GetSquare = [&](chessengine::Square square) {
-            chessengine::Side side = position.side(square);
-            switch (position.piece(square)) {
-                case chessengine::kBlackPawn:
-                    return "♟";
-                case chessengine::kWhitePawn:
-                    return "♙";
-                case chessengine::kKnight:
-                    return side == chessengine::kWhite ? "♘" : "♞";
-                case chessengine::kBishop:
-                    return side == chessengine::kWhite ? "♗" : "♝";
-                case chessengine::kRook:
-                    return side == chessengine::kWhite ? "♖" : "♜";
-                case chessengine::kQueen:
-                    return side == chessengine::kWhite ? "♕" : "♛";
-                case chessengine::kKing:
-                    return side == chessengine::kWhite ? "♔" : "♚";
-                default:
-                    return ".";
+            static char kPieceChars[] = {'P', 'p', 'N', 'B', 'R', 'Q', 'K', '.', '.'};
+            char result = kPieceChars[static_cast<int>(position.piece(square))];
+
+            if (position.side(square) == chessengine::kBlack) {
+                result = std::tolower(result);
             }
+            return result;
         };
 
         auto out = context.out();
@@ -84,7 +72,12 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
         for (int col = 0; col < 8; ++col) {
             out = std::format_to(out, " {:c}", 'a' + col);
         }
-        out = std::format_to(out, "\n");
+        out = std::format_to(out, "\n\n");
+        out = std::format_to(out, "      Turn: -\n");
+        out = std::format_to(out, "  Castling: -\n");
+        out = std::format_to(out, "En Passant: -\n");
+        out = std::format_to(out, "Half Moves: 0\n");
+        out = std::format_to(out, "Full Moves: 0\n");
         return out;
     }
 };
