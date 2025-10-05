@@ -60,6 +60,17 @@ Position Position::Make() {
     return kEmptySide;
 }
 
+[[nodiscard]] Bitboard Position::Pieces() const {
+    return sides_[kWhite] | sides_[kBlack];
+}
+
+[[nodiscard]] Bitboard Position::Pieces(Side side) const {
+    return sides_[side];
+}
+
+[[nodiscard]] Bitboard Position::Pieces(Side side, Piece type) const {
+    return sides_[side] & pieces_[type];
+}
 
 namespace {
 

@@ -25,6 +25,14 @@ public:
     // Returns the side at the given square.
     [[nodiscard]] Side side(Square square) const;
 
+    [[nodiscard]] Bitboard Pieces() const;
+
+    [[nodiscard]] Bitboard Pieces(Side side) const;
+
+    [[nodiscard]] Bitboard Pieces(Side side, Piece type) const;
+
+    [[nodiscard]] Side SideToMove() const { return side_to_move_; }
+
 private:
     Position() = default;
 

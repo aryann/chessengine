@@ -25,6 +25,10 @@ enum Side : std::uint8_t {
     kEmptySide,
 };
 
+constexpr Side operator~(Side side) {
+    return side == kWhite ? kBlack : kWhite;
+}
+
 enum Direction : std::int8_t {
     kNorth,
     kNorthEast,
@@ -47,6 +51,13 @@ enum Piece : std::uint8_t {
     kNumPieces,
     kEmptyPiece,
 };
+
+enum class MoveType: std::uint8_t {
+    kQuiet,
+    kCapture,
+};
+
+using enum MoveType;
 
 } // namespace chessengine
 

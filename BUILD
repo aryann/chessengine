@@ -96,6 +96,18 @@ cc_test(
 )
 
 cc_library(
+    name = "move_generator",
+    srcs = ["move_generator.cc"],
+    hdrs = ["move_generator.h"],
+    deps = [
+        ":attacks",
+        ":move",
+        ":position",
+        ":types",
+    ],
+)
+
+cc_library(
     name = "testing",
     testonly = True,
     srcs = ["testing.cc"],
