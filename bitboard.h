@@ -114,6 +114,12 @@ public:
         data_ &= ~(1ULL << square);
     }
 
+    // Returns the Square corresponding to the least significant bit.
+    // This function has undefined behavior when no squares are set.
+    [[nodiscard]] constexpr Square LeastSignificantBit() const {
+        return static_cast<Square>(std::countr_zero(data_));
+    }
+
     template<Direction D>
     [[nodiscard]] constexpr Bitboard Shift() const;
 

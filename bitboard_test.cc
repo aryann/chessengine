@@ -420,6 +420,22 @@ TEST(Bitboard, ShiftNorthWest) {
                 ));
 }
 
+TEST(Bitboard, LeastSignificantBit) {
+    EXPECT_THAT(rank::k1.LeastSignificantBit(), Eq(A1));
+    EXPECT_THAT(rank::k5.LeastSignificantBit(), Eq(A5));
+    EXPECT_THAT(rank::k8.LeastSignificantBit(), Eq(A8));
+
+    EXPECT_THAT(file::kA.LeastSignificantBit(), Eq(A8));
+    EXPECT_THAT(file::kE.LeastSignificantBit(), Eq(E8));
+    EXPECT_THAT(file::kH.LeastSignificantBit(), Eq(H8));
+
+    EXPECT_THAT(Bitboard(0b1).LeastSignificantBit(), Eq(A8));
+    EXPECT_THAT(Bitboard(0b10).LeastSignificantBit(), Eq(B8));
+    EXPECT_THAT(Bitboard(0b11110).LeastSignificantBit(), Eq(B8));
+    EXPECT_THAT(Bitboard(0b10011110).LeastSignificantBit(), Eq(B8));
+    EXPECT_THAT(Bitboard(0b1111000).LeastSignificantBit(), Eq(D8));
+}
+
 } // namespace
 } // namespace chessengine
 
