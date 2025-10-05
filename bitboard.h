@@ -114,16 +114,27 @@ public:
         data_ &= ~(1ULL << square);
     }
 
-    // Returns the Square corresponding to the least significant bit.
-    // This function has undefined behavior when no squares are set.
+    // Gets the square of the least significant bit (LSB).
+    //
+    // Precondition: The Bitboard must not be empty.
     [[nodiscard]] constexpr Square LeastSignificantBit() const {
         return static_cast<Square>(std::countr_zero(data_));
+    }
+
+    // Finds the least significant bit (LSB), clears it from the board,
+    // and returns its corresponding square.
+    //
+    // Precondition: The Bitboard must not be empty.
+    constexpr Square PopLeastSignificantBit() {
+        Square square = LeastSignificantBit();
+        data_ &= data_ - 1;
+        return square;
     }
 
     template<Direction D>
     [[nodiscard]] constexpr Bitboard Shift() const;
 
-    [[nodiscard]] constexpr auto data() const { return data_; }
+    [[nodiscard]] constexpr auto Data() const { return data_; }
 
 private:
     std::uint64_t data_;

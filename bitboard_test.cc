@@ -436,6 +436,23 @@ TEST(Bitboard, LeastSignificantBit) {
     EXPECT_THAT(Bitboard(0b1111000).LeastSignificantBit(), Eq(D8));
 }
 
+TEST(Bitboard, PopLeastSignificantBit) {
+    Bitboard board(0b10011110);
+
+    EXPECT_THAT(board.Data(), Eq(0b10011110));
+    EXPECT_THAT(board.PopLeastSignificantBit(), Eq(B8));
+    EXPECT_THAT(board.Data(), Eq(0b10011100));
+    EXPECT_THAT(board.PopLeastSignificantBit(), Eq(C8));
+    EXPECT_THAT(board.Data(), Eq(0b10011000));
+    EXPECT_THAT(board.PopLeastSignificantBit(), Eq(D8));
+    EXPECT_THAT(board.Data(), Eq(0b10010000));
+    EXPECT_THAT(board.PopLeastSignificantBit(), Eq(E8));
+    EXPECT_THAT(board.Data(), Eq(0b10000000));
+    EXPECT_THAT(board.PopLeastSignificantBit(), Eq(H8));
+    EXPECT_THAT(board.Data(), Eq(0b00000000));
+
+}
+
 } // namespace
 } // namespace chessengine
 

@@ -8,7 +8,7 @@
 namespace chessengine {
 
 void PrintTo(const Bitboard &bitboard, std::ostream *os) {
-    *os << std::format("Bitboard(0x{:})", bitboard.data());
+    *os << std::format("Bitboard(0x{:})", bitboard.Data());
 }
 
 } // namespace chessengine

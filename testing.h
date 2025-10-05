@@ -31,7 +31,7 @@ static constexpr Bitboard FromString(std::string_view input) {
 
 void PrintTo(const Bitboard &bitboard, std::ostream *os);
 
-MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", FromString(expected).data())) {
+MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", FromString(expected).Data())) {
     Bitboard expected_bitboard = FromString(expected);
     if (arg == expected_bitboard) {
         return true;
