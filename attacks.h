@@ -40,36 +40,29 @@ consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     }
 }
 
+// Returns a bitboard representing a ray from the `from` square in the given
+// `Direction`. The ray extends to the edge of the board, but the `from`
+// square is not included.
+template<Direction Direction>
+consteval Bitboard MakeRay(Square from) {
+    Bitboard result;
+    Bitboard curr(from);
+    while (curr) {
+        curr = curr.Shift<Direction>();
+        result |= curr;
+    }
+    return result;
+}
+
 consteval void MakeBishopAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A8; square < kNumSquares; ++square) {
-        Bitboard start(static_cast<Square>(square));
+        Square start = static_cast<Square>(square);
 
-        Bitboard result;
-        Bitboard curr = start;
-        while (curr) {
-            result |= curr;
-            curr = curr.Shift<kNorthWest>();
-        }
-
-        curr = start;
-        while (curr) {
-            result |= curr;
-            curr = curr.Shift<kNorthEast>();
-        }
-
-        curr = start;
-        while (curr) {
-            result |= curr;
-            curr = curr.Shift<kSouthEast>();
-        }
-
-        curr = start;
-        while (curr) {
-            result |= curr;
-            curr = curr.Shift<kSouthWest>();
-        }
-
-        attacks[square] = result & ~start;
+        attacks[square] = kEmptyBoard
+                          | MakeRay<kNorthEast>(start)
+                          | MakeRay<kSouthEast>(start)
+                          | MakeRay<kSouthWest>(start)
+                          | MakeRay<kNorthWest>(start);
     }
 }
 
