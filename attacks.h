@@ -40,6 +40,39 @@ consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     }
 }
 
+consteval void MakeBishopAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A8; square < kNumSquares; ++square) {
+        Bitboard start(static_cast<Square>(square));
+
+        Bitboard result;
+        Bitboard curr = start;
+        while (curr) {
+            result |= curr;
+            curr = curr.Shift<kNorthWest>();
+        }
+
+        curr = start;
+        while (curr) {
+            result |= curr;
+            curr = curr.Shift<kNorthEast>();
+        }
+
+        curr = start;
+        while (curr) {
+            result |= curr;
+            curr = curr.Shift<kSouthEast>();
+        }
+
+        curr = start;
+        while (curr) {
+            result |= curr;
+            curr = curr.Shift<kSouthWest>();
+        }
+
+        attacks[square] = result & ~start;
+    }
+}
+
 consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start(static_cast<Square>(square));
@@ -61,6 +94,7 @@ consteval auto MakePseudoAttacks() {
     MakeWhitePawnAttacks(attacks[kWhitePawn]);
     MakeBlackPawnAttacks(attacks[kBlackPawn]);
     MakeKnightAttacks(attacks[kKnight]);
+    MakeBishopAttacks(attacks[kBishop]);
     MakeKingAttacks(attacks[kKing]);
     return attacks;
 }

@@ -153,6 +153,19 @@ TEST(Attacks, Knight) {
                 ));
 }
 
+TEST(Attacks, Bishop) {
+    EXPECT_THAT(kPseudoAttacks[kBishop][D5], EqualsBitboard(
+                    "8: X . . . . . X ."
+                    "7: . X . . . X . ."
+                    "6: . . X . X . . ."
+                    "5: . . . . . . . ."
+                    "4: . . X . X . . ."
+                    "3: . X . . . X . ."
+                    "2: X . . . . . X ."
+                    "1: . . . . . . . X"
+                    "   a b c d e f g h"
+                ));
+}
 
 TEST(Attacks, King) {
     EXPECT_THAT(kPseudoAttacks[kKing][A1], EqualsBitboard(
