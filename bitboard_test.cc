@@ -84,6 +84,32 @@ TEST(Bitboard, Files) {
                 ));
 }
 
+TEST(Bitboard, OtherConstants) {
+    EXPECT_THAT(kEmptyBoard, EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kEdges, EqualsBitboard(
+                    "8: X X X X X X X X"
+                    "7: X . . . . . . X"
+                    "6: X . . . . . . X"
+                    "5: X . . . . . . X"
+                    "4: X . . . . . . X"
+                    "3: X . . . . . . X"
+                    "2: X . . . . . . X"
+                    "1: X X X X X X X X"
+                    "   a b c d e f g h"
+                ));
+}
+
 TEST(Bitboard, Corners) {
     Bitboard back_ranks = rank::k1 | rank::k8;
 

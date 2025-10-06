@@ -140,9 +140,6 @@ private:
     std::uint64_t data_;
 };
 
-constexpr Bitboard kEmptyBoard;
-
-
 namespace rank {
 
 // N.B.: Integer literals used with Bitboard must be at least 64-bit to
@@ -171,6 +168,9 @@ constexpr Bitboard kG = kF << 1;
 constexpr Bitboard kH = kG << 1;
 
 } // file
+
+constexpr Bitboard kEmptyBoard;
+constexpr Bitboard kEdges = file::kA | file::kH | rank::k1 | rank::k8;
 
 template<Direction D>
 constexpr Bitboard Bitboard::Shift() const {
