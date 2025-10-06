@@ -154,7 +154,7 @@ constexpr Bitboard k3 = k4 << 8;
 constexpr Bitboard k2 = k3 << 8;
 constexpr Bitboard k1 = k2 << 8;
 
-} // rank
+} // namespace rank
 
 namespace file {
 
@@ -167,7 +167,7 @@ constexpr Bitboard kF = kE << 1;
 constexpr Bitboard kG = kF << 1;
 constexpr Bitboard kH = kG << 1;
 
-} // file
+} // namespace file
 
 constexpr Bitboard kEmptyBoard;
 constexpr Bitboard kEdges = file::kA | file::kH | rank::k1 | rank::k8;
