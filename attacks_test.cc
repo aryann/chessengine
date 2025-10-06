@@ -165,6 +165,66 @@ TEST(Attacks, Bishop) {
                     "1: . . . . . . . X"
                     "   a b c d e f g h"
                 ));
+
+    EXPECT_THAT(kPseudoAttacks[kBishop][A1], EqualsBitboard(
+                    "8: . . . . . . . X"
+                    "7: . . . . . . X ."
+                    "6: . . . . . X . ."
+                    "5: . . . . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . X . . . . ."
+                    "2: . X . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kPseudoAttacks[kBishop][H1], EqualsBitboard(
+                    "8: X . . . . . . ."
+                    "7: . X . . . . . ."
+                    "6: . . X . . . . ."
+                    "5: . . . X . . . ."
+                    "4: . . . . X . . ."
+                    "3: . . . . . X . ."
+                    "2: . . . . . . X ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kPseudoAttacks[kBishop][A8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . X . . . . . ."
+                    "6: . . X . . . . ."
+                    "5: . . . X . . . ."
+                    "4: . . . . X . . ."
+                    "3: . . . . . X . ."
+                    "2: . . . . . . X ."
+                    "1: . . . . . . . X"
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kPseudoAttacks[kBishop][H8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . X ."
+                    "6: . . . . . X . ."
+                    "5: . . . . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . X . . . . ."
+                    "2: . X . . . . . ."
+                    "1: X . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kPseudoAttacks[kBishop][A5], EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . X . . . . ."
+                    "6: . X . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . X . . . . . ."
+                    "3: . . X . . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . . X . . ."
+                    "   a b c d e f g h"
+                ));
 }
 
 TEST(Attacks, King) {
