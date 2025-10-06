@@ -40,32 +40,6 @@ consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     }
 }
 
-// Returns a bitboard representing a ray from the `from` square in the given
-// `Direction`. The ray extends to the edge of the board, but the `from`
-// square is not included.
-template<Direction Direction>
-consteval Bitboard MakeRay(Square from) {
-    Bitboard result;
-    Bitboard curr(from);
-    while (curr) {
-        curr = curr.Shift<Direction>();
-        result |= curr;
-    }
-    return result;
-}
-
-consteval void MakeBishopAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A8; square < kNumSquares; ++square) {
-        Square start = static_cast<Square>(square);
-
-        attacks[square] = kEmptyBoard
-                          | MakeRay<kNorthEast>(start)
-                          | MakeRay<kSouthEast>(start)
-                          | MakeRay<kSouthWest>(start)
-                          | MakeRay<kNorthWest>(start);
-    }
-}
-
 consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start(static_cast<Square>(square));
@@ -81,14 +55,45 @@ consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     }
 }
 
+// Returns a bitboard representing a ray from the `from` square in the given
+// `Direction`. The ray extends to the edge of the board, but the `from`
+// square is not included.
+template<Direction Direction>
+consteval Bitboard MakeRay(Square from) {
+    Bitboard result;
+    Bitboard curr(from);
+    while (curr) {
+        curr = curr.Shift<Direction>();
+        result |= curr;
+    }
+    return result;
+}
+
+template<Direction ... Directions>
+consteval void MakeSlidingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A8; square < kNumSquares; ++square) {
+        attacks[square] = (MakeRay<Directions>(static_cast<Square>(square)) | ...);
+    }
+}
+
 consteval auto MakePseudoAttacks() {
     std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks{};
 
     MakeWhitePawnAttacks(attacks[kWhitePawn]);
     MakeBlackPawnAttacks(attacks[kBlackPawn]);
     MakeKnightAttacks(attacks[kKnight]);
-    MakeBishopAttacks(attacks[kBishop]);
     MakeKingAttacks(attacks[kKing]);
+
+    MakeSlidingAttacks<
+        kNorthEast, kSouthEast, kSouthWest, kNorthWest>(attacks[kBishop]);
+
+    MakeSlidingAttacks<
+        kNorth, kEast, kSouth, kWest>(attacks[kRook]);
+
+    MakeSlidingAttacks<
+        kNorth, kNorthEast, kEast, kSouthEast,
+        kSouth, kSouthWest, kWest, kNorthWest>(attacks[kQueen]);
+
     return attacks;
 }
 
