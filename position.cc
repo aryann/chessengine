@@ -21,6 +21,8 @@ Position Position::Make() {
     position.sides_[kWhite] = rank::k1 | rank::k2;
     position.sides_[kBlack] = rank::k7 | rank::k8;
 
+    position.side_to_move_ = kWhite;
+
     return position;
 }
 

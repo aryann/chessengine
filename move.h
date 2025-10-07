@@ -14,11 +14,11 @@ public:
         bits_(from + (to << 6)) {
     }
 
-    constexpr Square from() const {
+    [[nodiscard]] constexpr Square from() const {
         return static_cast<Square>(bits_ & 0b111111);
     }
 
-    constexpr Square to() const {
+    [[nodiscard]] constexpr Square to() const {
         return static_cast<Square>((bits_ >> 6) & 0b111111);
     }
 

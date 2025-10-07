@@ -107,6 +107,17 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "move_generator_test",
+    srcs = ["move_generator_test.cc"],
+    deps = [
+        ":move_generator",
+        ":position",
+        ":testing",
+        "@googletest//:gtest",
+    ],
+)
+
 cc_library(
     name = "testing",
     testonly = True,
