@@ -121,7 +121,16 @@ cc_library(
 
 cc_library(
     name = "types",
-    srcs = [],
+    srcs = ["types.cc"],
     hdrs = ["types.h"],
     deps = [],
+)
+
+cc_test(
+    name = "types_test",
+    srcs = ["types_test.cc"],
+    deps = [
+        ":types",
+        "@googletest//:gtest",
+    ],
 )

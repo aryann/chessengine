@@ -1,7 +1,7 @@
 #ifndef CHESS_ENGINE_TYPES_H_
 #define CHESS_ENGINE_TYPES_H_
 
-#include <cstdint>
+#include <string>
 
 namespace chessengine {
 
@@ -17,6 +17,8 @@ enum Square : std::uint8_t {
     A1, B1, C1, D1, E1, F1, G1, H1,
     kNumSquares,
 };
+
+std::string ToString(Square square);
 
 enum Side : std::uint8_t {
     kWhite,

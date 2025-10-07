@@ -2,6 +2,7 @@
 #define CHESS_ENGINE_MOVE_H_
 
 #include <cstdint>
+#include <iostream>
 
 #include "types.h"
 
@@ -30,6 +31,8 @@ private:
     //   * Bits [7, 13]: The `to` Square.
     std::uint16_t bits_;
 };
+
+std::ostream &operator<<(std::ostream &os, const Move &move);
 
 } // namespace chessengine
 
