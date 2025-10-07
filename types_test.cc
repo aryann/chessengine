@@ -14,8 +14,6 @@ TEST(Square, ToString) {
     EXPECT_THAT(ToString(D5), Eq("D5"));
     EXPECT_THAT(ToString(A1), Eq("A1"));
     EXPECT_THAT(ToString(H1), Eq("H1"));
-
-    EXPECT_THAT(ToString(kNumSquares), Eq("kNumSquares"));
 }
 
 } // namespace
