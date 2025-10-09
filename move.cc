@@ -5,7 +5,9 @@
 namespace chessengine {
 
 std::ostream &operator<<(std::ostream &os, const Move &move) {
-    os << ToString(move.from()) << ToString(move.to());
+    os << "Move(";
+    os << ToString(move.from()) << ", " << ToString(move.to());
+    os << ")";
     return os;
 }
 

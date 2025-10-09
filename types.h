@@ -34,14 +34,15 @@ constexpr Side operator~(Side side) {
 }
 
 enum Direction : std::int8_t {
-    kNorth,
-    kNorthEast,
-    kEast,
-    kSouthEast,
-    kSouth,
-    kSouthWest,
-    kWest,
-    kNorthWest,
+    kNorth = -8,
+    kSouth = -kNorth,
+    kEast = 1,
+    kWest = -kEast,
+
+    kNorthEast = kNorth + kEast,
+    kNorthWest = kNorth + kWest,
+    kSouthEast = kSouth + kEast,
+    kSouthWest = kSouth + kWest,
 };
 
 enum Piece : std::uint8_t {
