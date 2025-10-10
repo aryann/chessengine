@@ -47,6 +47,20 @@ public:
         }
     }
 
+    explicit constexpr Bitboard(std::string_view input):
+        data_(0ULL) {
+        int square = 0;
+        for (const char curr: input) {
+            if (curr != '.' && curr != 'X') {
+                continue;
+            }
+            if (curr == 'X') {
+                Set(static_cast<Square>(square));
+            }
+            ++square;
+        }
+    }
+
     constexpr bool operator==(const Bitboard &other) const = default;
 
     constexpr Bitboard operator&(const Bitboard &other) const {
@@ -104,6 +118,10 @@ public:
 
     constexpr explicit operator bool() const {
         return data_ != 0;
+    }
+
+    constexpr bool Get(Square square) {
+        return bool(data_ & 1ULL << square);
     }
 
     constexpr void Set(Square square) {
@@ -208,17 +226,6 @@ constexpr Bitboard Bitboard::Shift() const {
     return kEmptyBoard;
 }
 
-constexpr bool Get(Bitboard bitboard, Square square) {
-    return bool(bitboard & Bitboard(square));
-}
-
-constexpr Bitboard Set(Bitboard bitboard, Square square) {
-    return bitboard | Bitboard(square);
-}
-
-constexpr Bitboard Clear(Bitboard bitboard, Square square) {
-    return bitboard & (~Bitboard(square));
-}
 
 } // namespace chessengine
 
@@ -235,7 +242,7 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
             out = std::format_to(out, "{}:", 8 - row);
             for (int col = 0; col < 8; ++col) {
                 auto square = static_cast<chessengine::Square>(row * 8 + col);
-                if (chessengine::Get(bitboard, square)) {
+                if (bitboard.Get(square)) {
                     out = std::format_to(out, " X");
                 } else {
                     out = std::format_to(out, " .");

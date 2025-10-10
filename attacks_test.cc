@@ -389,6 +389,20 @@ TEST(Attacks, King) {
                 ));
 }
 
+TEST(GenerateBishopAttacks, All) {
+    EXPECT_THAT(GenerateBishopAttacks(D5, Bitboard()), EqualsBitboard(
+                    "8: X . . . . . X ."
+                    "7: . X . . . X . ."
+                    "6: . . X . X . . ."
+                    "5: . . . . . . . ."
+                    "4: . . X . X . . ."
+                    "3: . X . . . X . ."
+                    "2: X . . . . . X ."
+                    "1: . . . . . . . X"
+                    "   a b c d e f g h"
+                ));
+}
+
 } // namespace
 } // namespace chessengine
 

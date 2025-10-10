@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 
     chessengine::Bitboard board = chessengine::kEmptyBoard;
 
-    board = Set(board, chessengine::D4);
+    board.Set(chessengine::D4);
     std::println("{}", board);
     std::println("{}", board.Shift<chessengine::kSouthWest>());
     return 0;

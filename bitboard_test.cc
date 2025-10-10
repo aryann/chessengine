@@ -133,29 +133,29 @@ TEST(Bitboard, Corners) {
 TEST(Bitboard, GetSetClear) {
     Bitboard board = rank::k1;
 
-    EXPECT_THAT(Get(board, A1), IsTrue());
-    EXPECT_THAT(Get(board, B1), IsTrue());
-    EXPECT_THAT(Get(board, C1), IsTrue());
-    EXPECT_THAT(Get(board, D1), IsTrue());
-    EXPECT_THAT(Get(board, E1), IsTrue());
-    EXPECT_THAT(Get(board, F1), IsTrue());
-    EXPECT_THAT(Get(board, G1), IsTrue());
-    EXPECT_THAT(Get(board, H1), IsTrue());
+    EXPECT_THAT(board.Get(A1), IsTrue());
+    EXPECT_THAT(board.Get(B1), IsTrue());
+    EXPECT_THAT(board.Get(C1), IsTrue());
+    EXPECT_THAT(board.Get(D1), IsTrue());
+    EXPECT_THAT(board.Get(E1), IsTrue());
+    EXPECT_THAT(board.Get(F1), IsTrue());
+    EXPECT_THAT(board.Get(G1), IsTrue());
+    EXPECT_THAT(board.Get(H1), IsTrue());
 
-    EXPECT_THAT(Get(board, A2), IsFalse());
-    EXPECT_THAT(Get(board, B3), IsFalse());
-    EXPECT_THAT(Get(board, C4), IsFalse());
-    EXPECT_THAT(Get(board, D5), IsFalse());
-    EXPECT_THAT(Get(board, E6), IsFalse());
-    EXPECT_THAT(Get(board, F7), IsFalse());
-    EXPECT_THAT(Get(board, G8), IsFalse());
-    EXPECT_THAT(Get(board, H8), IsFalse());
+    EXPECT_THAT(board.Get(A2), IsFalse());
+    EXPECT_THAT(board.Get(B3), IsFalse());
+    EXPECT_THAT(board.Get(C4), IsFalse());
+    EXPECT_THAT(board.Get(D5), IsFalse());
+    EXPECT_THAT(board.Get(E6), IsFalse());
+    EXPECT_THAT(board.Get(F7), IsFalse());
+    EXPECT_THAT(board.Get(G8), IsFalse());
+    EXPECT_THAT(board.Get(H8), IsFalse());
 
-    board = Clear(board, B1);
-    EXPECT_THAT(Get(board, B1), IsFalse());
+    board.Clear(B1);
+    EXPECT_THAT(board.Get(B1), IsFalse());
 
-    board = Set(board, B1);
-    EXPECT_THAT(Get(board, B1), IsTrue());
+    board.Set(B1);
+    EXPECT_THAT(board.Get(B1), IsTrue());
 }
 
 TEST(Bitboard, ShiftNorth) {

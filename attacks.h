@@ -69,6 +69,11 @@ consteval Bitboard MakeRay(Square from) {
     return result;
 }
 
+template<Direction... Directions>
+consteval Bitboard MakeRays(Square from) {
+    return (MakeRay<Directions>(from) | ...);
+}
+
 template<Direction ... Directions>
 consteval void MakeSlidingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A8; square < kNumSquares; ++square) {
@@ -100,6 +105,48 @@ consteval auto MakePseudoAttacks() {
 // N.B.: Since MakePseudoAttacks() is consteval, the attack array will be
 // evaluated at compile time.
 inline constexpr auto kPseudoAttacks = MakePseudoAttacks();
+
+struct Magic {
+    // Relevancy bitboard for this piece.
+    Bitboard mask;
+};
+
+consteval std::array<Magic, kNumSquares> MakeBishopMagic() {
+    std::array<Magic, kNumSquares> result;
+    for (int square = A8; square < kNumSquares; ++square) {
+        Bitboard mask = MakeRays<
+            kNorthEast, kSouthEast, kSouthWest, kNorthWest>(static_cast<Square>(square));
+        mask &= ~kEdges;
+        result[square].mask = mask;
+    }
+    return result;
+}
+
+constexpr auto kBishopMagics = MakeBishopMagic();
+
+template<Direction Direction>
+constexpr Bitboard GenerateRayAttacks(Square from, Bitboard blockers) {
+    Bitboard attacks;
+    Bitboard curr(from);
+    while (curr) {
+        curr = curr.Shift<Direction>();
+        attacks |= curr;
+        if (curr & blockers) {
+            break;
+        }
+    }
+    return attacks;
+}
+
+template<Direction ... Directions>
+constexpr Bitboard GenerateSlidingAttacks(Square from, Bitboard blockers) {
+    return (GenerateRayAttacks<Directions>(from, blockers) | ...);
+}
+
+constexpr Bitboard GenerateBishopAttacks(Square square, Bitboard blockers) {
+    blockers &= kBishopMagics[square].mask;
+    return GenerateSlidingAttacks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(square, blockers);
+}
 
 } // namespace chessengine
 

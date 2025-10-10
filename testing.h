@@ -12,27 +12,10 @@
 
 namespace chessengine {
 
-static constexpr Bitboard FromString(std::string_view input) {
-    Bitboard bitboard = kEmptyBoard;
-    int square = 0;
-
-    for (const char curr: input) {
-        if (curr != '.' && curr != 'X') {
-            continue;
-        }
-        if (curr == 'X') {
-            bitboard |= Set(bitboard, static_cast<Square>(square));
-        }
-        ++square;
-    }
-
-    return bitboard;
-}
-
 void PrintTo(const Bitboard &bitboard, std::ostream *os);
 
-MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", FromString(expected).Data())) {
-    Bitboard expected_bitboard = FromString(expected);
+MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(expected).Data())) {
+    Bitboard expected_bitboard = Bitboard(expected);
     if (arg == expected_bitboard) {
         return true;
     }
