@@ -4,27 +4,11 @@
 #include "absl/strings/str_split.h"
 
 namespace chessengine {
+namespace {
 
-Position Position::Make() {
-    Position position;
+constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-    // Pieces:
-    position.pieces_[kWhitePawn] = rank::k2;
-    position.pieces_[kBlackPawn] = rank::k7;
-    position.pieces_[kKnight] = {B1, G1, B8, G8};
-    position.pieces_[kBishop] = {C1, F1, C8, F8};
-    position.pieces_[kRook] = {A1, H1, A8, H8};
-    position.pieces_[kQueen] = {D1, D8};
-    position.pieces_[kKing] = {E1, E8};
-
-    // Sides:
-    position.sides_[kWhite] = rank::k1 | rank::k2;
-    position.sides_[kBlack] = rank::k7 | rank::k8;
-
-    position.side_to_move_ = kWhite;
-
-    return position;
-}
+} // namespace
 
 [[nodiscard]] Piece Position::piece(Square square) const {
     if (pieces_[kBlackPawn] & square) {
@@ -134,7 +118,12 @@ std::expected<void, std::string> ParseBoard(std::string_view board,
 
 } // namespace
 
-std::expected<Position, std::string> Position::Make(std::string_view fen) {
+Position Position::Starting() {
+    std::expected<Position, std::string> result = FromFen(kStartingPosition);
+    return result.value();
+}
+
+std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
     std::vector<std::string_view> parts = absl::StrSplit(fen, absl::ByAsciiWhitespace());
     if (parts.size() != 6) {
         return std::unexpected(std::format("FEN string must have 6 parts; received: {}", parts.size()));

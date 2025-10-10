@@ -11,13 +11,13 @@ namespace chessengine {
 
 class Position {
 public:
-    static Position Make();
+    static Position Starting();
 
     // Parses a Forsyth–Edwards Notation (FEN) string to create a `Position`.
     //
     // Returns an error string with a descriptive message if and only if the FEN
     // value is invalid.
-    static std::expected<Position, std::string> Make(std::string_view fen);
+    static std::expected<Position, std::string> FromFen(std::string_view fen);
 
     // Returns the piece at the given square.
     [[nodiscard]] Piece piece(Square square) const;
@@ -34,7 +34,9 @@ public:
     [[nodiscard]] Side SideToMove() const { return side_to_move_; }
 
 private:
-    Position() = default;
+    Position():
+        side_to_move_(kWhite), half_moves_(0), full_moves_(1) {
+    }
 
     std::array<Bitboard, kNumPieces> pieces_;
     std::array<Bitboard, kNumSides> sides_;

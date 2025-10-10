@@ -13,7 +13,7 @@ using ::testing::Eq;
 using ::testing::UnorderedElementsAre;
 
 TEST(GenerateMoves, QuietKnightMoves) {
-    auto position = Position::Make();
+    auto position = Position::Starting();
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
                     // Pawn single moves:
