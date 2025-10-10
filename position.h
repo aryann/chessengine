@@ -57,7 +57,7 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
     static auto format(chessengine::Position position, std::format_context &context) {
 
         auto GetSquare = [&](chessengine::Square square) {
-            static char kPieceChars[] = {'P', 'p', 'N', 'B', 'R', 'Q', 'K', '.', '.'};
+            static char kPieceChars[] = {'P', 'N', 'B', 'R', 'Q', 'K', '.', '.'};
             char result = kPieceChars[static_cast<int>(position.piece(square))];
 
             if (position.side(square) == chessengine::kBlack) {

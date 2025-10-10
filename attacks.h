@@ -81,11 +81,18 @@ consteval void MakeSlidingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     }
 }
 
-consteval auto MakePseudoAttacks() {
-    std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks{};
+consteval auto MakePawnAttacks() {
+    std::array<std::array<Bitboard, kNumSquares>, kNumSides> attacks;
+    MakeWhitePawnAttacks(attacks[kWhite]);
+    MakeBlackPawnAttacks(attacks[kBlack]);
+    return attacks;
+}
 
-    MakeWhitePawnAttacks(attacks[kWhitePawn]);
-    MakeBlackPawnAttacks(attacks[kBlackPawn]);
+constexpr auto kPawnAttacks = MakePawnAttacks();
+
+consteval auto MakePseudoAttacks() {
+    std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks;
+
     MakeKnightAttacks(attacks[kKnight]);
     MakeKingAttacks(attacks[kKing]);
 
@@ -104,7 +111,7 @@ consteval auto MakePseudoAttacks() {
 
 // N.B.: Since MakePseudoAttacks() is consteval, the attack array will be
 // evaluated at compile time.
-inline constexpr auto kPseudoAttacks = MakePseudoAttacks();
+constexpr auto kPseudoAttacks = MakePseudoAttacks();
 
 struct Magic {
     // Relevancy bitboard for this square and piece.

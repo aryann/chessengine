@@ -11,11 +11,8 @@ constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPP
 } // namespace
 
 [[nodiscard]] Piece Position::piece(Square square) const {
-    if (pieces_[kBlackPawn] & square) {
-        return kBlackPawn;
-    }
-    if (pieces_[kWhitePawn] & square) {
-        return kWhitePawn;
+    if (pieces_[kPawn] & square) {
+        return kPawn;
     }
     if (pieces_[kKnight] & square) {
         return kKnight;
@@ -61,10 +58,8 @@ constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPP
 namespace {
 
 std::expected<void, std::string> FillPiece(char curr, Square square, std::array<Bitboard, kNumPieces> &pieces) {
-    if (curr == 'p') {
-        pieces[kBlackPawn].Set(square);
-    } else if (curr == 'P') {
-        pieces[kWhitePawn].Set(square);
+    if (curr == 'p' || curr == 'P') {
+        pieces[kPawn].Set(square);
     } else if (curr == 'n' || curr == 'N') {
         pieces[kKnight].Set(square);
     } else if (curr == 'b' || curr == 'B') {

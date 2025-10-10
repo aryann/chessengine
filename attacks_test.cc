@@ -10,7 +10,7 @@ namespace {
 using testing::Eq;
 
 TEST(Attacks, WhitePawn) {
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][A2], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][A2], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -21,7 +21,7 @@ TEST(Attacks, WhitePawn) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][B2], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][B2], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -32,7 +32,7 @@ TEST(Attacks, WhitePawn) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][H2], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][H2], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -44,7 +44,7 @@ TEST(Attacks, WhitePawn) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][A1], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][A1], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -55,7 +55,7 @@ TEST(Attacks, WhitePawn) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][E1], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][E1], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -67,7 +67,7 @@ TEST(Attacks, WhitePawn) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][A8], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][A8], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -78,7 +78,7 @@ TEST(Attacks, WhitePawn) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
-    EXPECT_THAT(kPseudoAttacks[kWhitePawn][H8], EqualsBitboard(
+    EXPECT_THAT(kPawnAttacks[kWhite][H8], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."

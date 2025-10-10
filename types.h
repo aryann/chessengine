@@ -46,16 +46,16 @@ enum Direction : std::int8_t {
 };
 
 enum Piece : std::uint8_t {
-    kWhitePawn,
-    kBlackPawn,
+    kPawn,
     kKnight,
     kBishop,
     kRook,
     kQueen,
     kKing,
-    kNumPieces,
     kEmptyPiece,
 };
+
+constexpr std::size_t kNumPieces = 6;
 
 enum class MoveType: std::uint8_t {
     kQuiet,
