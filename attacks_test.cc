@@ -389,8 +389,9 @@ TEST(Attacks, King) {
                 ));
 }
 
-TEST(GenerateBishopAttacks, All) {
-    EXPECT_THAT(GenerateBishopAttacks(D5, Bitboard()), EqualsBitboard(
+TEST(GenerateBishopAttacks, NoBlockers) {
+    Bitboard blockers;
+    EXPECT_THAT(GenerateBishopAttacks(D5, blockers), EqualsBitboard(
                     "8: X . . . . . X ."
                     "7: . X . . . X . ."
                     "6: . . X . X . . ."
@@ -399,6 +400,214 @@ TEST(GenerateBishopAttacks, All) {
                     "3: . X . . . X . ."
                     "2: X . . . . . X ."
                     "1: . . . . . . . X"
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateBishopAttacks, AllPathsBlocked) {
+    Bitboard blockers(
+            "8: X . . . . . X ."
+            "7: . X . . . X . ."
+            "6: . . X . X . . ."
+            "5: . . . . . . . ."
+            "4: . . X . X . . ."
+            "3: . X . . . X . ."
+            "2: X . . . . . X ."
+            "1: . . . . . . . X"
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateBishopAttacks(D5, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . X . X . . ."
+                    "5: . . . . . . . ."
+                    "4: . . X . X . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateBishopAttacks, EdgesBlockedOnly) {
+    Bitboard blockers(
+            "8: X . . . . . X ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: X . . . . . . ."
+            "1: . . . . . . . X"
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateBishopAttacks(D5, blockers), EqualsBitboard(
+                    "8: X . . . . . X ."
+                    "7: . X . . . X . ."
+                    "6: . . X . X . . ."
+                    "5: . . . . . . . ."
+                    "4: . . X . X . . ."
+                    "3: . X . . . X . ."
+                    "2: X . . . . . X ."
+                    "1: . . . . . . . X"
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(BishopAttacksTest, PieceOnCornerA1) {
+    Bitboard blockers;
+    EXPECT_THAT(GenerateBishopAttacks(A1, blockers), EqualsBitboard(
+                    "8: . . . . . . . X"
+                    "7: . . . . . . X ."
+                    "6: . . . . . X . ."
+                    "5: . . . . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . X . . . . ."
+                    "2: . X . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(BishopAttacksTest, PieceOnEdgeA4) {
+    Bitboard blockers;
+    EXPECT_THAT(GenerateBishopAttacks(A4, blockers), EqualsBitboard(
+                    "8: . . . . X . . ."
+                    "7: . . . X . . . ."
+                    "6: . . X . . . . ."
+                    "5: . X . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . X . . . . . ."
+                    "2: . . X . . . . ."
+                    "1: . . . X . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacks, NoBlockers) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: X X X . X X X X"
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . X . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacks, AllPathsBlocked) {
+    Bitboard blockers(
+            "8: . . . X . . . ."
+            "7: . . . X . . . ."
+            "6: . . . X . . . ."
+            "5: X X X . X X X X"
+            "4: . . . X . . . ."
+            "3: . . . X . . . ."
+            "2: . . . X . . . ."
+            "1: . . . X . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . X . . . ."
+                    "5: . . X . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacks, EdgesBlockedOnly) {
+    Bitboard blockers(
+            "8: . . . X . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: X . . . . . . X"
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . X . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: X X X . X X X X"
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . X . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+
+TEST(RookAttacksTest, PieceOnCornerH1) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateRookAttacks(H1, blockers), EqualsBitboard(
+                    "8: . . . . . . . X"
+                    "7: . . . . . . . X"
+                    "6: . . . . . . . X"
+                    "5: . . . . . . . X"
+                    "4: . . . . . . . X"
+                    "3: . . . . . . . X"
+                    "2: . . . . . . . X"
+                    "1: X X X X X X X ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(RookAttacksTest, PieceOnEdgeA4) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateRookAttacks(A4, blockers), EqualsBitboard(
+                    "8: X . . . . . . ."
+                    "7: X . . . . . . ."
+                    "6: X . . . . . . ."
+                    "5: X . . . . . . ."
+                    "4: . X X X X X X X"
+                    "3: X . . . . . . ."
+                    "2: X . . . . . . ."
+                    "1: X . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(RookAttacksTest, MultipleBlockersOnSameRay) {
+    Bitboard blockers(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . X . X ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            );
+    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: X X X . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . X . . . ."
                     "   a b c d e f g h"
                 ));
 }

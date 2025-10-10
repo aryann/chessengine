@@ -107,22 +107,20 @@ consteval auto MakePseudoAttacks() {
 inline constexpr auto kPseudoAttacks = MakePseudoAttacks();
 
 struct Magic {
-    // Relevancy bitboard for this piece.
+    // Relevancy bitboard for this square and piece.
     Bitboard mask;
 };
 
-consteval std::array<Magic, kNumSquares> MakeBishopMagic() {
+template<Direction ... Directions>
+consteval std::array<Magic, kNumSquares> MakeMagic() {
     std::array<Magic, kNumSquares> result;
     for (int square = A8; square < kNumSquares; ++square) {
-        Bitboard mask = MakeRays<
-            kNorthEast, kSouthEast, kSouthWest, kNorthWest>(static_cast<Square>(square));
+        Bitboard mask = (MakeRays<Directions>(static_cast<Square>(square)) | ...);
         mask &= ~kEdges;
         result[square].mask = mask;
     }
     return result;
 }
-
-constexpr auto kBishopMagics = MakeBishopMagic();
 
 template<Direction Direction>
 constexpr Bitboard GenerateRayAttacks(Square from, Bitboard blockers) {
@@ -144,8 +142,19 @@ constexpr Bitboard GenerateSlidingAttacks(Square from, Bitboard blockers) {
 }
 
 constexpr Bitboard GenerateBishopAttacks(Square square, Bitboard blockers) {
+    static std::array<Magic, kNumSquares> kBishopMagics = MakeMagic<
+        kNorthEast, kSouthEast, kSouthWest, kNorthWest>();
+
     blockers &= kBishopMagics[square].mask;
     return GenerateSlidingAttacks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(square, blockers);
+}
+
+constexpr Bitboard GenerateRookAttacks(Square square, Bitboard blockers) {
+    static std::array<Magic, kNumSquares> kRookMagics = MakeMagic<
+        kNorth, kEast, kSouth, kWest>();
+
+    blockers &= kRookMagics[square].mask;
+    return GenerateSlidingAttacks<kNorth, kEast, kSouth, kWest>(square, blockers);
 }
 
 } // namespace chessengine
