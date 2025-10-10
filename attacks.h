@@ -7,23 +7,22 @@
 
 namespace chessengine {
 
-consteval void MakeWhitePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A8; square < A1; ++square) {
+template<Direction ... Directions>
+consteval void MakePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start(static_cast<Square>(square));
-        attacks[square] = kEmptyBoard
-                          | start.Shift<kNorthEast>()
-                          | start.Shift<kNorthWest>();
+        attacks[square] = (start.Shift<Directions>() | ...);
     }
 }
 
-consteval void MakeBlackPawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A7; square < kNumSquares; ++square) {
-        Bitboard start(static_cast<Square>(square));
-        attacks[square] = kEmptyBoard
-                          | start.Shift<kSouthEast>()
-                          | start.Shift<kSouthWest>();
-    }
+consteval auto MakePawnAttacks() {
+    std::array<std::array<Bitboard, kNumSquares>, kNumSides> attacks;
+    MakePawnAttacks<kNorthEast, kNorthWest>(attacks[kWhite]);
+    MakePawnAttacks<kSouthEast, kSouthWest>(attacks[kBlack]);
+    return attacks;
 }
+
+constexpr auto kPawnAttacks = MakePawnAttacks();
 
 consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
     for (int square = A8; square < kNumSquares; ++square) {
@@ -80,15 +79,6 @@ consteval void MakeSlidingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
         attacks[square] = (MakeRay<Directions>(static_cast<Square>(square)) | ...);
     }
 }
-
-consteval auto MakePawnAttacks() {
-    std::array<std::array<Bitboard, kNumSquares>, kNumSides> attacks;
-    MakeWhitePawnAttacks(attacks[kWhite]);
-    MakeBlackPawnAttacks(attacks[kBlack]);
-    return attacks;
-}
-
-constexpr auto kPawnAttacks = MakePawnAttacks();
 
 consteval auto MakePseudoAttacks() {
     std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks;

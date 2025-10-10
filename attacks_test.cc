@@ -44,6 +44,8 @@ TEST(Attacks, WhitePawn) {
                     "   a b c d e f g h"
                 ));
 
+    // The first-rank attacks will never be called, but for implementation simplicity,
+    // we still calculate them.
     EXPECT_THAT(kPawnAttacks[kWhite][A1], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
@@ -51,7 +53,7 @@ TEST(Attacks, WhitePawn) {
                     "5: . . . . . . . ."
                     "4: . . . . . . . ."
                     "3: . . . . . . . ."
-                    "2: . . . . . . . ."
+                    "2: . X . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
@@ -62,7 +64,7 @@ TEST(Attacks, WhitePawn) {
                     "5: . . . . . . . ."
                     "4: . . . . . . . ."
                     "3: . . . . . . . ."
-                    "2: . . . . . . . ."
+                    "2: . . . X . X . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
@@ -79,6 +81,90 @@ TEST(Attacks, WhitePawn) {
                     "   a b c d e f g h"
                 ));
     EXPECT_THAT(kPawnAttacks[kWhite][H8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Attacks, BlackPawn) {
+    EXPECT_THAT(kPawnAttacks[kBlack][A7], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . X . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(kPawnAttacks[kBlack][B7], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: X . X . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(kPawnAttacks[kBlack][H7], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . X ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    // The eighth-rank attacks will never be called, but for implementation simplicity,
+    // we still calculate them.
+    EXPECT_THAT(kPawnAttacks[kBlack][A8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . X . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(kPawnAttacks[kBlack][E8], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . X . X . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kPawnAttacks[kBlack][A1], EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(kPawnAttacks[kBlack][H1], EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
