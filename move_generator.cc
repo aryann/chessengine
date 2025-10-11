@@ -78,7 +78,6 @@ std::vector<Move> GenerateAllMoves(const Position &position) {
     return moves;
 }
 
-
 } // namespace
 
 template<MoveType MoveType>
