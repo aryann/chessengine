@@ -21,9 +21,9 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     constexpr Direction forward = Side == kWhite ? kNorth : kEast;
     Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
     Bitboard pre_promotion_rank = Side == kWhite ? rank::k7 : rank::k2;
-    Bitboard empty_squares = ~position.Pieces();
+    Bitboard empty_squares = ~position.GetPieces();
 
-    Bitboard unpromotable_pawns = position.Pieces(position.SideToMove(), kPawn) & ~pre_promotion_rank;
+    Bitboard unpromotable_pawns = position.GetPieces(position.SideToMove(), kPawn) & ~pre_promotion_rank;
 
     if (MoveType == kQuiet) {
         Bitboard single_moves = unpromotable_pawns.Shift<forward>() & empty_squares;
@@ -36,7 +36,7 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
 
 template<Side Side, Piece Piece>
 void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move> &moves) {
-    Bitboard pieces = position.Pieces(Side, Piece);
+    Bitboard pieces = position.GetPieces(Side, Piece);
 
     while (pieces) {
         Square from = pieces.PopLeastSignificantBit();
@@ -52,11 +52,11 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
 template<MoveType MoveType>
 Bitboard GetTargets(const Position &position) {
     if constexpr (MoveType == kQuiet) {
-        return ~position.Pieces();
+        return ~position.GetPieces();
     }
 
     if constexpr (MoveType == kCapture) {
-        return position.Pieces(~position.SideToMove());
+        return position.GetPieces(~position.SideToMove());
     }
 
     return {};

@@ -21,16 +21,16 @@ public:
     static std::expected<Position, std::string> FromFen(std::string_view fen);
 
     // Returns the piece at the given square.
-    [[nodiscard]] Piece piece(Square square) const;
+    [[nodiscard]] Piece GetPiece(Square square) const;
 
     // Returns the side at the given square.
-    [[nodiscard]] Side side(Square square) const;
+    [[nodiscard]] Side GetSide(Square square) const;
 
-    [[nodiscard]] Bitboard Pieces() const;
+    [[nodiscard]] Bitboard GetPieces() const;
 
-    [[nodiscard]] Bitboard Pieces(Side side) const;
+    [[nodiscard]] Bitboard GetPieces(Side side) const;
 
-    [[nodiscard]] Bitboard Pieces(Side side, Piece type) const;
+    [[nodiscard]] Bitboard GetPieces(Side side, Piece type) const;
 
     [[nodiscard]] Side SideToMove() const { return side_to_move_; }
 
@@ -65,9 +65,9 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
 
         auto GetSquare = [&](chessengine::Square square) {
             static char kPieceChars[] = {'P', 'N', 'B', 'R', 'Q', 'K', '.', '.'};
-            char result = kPieceChars[static_cast<int>(position.piece(square))];
+            char result = kPieceChars[static_cast<int>(position.GetPiece(square))];
 
-            if (position.side(square) == chessengine::kBlack) {
+            if (position.GetSide(square) == chessengine::kBlack) {
                 result = std::tolower(result);
             }
             return result;

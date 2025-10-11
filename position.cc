@@ -11,7 +11,7 @@ constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPP
 
 } // namespace
 
-[[nodiscard]] Piece Position::piece(Square square) const {
+[[nodiscard]] Piece Position::GetPiece(Square square) const {
     if (pieces_[kPawn] & square) {
         return kPawn;
     }
@@ -34,7 +34,7 @@ constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPP
     return kEmptyPiece;
 }
 
-[[nodiscard]] Side Position::side(Square square) const {
+[[nodiscard]] Side Position::GetSide(Square square) const {
     if (sides_[kWhite] & square) {
         return kWhite;
     }
@@ -44,15 +44,15 @@ constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPP
     return kEmptySide;
 }
 
-[[nodiscard]] Bitboard Position::Pieces() const {
+[[nodiscard]] Bitboard Position::GetPieces() const {
     return sides_[kWhite] | sides_[kBlack];
 }
 
-[[nodiscard]] Bitboard Position::Pieces(Side side) const {
+[[nodiscard]] Bitboard Position::GetPieces(Side side) const {
     return sides_[side];
 }
 
-[[nodiscard]] Bitboard Position::Pieces(Side side, Piece type) const {
+[[nodiscard]] Bitboard Position::GetPieces(Side side, Piece type) const {
     return sides_[side] & pieces_[type];
 }
 
