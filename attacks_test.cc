@@ -477,7 +477,7 @@ TEST(Attacks, King) {
 
 TEST(GenerateBishopAttacks, NoBlockers) {
     Bitboard blockers;
-    EXPECT_THAT(GenerateBishopAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(D5, blockers), EqualsBitboard(
                     "8: X . . . . . X ."
                     "7: . X . . . X . ."
                     "6: . . X . X . . ."
@@ -503,7 +503,7 @@ TEST(GenerateBishopAttacks, AllPathsBlocked) {
             "   a b c d e f g h"
             );
 
-    EXPECT_THAT(GenerateBishopAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(D5, blockers), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . X . X . . ."
@@ -529,7 +529,7 @@ TEST(GenerateBishopAttacks, EdgesBlockedOnly) {
             "   a b c d e f g h"
             );
 
-    EXPECT_THAT(GenerateBishopAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(D5, blockers), EqualsBitboard(
                     "8: X . . . . . X ."
                     "7: . X . . . X . ."
                     "6: . . X . X . . ."
@@ -544,7 +544,7 @@ TEST(GenerateBishopAttacks, EdgesBlockedOnly) {
 
 TEST(BishopAttacksTest, PieceOnCornerA1) {
     Bitboard blockers;
-    EXPECT_THAT(GenerateBishopAttacks(A1, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(A1, blockers), EqualsBitboard(
                     "8: . . . . . . . X"
                     "7: . . . . . . X ."
                     "6: . . . . . X . ."
@@ -559,7 +559,7 @@ TEST(BishopAttacksTest, PieceOnCornerA1) {
 
 TEST(BishopAttacksTest, PieceOnEdgeA4) {
     Bitboard blockers;
-    EXPECT_THAT(GenerateBishopAttacks(A4, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(A4, blockers), EqualsBitboard(
                     "8: . . . . X . . ."
                     "7: . . . X . . . ."
                     "6: . . X . . . . ."
@@ -575,7 +575,7 @@ TEST(BishopAttacksTest, PieceOnEdgeA4) {
 TEST(GenerateRookAttacks, NoBlockers) {
     Bitboard blockers;
 
-    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
                     "8: . . . X . . . ."
                     "7: . . . X . . . ."
                     "6: . . . X . . . ."
@@ -601,7 +601,7 @@ TEST(GenerateRookAttacks, AllPathsBlocked) {
             "   a b c d e f g h"
             );
 
-    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . X . . . ."
@@ -627,7 +627,7 @@ TEST(GenerateRookAttacks, EdgesBlockedOnly) {
             "   a b c d e f g h"
             );
 
-    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
                     "8: . . . X . . . ."
                     "7: . . . X . . . ."
                     "6: . . . X . . . ."
@@ -644,7 +644,7 @@ TEST(GenerateRookAttacks, EdgesBlockedOnly) {
 TEST(RookAttacksTest, PieceOnCornerH1) {
     Bitboard blockers;
 
-    EXPECT_THAT(GenerateRookAttacks(H1, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(H1, blockers), EqualsBitboard(
                     "8: . . . . . . . X"
                     "7: . . . . . . . X"
                     "6: . . . . . . . X"
@@ -660,7 +660,7 @@ TEST(RookAttacksTest, PieceOnCornerH1) {
 TEST(RookAttacksTest, PieceOnEdgeA4) {
     Bitboard blockers;
 
-    EXPECT_THAT(GenerateRookAttacks(A4, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(A4, blockers), EqualsBitboard(
                     "8: X . . . . . . ."
                     "7: X . . . . . . ."
                     "6: X . . . . . . ."
@@ -685,7 +685,7 @@ TEST(RookAttacksTest, MultipleBlockersOnSameRay) {
             "1: . . . . . . . ."
             "   a b c d e f g h"
             );
-    EXPECT_THAT(GenerateRookAttacks(D5, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
                     "8: . . . X . . . ."
                     "7: . . . X . . . ."
                     "6: . . . X . . . ."

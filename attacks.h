@@ -120,13 +120,13 @@ consteval std::array<Magic, kNumSquares> MakeMagic() {
 }
 
 template<Direction Direction>
-constexpr Bitboard GenerateRayAttacks(Square from, Bitboard blockers) {
+constexpr Bitboard GenerateRayAttacks(Square from, Bitboard occupied) {
     Bitboard attacks;
     Bitboard curr(from);
     while (curr) {
         curr = curr.Shift<Direction>();
         attacks |= curr;
-        if (curr & blockers) {
+        if (curr & occupied) {
             break;
         }
     }
@@ -134,24 +134,37 @@ constexpr Bitboard GenerateRayAttacks(Square from, Bitboard blockers) {
 }
 
 template<Direction ... Directions>
-constexpr Bitboard GenerateSlidingAttacks(Square from, Bitboard blockers) {
-    return (GenerateRayAttacks<Directions>(from, blockers) | ...);
+constexpr Bitboard GenerateSlidingAttacks(Square from, Bitboard occupied) {
+    return (GenerateRayAttacks<Directions>(from, occupied) | ...);
 }
 
-constexpr Bitboard GenerateBishopAttacks(Square square, Bitboard blockers) {
+constexpr Bitboard GenerateBishopAttacks(Square square, Bitboard occupied) {
     static std::array<Magic, kNumSquares> kBishopMagics = MakeMagic<
         kNorthEast, kSouthEast, kSouthWest, kNorthWest>();
 
-    blockers &= kBishopMagics[square].mask;
-    return GenerateSlidingAttacks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(square, blockers);
+    occupied &= kBishopMagics[square].mask;
+    return GenerateSlidingAttacks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(square, occupied);
 }
 
-constexpr Bitboard GenerateRookAttacks(Square square, Bitboard blockers) {
+constexpr Bitboard GenerateRookAttacks(Square square, Bitboard occupied) {
     static std::array<Magic, kNumSquares> kRookMagics = MakeMagic<
         kNorth, kEast, kSouth, kWest>();
 
-    blockers &= kRookMagics[square].mask;
-    return GenerateSlidingAttacks<kNorth, kEast, kSouth, kWest>(square, blockers);
+    occupied &= kRookMagics[square].mask;
+    return GenerateSlidingAttacks<kNorth, kEast, kSouth, kWest>(square, occupied);
+}
+
+template<Piece Piece>
+constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
+    if constexpr (Piece == kBishop) {
+        return GenerateBishopAttacks(square, occupied);
+    } else if constexpr (Piece == kRook) {
+        return GenerateRookAttacks(square, occupied);
+    } else if constexpr (Piece == kQueen) {
+        return GenerateBishopAttacks(square, occupied) | GenerateRookAttacks(square, occupied);
+    } else {
+        return kEmptyBoard;
+    }
 }
 
 } // namespace chessengine
