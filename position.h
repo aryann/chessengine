@@ -5,6 +5,7 @@
 #include <string_view>
 
 #include "bitboard.h"
+#include "castling_rights.h"
 #include "types.h"
 
 namespace chessengine {
@@ -33,18 +34,24 @@ public:
 
     [[nodiscard]] Side SideToMove() const { return side_to_move_; }
 
+    [[nodiscard]] const CastlingRights &GetCastlingRights() const { return castling_rights_; }
+
 private:
     Position():
-        side_to_move_(kWhite), half_moves_(0), full_moves_(1) {
+        side_to_move_(kWhite),
+        castling_rights_(),
+        en_passant_target_(std::nullopt),
+        half_moves_(0),
+        full_moves_(1) {
     }
 
     std::array<Bitboard, kNumPieces> pieces_;
     std::array<Bitboard, kNumSides> sides_;
 
     Side side_to_move_;
-    std::optional<Square> en_passant_target_;
+    CastlingRights castling_rights_;
 
-    // TODO(aryann): Add castling rights.
+    std::optional<Square> en_passant_target_;
 
     int half_moves_;
     int full_moves_;

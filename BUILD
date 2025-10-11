@@ -48,11 +48,21 @@ cc_test(
 )
 
 cc_library(
+    name = "castling_rights",
+    srcs = ["castling_rights.cc"],
+    hdrs = ["castling_rights.h"],
+    deps = [
+        ":types",
+    ],
+)
+
+cc_library(
     name = "position",
     srcs = ["position.cc"],
     hdrs = ["position.h"],
     deps = [
         ":bitboard",
+        ":castling_rights",
         ":types",
         "@abseil-cpp//absl/strings",
     ],

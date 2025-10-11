@@ -1,7 +1,8 @@
 #include "position.h"
 
-#include "bitboard.h"
 #include "absl/strings/str_split.h"
+#include "bitboard.h"
+#include "castling_rights.h"
 
 namespace chessengine {
 namespace {
@@ -111,6 +112,31 @@ std::expected<void, std::string> ParseBoard(std::string_view board,
     return {};
 }
 
+std::expected<void, std::string> SetCastlingRights(std::string_view input, CastlingRights &rights) {
+    if (input == "-") {
+        return {};
+    }
+
+    if (input.find_first_not_of("KQkq") != std::string::npos) {
+        return std::unexpected(std::format("Invalid castling rights: {}", input));
+    }
+
+    if (input.contains("K")) {
+        rights.SetKingSide(kWhite);
+    }
+    if (input.contains("k")) {
+        rights.SetKingSide(kBlack);
+    }
+    if (input.contains("Q")) {
+        rights.SetQueenSide(kWhite);
+    }
+    if (input.contains("q")) {
+        rights.SetQueenSide(kBlack);
+    }
+
+    return {};
+}
+
 } // namespace
 
 Position Position::Starting() {
@@ -142,6 +168,10 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
         position.side_to_move_ = kBlack;
     } else {
         return std::unexpected(std::format("Invalid side to move value: {}", side_to_move));
+    }
+
+    if (auto result = SetCastlingRights(castling_rights, position.castling_rights_); !result.has_value()) {
+        return std::unexpected(result.error());
     }
 
     return position;

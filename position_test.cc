@@ -35,6 +35,58 @@ TEST(FEN, Initial) {
                 ));
 }
 
+TEST(FEN, CastlingRights) {
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
+
+        ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
+        auto castling_rights = position.value().GetCastlingRights();
+        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsFalse());
+        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsFalse());
+        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
+        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsFalse());
+    }
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+
+        ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
+        auto castling_rights = position.value().GetCastlingRights();
+        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsTrue());
+        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsTrue());
+        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsTrue());
+        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsTrue());
+    }
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w kq - 0 1");
+
+        ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
+        auto castling_rights = position.value().GetCastlingRights();
+        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsFalse());
+        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsTrue());
+        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
+        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsTrue());
+    }
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1");
+
+        ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
+        auto castling_rights = position.value().GetCastlingRights();
+        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsTrue());
+        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsTrue());
+        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
+        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsFalse());
+    }
+}
+
+
 TEST(FEN, Kiwipete) {
     std::expected<Position, std::string> position = Position::FromFen(
             "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
