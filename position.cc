@@ -137,6 +137,10 @@ std::expected<void, std::string> SetCastlingRights(std::string_view input, Castl
     return {};
 }
 
+bool IsNumeric(std::string_view input) {
+    return std::ranges::all_of(input, isdigit);
+}
+
 } // namespace
 
 Position Position::Starting() {
@@ -173,6 +177,16 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
     if (auto result = SetCastlingRights(castling_rights, position.castling_rights_); !result.has_value()) {
         return std::unexpected(result.error());
     }
+
+    if (!IsNumeric(half_moves)) {
+        return std::unexpected(std::format("Invalid half moves: {}", half_moves));
+    }
+    position.half_moves_ = std::stoi(std::string(half_moves));
+
+    if (!IsNumeric(full_moves)) {
+        return std::unexpected(std::format("Invalid full moves: {}", full_moves));
+    }
+    position.full_moves_ = std::stoi(std::string(full_moves));
 
     return position;
 }

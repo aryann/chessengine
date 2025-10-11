@@ -32,14 +32,29 @@ public:
 
     [[nodiscard]] Bitboard GetPieces(Side side, Piece type) const;
 
-    [[nodiscard]] Side SideToMove() const { return side_to_move_; }
+    [[nodiscard]] Side SideToMove() const {
+        return side_to_move_;
+    }
 
-    [[nodiscard]] const CastlingRights &GetCastlingRights() const { return castling_rights_; }
+    [[nodiscard]] const CastlingRights &GetCastlingRights() const {
+        return castling_rights_;
+    }
+
+    [[nodiscard]] std::optional<Square> GetEnPassantTarget() const {
+        return en_passant_target_;
+    }
+
+    [[nodiscard]] int GetHalfMoves() const {
+        return half_moves_;
+    }
+
+    [[nodiscard]] int GetFullMoves() const {
+        return full_moves_;
+    }
 
 private:
     Position():
         side_to_move_(kWhite),
-        castling_rights_(),
         en_passant_target_(std::nullopt),
         half_moves_(0),
         full_moves_(1) {
