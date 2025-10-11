@@ -84,6 +84,14 @@ TEST(FEN, CastlingRights) {
         EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
         EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsFalse());
     }
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w INVALID - 0 1");
+
+        ASSERT_THAT(position.has_value(), IsFalse());
+        EXPECT_THAT(position.error(), Eq("Invalid castling rights: INVALID"));
+    }
 }
 
 
