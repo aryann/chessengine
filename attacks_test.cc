@@ -713,8 +713,13 @@ TEST(Attacks, King) {
                 ));
 }
 
-TEST(GenerateBishopAttacks, NoBlockers) {
+//================================================================================
+// Bishop Attack Tests
+//================================================================================
+
+TEST(GenerateBishopAttacks, Center_NoBlockers) {
     Bitboard blockers;
+
     EXPECT_THAT(GenerateAttacks<kBishop>(D5, blockers), EqualsBitboard(
                     "8: X . . . . . X ."
                     "7: . X . . . X . ."
@@ -728,16 +733,16 @@ TEST(GenerateBishopAttacks, NoBlockers) {
                 ));
 }
 
-TEST(GenerateBishopAttacks, AllPathsBlocked) {
+TEST(GenerateBishopAttacks, Center_AdjacentBlockers) {
     Bitboard blockers(
-            "8: X . . . . . X ."
-            "7: . X . . . X . ."
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
             "6: . . X . X . . ."
             "5: . . . . . . . ."
             "4: . . X . X . . ."
-            "3: . X . . . X . ."
-            "2: X . . . . . X ."
-            "1: . . . . . . . X"
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
             "   a b c d e f g h"
             );
 
@@ -754,16 +759,16 @@ TEST(GenerateBishopAttacks, AllPathsBlocked) {
                 ));
 }
 
-TEST(GenerateBishopAttacks, EdgesBlockedOnly) {
+TEST(GenerateBishopAttacks, Center_DistantBlockers) {
     Bitboard blockers(
-            "8: X . . . . . X ."
+            "8: . . . . . . . ."
             "7: . . . . . . . ."
             "6: . . . . . . . ."
             "5: . . . . . . . ."
             "4: . . . . . . . ."
-            "3: . . . . . . . ."
-            "2: X . . . . . . ."
-            "1: . . . . . . . X"
+            "3: . X . . . . . ."
+            "2: . . . . . . X ."
+            "1: . . . . . . . ."
             "   a b c d e f g h"
             );
 
@@ -774,14 +779,15 @@ TEST(GenerateBishopAttacks, EdgesBlockedOnly) {
                     "5: . . . . . . . ."
                     "4: . . X . X . . ."
                     "3: . X . . . X . ."
-                    "2: X . . . . . X ."
-                    "1: . . . . . . . X"
+                    "2: . . . . . . X ."
+                    "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
 }
 
-TEST(BishopAttacksTest, PieceOnCornerA1) {
+TEST(GenerateBishopAttacks, CornerA1_NoBlockers) {
     Bitboard blockers;
+
     EXPECT_THAT(GenerateAttacks<kBishop>(A1, blockers), EqualsBitboard(
                     "8: . . . . . . . X"
                     "7: . . . . . . X ."
@@ -795,8 +801,35 @@ TEST(BishopAttacksTest, PieceOnCornerA1) {
                 ));
 }
 
-TEST(BishopAttacksTest, PieceOnEdgeA4) {
+TEST(GenerateBishopAttacks, CornerA1_WithBlocker) {
+    Bitboard blockers(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . X . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateAttacks<kBishop>(A1, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . X . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateBishopAttacks, EdgeA4_NoBlockers) {
     Bitboard blockers;
+
     EXPECT_THAT(GenerateAttacks<kBishop>(A4, blockers), EqualsBitboard(
                     "8: . . . . X . . ."
                     "7: . . . X . . . ."
@@ -810,7 +843,11 @@ TEST(BishopAttacksTest, PieceOnEdgeA4) {
                 ));
 }
 
-TEST(GenerateRookAttacks, NoBlockers) {
+//================================================================================
+// Rook Attack Tests
+//================================================================================
+
+TEST(GenerateRookAttacks, Center_NoBlockers) {
     Bitboard blockers;
 
     EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
@@ -826,16 +863,16 @@ TEST(GenerateRookAttacks, NoBlockers) {
                 ));
 }
 
-TEST(GenerateRookAttacks, AllPathsBlocked) {
+TEST(GenerateRookAttacks, Center_AdjacentBlockers) {
     Bitboard blockers(
-            "8: . . . X . . . ."
-            "7: . . . X . . . ."
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
             "6: . . . X . . . ."
-            "5: X X X . X X X X"
+            "5: . . X . X . . ."
             "4: . . . X . . . ."
-            "3: . . . X . . . ."
-            "2: . . . X . . . ."
-            "1: . . . X . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
             "   a b c d e f g h"
             );
 
@@ -852,96 +889,159 @@ TEST(GenerateRookAttacks, AllPathsBlocked) {
                 ));
 }
 
-TEST(GenerateRookAttacks, EdgesBlockedOnly) {
+TEST(GenerateRookAttacks, Center_MultipleBlockersOnRay) {
     Bitboard blockers(
-            "8: . . . X . . . ."
-            "7: . . . . . . . ."
+            "8: . . . . . . . ."
+            "7: . . . X . . . ."
             "6: . . . . . . . ."
-            "5: X . . . . . . X"
+            "5: . X . . X . X ."
             "4: . . . . . . . ."
             "3: . . . . . . . ."
-            "2: . . . . . . . ."
-            "1: . . . X . . . ."
+            "2: . . . X . . . ."
+            "1: . . . . . . . ."
             "   a b c d e f g h"
             );
 
     EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
-                    "8: . . . X . . . ."
+                    "8: . . . . . . . ."
                     "7: . . . X . . . ."
                     "6: . . . X . . . ."
-                    "5: X X X . X X X X"
+                    "5: . X X . X . . ."
                     "4: . . . X . . . ."
                     "3: . . . X . . . ."
                     "2: . . . X . . . ."
-                    "1: . . . X . . . ."
+                    "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
 }
 
-
-TEST(RookAttacksTest, PieceOnCornerH1) {
+TEST(GenerateRookAttacks, CornerA1_NoBlockers) {
     Bitboard blockers;
 
-    EXPECT_THAT(GenerateAttacks<kRook>(H1, blockers), EqualsBitboard(
-                    "8: . . . . . . . X"
-                    "7: . . . . . . . X"
-                    "6: . . . . . . . X"
-                    "5: . . . . . . . X"
-                    "4: . . . . . . . X"
-                    "3: . . . . . . . X"
-                    "2: . . . . . . . X"
-                    "1: X X X X X X X ."
+    EXPECT_THAT(GenerateAttacks<kRook>(A1, blockers), EqualsBitboard(
+                    "8: X . . . . . . ."
+                    "7: X . . . . . . ."
+                    "6: X . . . . . . ."
+                    "5: X . . . . . . ."
+                    "4: X . . . . . . ."
+                    "3: X . . . . . . ."
+                    "2: X . . . . . . ."
+                    "1: . X X X X X X X"
                     "   a b c d e f g h"
                 ));
 }
 
-TEST(RookAttacksTest, PieceOnEdgeA4) {
+TEST(GenerateRookAttacks, CornerA1_WithBlockers) {
     Bitboard blockers(
-            "8: . . . X . . . ."
+            "8: . . . . . . . ."
             "7: . . . . . . . ."
             "6: . . . . . . . ."
-            "5: X . . . . . . X"
-            "4: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: X . . . . . . ."
             "3: . . . . . . . ."
             "2: . . . . . . . ."
             "1: . . . X . . . ."
             "   a b c d e f g h"
             );
 
-    EXPECT_THAT(GenerateAttacks<kRook>(A4, blockers), EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(A1, blockers), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
-                    "5: X . . . . . . ."
-                    "4: . X X X X X X X"
+                    "5: . . . . . . . ."
+                    "4: X . . . . . . ."
                     "3: X . . . . . . ."
                     "2: X . . . . . . ."
-                    "1: X . . . . . . ."
+                    "1: . X X X . . . ."
                     "   a b c d e f g h"
                 ));
 }
 
-TEST(RookAttacksTest, MultipleBlockersOnSameRay) {
+//================================================================================
+// Queen Attack Tests
+//================================================================================
+
+TEST(GenerateQueenAttacks, Center_NoBlockers) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateAttacks<kQueen>(D5, blockers), EqualsBitboard(
+                    "8: X . . X . . X ."
+                    "7: . X . X . X . ."
+                    "6: . . X X X . . ."
+                    "5: X X X . X X X X"
+                    "4: . . X X X . . ."
+                    "3: . X . X . X . ."
+                    "2: X . . X . . X ."
+                    "1: . . . X . . . X"
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateQueenAttacks, Center_WithBlockers) {
     Bitboard blockers(
             "8: . . . . . . . ."
             "7: . . . . . . . ."
-            "6: . . . . . . . ."
-            "5: . . . . X . X ."
-            "4: . . . . . . . ."
+            "6: . . X . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . X . . . ."
+            "3: . . . . . X . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateAttacks<kQueen>(D5, blockers), EqualsBitboard(
+                    "8: . . . X . . X ."
+                    "7: . . . X . X . ."
+                    "6: . . X X X . . ."
+                    "5: X X X . X X X X"
+                    "4: . . X X X . . ."
+                    "3: . X . . . X . ."
+                    "2: X . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateQueenAttacks, CornerA1_NoBlockers) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateAttacks<kQueen>(A1, blockers), EqualsBitboard(
+                    "8: X . . . . . . X"
+                    "7: X . . . . . X ."
+                    "6: X . . . . X . ."
+                    "5: X . . . X . . ."
+                    "4: X . . X . . . ."
+                    "3: X . X . . . . ."
+                    "2: X X . . . . . ."
+                    "1: . X X X X X X X"
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateQueenAttacks, Surrounded) {
+    Bitboard blockers(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . X X X . . ."
+            "5: . . X . X . . ."
+            "4: . . X X X . . ."
             "3: . . . . . . . ."
             "2: . . . . . . . ."
             "1: . . . . . . . ."
             "   a b c d e f g h"
             );
-    EXPECT_THAT(GenerateAttacks<kRook>(D5, blockers), EqualsBitboard(
-                    "8: . . . X . . . ."
-                    "7: . . . X . . . ."
-                    "6: . . . X . . . ."
-                    "5: X X X . X . . ."
-                    "4: . . . X . . . ."
-                    "3: . . . X . . . ."
-                    "2: . . . X . . . ."
-                    "1: . . . X . . . ."
+
+
+    EXPECT_THAT(GenerateAttacks<kQueen>(D5, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . X X X . . ."
+                    "5: . . X . X . . ."
+                    "4: . . X X X . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
 }
