@@ -108,8 +108,8 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
         out = std::format_to(out, "      Turn: -\n");
         out = std::format_to(out, "  Castling: -\n");
         out = std::format_to(out, "En Passant: -\n");
-        out = std::format_to(out, "Half Moves: 0\n");
-        out = std::format_to(out, "Full Moves: 0\n");
+        out = std::format_to(out, "Half Moves: {}\n", position.GetHalfMoves());
+        out = std::format_to(out, "Full Moves: {}\n", position.GetFullMoves());
         return out;
     }
 };

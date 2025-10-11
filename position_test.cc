@@ -31,7 +31,7 @@ TEST(FEN, Initial) {
                     "  Castling: -\n"
                     "En Passant: -\n"
                     "Half Moves: 0\n"
-                    "Full Moves: 0\n"
+                    "Full Moves: 1\n"
                 ));
 }
 
@@ -94,6 +94,43 @@ TEST(FEN, CastlingRights) {
     }
 }
 
+TEST(FEN, HalfMoves) {
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 30 1");
+
+        ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
+        EXPECT_THAT(position.value().GetHalfMoves(), Eq(30));
+    }
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - INVALID 1");
+
+        ASSERT_THAT(position.has_value(), IsFalse());
+        EXPECT_THAT(position.error(), Eq("Invalid half moves: INVALID"));
+    }
+}
+
+TEST(FEN, FullMoves) {
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 50");
+
+        ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
+        EXPECT_THAT(position.value().GetFullMoves(), Eq(50));
+    }
+    //
+    {
+        std::expected<Position, std::string> position = Position::FromFen(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 INVALID");
+
+        ASSERT_THAT(position.has_value(), IsFalse());
+        EXPECT_THAT(position.error(), Eq("Invalid full moves: INVALID"));
+    }
+}
 
 TEST(FEN, Kiwipete) {
     std::expected<Position, std::string> position = Position::FromFen(
@@ -115,7 +152,7 @@ TEST(FEN, Kiwipete) {
                     "  Castling: -\n"
                     "En Passant: -\n"
                     "Half Moves: 0\n"
-                    "Full Moves: 0\n"
+                    "Full Moves: 1\n"
                 ));
 }
 
@@ -139,7 +176,7 @@ TEST(FEN, Sparse) {
                     "  Castling: -\n"
                     "En Passant: -\n"
                     "Half Moves: 0\n"
-                    "Full Moves: 0\n"
+                    "Full Moves: 1\n"
                 ));
 }
 
