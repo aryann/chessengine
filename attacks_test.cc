@@ -178,7 +178,7 @@ TEST(Attacks, BlackPawn) {
 }
 
 TEST(Attacks, Knight) {
-    EXPECT_THAT(kPseudoAttacks[kKnight][A1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKnight>(A1, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -190,7 +190,7 @@ TEST(Attacks, Knight) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKnight][H1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKnight>(H1, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -202,7 +202,7 @@ TEST(Attacks, Knight) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKnight][A8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKnight>(A8, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . X . . . . ."
                     "6: . X . . . . . ."
@@ -214,7 +214,7 @@ TEST(Attacks, Knight) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKnight][H8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKnight>(H8, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . X . ."
                     "6: . . . . . . X ."
@@ -226,7 +226,7 @@ TEST(Attacks, Knight) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKnight][D4], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKnight>(D4, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . X . X . . ."
@@ -240,7 +240,7 @@ TEST(Attacks, Knight) {
 }
 
 TEST(Attacks, Bishop) {
-    EXPECT_THAT(kPseudoAttacks[kBishop][D5], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(D5, kEmptyBoard), EqualsBitboard(
                     "8: X . . . . . X ."
                     "7: . X . . . X . ."
                     "6: . . X . X . . ."
@@ -252,7 +252,7 @@ TEST(Attacks, Bishop) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kBishop][A1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(A1, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . X"
                     "7: . . . . . . X ."
                     "6: . . . . . X . ."
@@ -264,7 +264,7 @@ TEST(Attacks, Bishop) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kBishop][H1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(H1, kEmptyBoard), EqualsBitboard(
                     "8: X . . . . . . ."
                     "7: . X . . . . . ."
                     "6: . . X . . . . ."
@@ -276,7 +276,7 @@ TEST(Attacks, Bishop) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kBishop][A8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(A8, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . X . . . . . ."
                     "6: . . X . . . . ."
@@ -288,7 +288,7 @@ TEST(Attacks, Bishop) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kBishop][H8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(H8, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . X ."
                     "6: . . . . . X . ."
@@ -300,7 +300,7 @@ TEST(Attacks, Bishop) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kBishop][A5], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kBishop>(A5, kEmptyBoard), EqualsBitboard(
                     "8: . . . X . . . ."
                     "7: . . X . . . . ."
                     "6: . X . . . . . ."
@@ -314,7 +314,7 @@ TEST(Attacks, Bishop) {
 }
 
 TEST(Attacks, Rook) {
-    EXPECT_THAT(kPseudoAttacks[kRook][D5], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(D5, kEmptyBoard), EqualsBitboard(
                     "8: . . . X . . . ."
                     "7: . . . X . . . ."
                     "6: . . . X . . . ."
@@ -326,7 +326,7 @@ TEST(Attacks, Rook) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kRook][A1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(A1, kEmptyBoard), EqualsBitboard(
                     "8: X . . . . . . ."
                     "7: X . . . . . . ."
                     "6: X . . . . . . ."
@@ -338,7 +338,7 @@ TEST(Attacks, Rook) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kRook][H8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(H8, kEmptyBoard), EqualsBitboard(
                     "8: X X X X X X X ."
                     "7: . . . . . . . X"
                     "6: . . . . . . . X"
@@ -350,7 +350,7 @@ TEST(Attacks, Rook) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kRook][A5], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kRook>(A5, kEmptyBoard), EqualsBitboard(
                     "8: X . . . . . . ."
                     "7: X . . . . . . ."
                     "6: X . . . . . . ."
@@ -364,7 +364,7 @@ TEST(Attacks, Rook) {
 }
 
 TEST(Attacks, Queen) {
-    EXPECT_THAT(kPseudoAttacks[kQueen][D5], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kQueen>(D5, kEmptyBoard), EqualsBitboard(
                     "8: X . . X . . X ."
                     "7: . X . X . X . ."
                     "6: . . X X X . . ."
@@ -376,7 +376,7 @@ TEST(Attacks, Queen) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kQueen][A1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kQueen>(A1, kEmptyBoard), EqualsBitboard(
                     "8: X . . . . . . X"
                     "7: X . . . . . X ."
                     "6: X . . . . X . ."
@@ -388,7 +388,7 @@ TEST(Attacks, Queen) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kQueen][H8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kQueen>(H8, kEmptyBoard), EqualsBitboard(
                     "8: X X X X X X X ."
                     "7: . . . . . . X X"
                     "6: . . . . . X . X"
@@ -400,7 +400,7 @@ TEST(Attacks, Queen) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kQueen][H1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kQueen>(H1, kEmptyBoard), EqualsBitboard(
                     "8: X . . . . . . X"
                     "7: . X . . . . . X"
                     "6: . . X . . . . X"
@@ -414,7 +414,7 @@ TEST(Attacks, Queen) {
 }
 
 TEST(Attacks, King) {
-    EXPECT_THAT(kPseudoAttacks[kKing][A1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKing>(A1, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -426,7 +426,7 @@ TEST(Attacks, King) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKing][H1], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKing>(H1, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -438,7 +438,7 @@ TEST(Attacks, King) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKing][A8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKing>(A8, kEmptyBoard), EqualsBitboard(
                     "8: . X . . . . . ."
                     "7: X X . . . . . ."
                     "6: . . . . . . . ."
@@ -450,7 +450,7 @@ TEST(Attacks, King) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKing][H8], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKing>(H8, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . X ."
                     "7: . . . . . . X X"
                     "6: . . . . . . . ."
@@ -462,7 +462,7 @@ TEST(Attacks, King) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kPseudoAttacks[kKing][D5], EqualsBitboard(
+    EXPECT_THAT(GenerateAttacks<kKing>(D5, kEmptyBoard), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . X X X . . ."

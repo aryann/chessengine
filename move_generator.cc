@@ -40,7 +40,7 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
 
     while (pieces) {
         Square from = pieces.PopLeastSignificantBit();
-        Bitboard attacks = kPseudoAttacks[Piece][from] & targets;
+        Bitboard attacks = GenerateAttacks<Piece>(from, position.GetPieces()) & targets;
 
         while (attacks) {
             Square to = attacks.PopLeastSignificantBit();

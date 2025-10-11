@@ -24,7 +24,8 @@ consteval auto MakePawnAttacks() {
 
 constexpr auto kPawnAttacks = MakePawnAttacks();
 
-consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+consteval std::array<Bitboard, kNumSquares> GenerateKnightAttacks() {
+    std::array<Bitboard, kNumSquares> attacks;
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start(static_cast<Square>(square));
         attacks[square] = kEmptyBoard
@@ -37,9 +38,11 @@ consteval void MakeKnightAttacks(std::array<Bitboard, kNumSquares> &attacks) {
                           | start.Shift<kWest>().Shift<kNorthWest>()
                           | start.Shift<kNorth>().Shift<kNorthWest>();
     }
+    return attacks;
 }
 
-consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+consteval std::array<Bitboard, kNumSquares> GenerateKingAttacks() {
+    std::array<Bitboard, kNumSquares> attacks;
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start(static_cast<Square>(square));
         attacks[square] = kEmptyBoard
@@ -52,6 +55,7 @@ consteval void MakeKingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
                           | start.Shift<kWest>()
                           | start.Shift<kNorthWest>();
     }
+    return attacks;
 }
 
 // Returns a bitboard representing a ray from the `from` square in the given
@@ -72,36 +76,6 @@ template<Direction... Directions>
 consteval Bitboard MakeRays(Square from) {
     return (MakeRay<Directions>(from) | ...);
 }
-
-template<Direction ... Directions>
-consteval void MakeSlidingAttacks(std::array<Bitboard, kNumSquares> &attacks) {
-    for (int square = A8; square < kNumSquares; ++square) {
-        attacks[square] = (MakeRay<Directions>(static_cast<Square>(square)) | ...);
-    }
-}
-
-consteval auto MakePseudoAttacks() {
-    std::array<std::array<Bitboard, kNumSquares>, kNumPieces> attacks;
-
-    MakeKnightAttacks(attacks[kKnight]);
-    MakeKingAttacks(attacks[kKing]);
-
-    MakeSlidingAttacks<
-        kNorthEast, kSouthEast, kSouthWest, kNorthWest>(attacks[kBishop]);
-
-    MakeSlidingAttacks<
-        kNorth, kEast, kSouth, kWest>(attacks[kRook]);
-
-    MakeSlidingAttacks<
-        kNorth, kNorthEast, kEast, kSouthEast,
-        kSouth, kSouthWest, kWest, kNorthWest>(attacks[kQueen]);
-
-    return attacks;
-}
-
-// N.B.: Since MakePseudoAttacks() is consteval, the attack array will be
-// evaluated at compile time.
-constexpr auto kPseudoAttacks = MakePseudoAttacks();
 
 struct Magic {
     // Relevancy bitboard for this square and piece.
@@ -156,15 +130,30 @@ constexpr Bitboard GenerateRookAttacks(Square square, Bitboard occupied) {
 
 template<Piece Piece>
 constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
+    if constexpr (Piece == kKnight) {
+        static std::array<Bitboard, kNumSquares> kKnightAttacks = GenerateKnightAttacks();
+        return kKnightAttacks[square];
+    }
+
+    if constexpr (Piece == kKing) {
+        static std::array<Bitboard, kNumSquares> kKingAttacks = GenerateKingAttacks();
+        return kKingAttacks[square];
+    }
+
     if constexpr (Piece == kBishop) {
         return GenerateBishopAttacks(square, occupied);
-    } else if constexpr (Piece == kRook) {
-        return GenerateRookAttacks(square, occupied);
-    } else if constexpr (Piece == kQueen) {
-        return GenerateBishopAttacks(square, occupied) | GenerateRookAttacks(square, occupied);
-    } else {
-        return kEmptyBoard;
     }
+
+    if constexpr (Piece == kRook) {
+        return GenerateRookAttacks(square, occupied);
+    }
+
+    if constexpr (Piece == kQueen) {
+        return GenerateBishopAttacks(square, occupied) | GenerateRookAttacks(square, occupied);
+    }
+
+    return kEmptyBoard;
+
 }
 
 } // namespace chessengine

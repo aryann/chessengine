@@ -5,7 +5,7 @@
 #include "types.h"
 
 int main(int argc, char **argv) {
-    std::println("{}", chessengine::kPseudoAttacks[chessengine::kKnight][chessengine::H2]);
+    std::println("{}", chessengine::kPawnAttacks[chessengine::kWhite][chessengine::H2]);
 
     chessengine::Bitboard board = chessengine::kEmptyBoard;
 
