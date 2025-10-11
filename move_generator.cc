@@ -71,6 +71,10 @@ std::vector<Move> GenerateAllMoves(const Position &position) {
     std::vector<Move> moves;
     GeneratePawnMoves<Side, MoveType>(position, moves);
     GenerateMoves<Side, kKnight>(position, targets, moves);
+    GenerateMoves<Side, kBishop>(position, targets, moves);
+    GenerateMoves<Side, kRook>(position, targets, moves);
+    GenerateMoves<Side, kQueen>(position, targets, moves);
+    GenerateMoves<Side, kKing>(position, targets, moves);
     return moves;
 }
 

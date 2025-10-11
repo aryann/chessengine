@@ -9,6 +9,244 @@ namespace {
 
 using testing::Eq;
 
+TEST(MakeRay, North_CenterBoardRay) {
+    EXPECT_THAT(MakeRay<kNorth>(E4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . X . . ."
+                    "6: . . . . X . . ."
+                    "5: . . . . X . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, North_ZeroLengthRayFromRank7) {
+    EXPECT_THAT(MakeRay<kNorth>(D7), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, South_CenterBoardRay) {
+    EXPECT_THAT(MakeRay<kSouth>(D5), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, South_ZeroLengthRayFromRank2) {
+    EXPECT_THAT(MakeRay<kSouth>(A2), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, East_LongRayFromAFile) {
+    EXPECT_THAT(MakeRay<kEast>(A1), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . X X X X X X ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, East_ZeroLengthRayFromGFile) {
+    EXPECT_THAT(MakeRay<kEast>(G6), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, West_LongRayFromHFile) {
+    EXPECT_THAT(MakeRay<kWest>(H8), EqualsBitboard(
+                    "8: . X X X X X X ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, West_ZeroLengthRayFromBFile) {
+    EXPECT_THAT(MakeRay<kWest>(B4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, NorthEast_LongRayFromCorner) {
+    EXPECT_THAT(MakeRay<kNorthEast>(A1), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . X ."
+                    "6: . . . . . X . ."
+                    "5: . . . . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . X . . . . ."
+                    "2: . X . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, NorthEast_ZeroLengthRayFromRank7) {
+    EXPECT_THAT(MakeRay<kNorthEast>(F7), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, NorthEast_ZeroLengthRayFromGFile) {
+    EXPECT_THAT(MakeRay<kNorthEast>(G5), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, NorthWest_LongRayFromCorner) {
+    EXPECT_THAT(MakeRay<kNorthWest>(H1), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . X . . . . . ."
+                    "6: . . X . . . . ."
+                    "5: . . . X . . . ."
+                    "4: . . . . X . . ."
+                    "3: . . . . . X . ."
+                    "2: . . . . . . X ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, NorthWest_ZeroLengthRayFromB7) {
+    EXPECT_THAT(MakeRay<kNorthWest>(B7), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, SouthEast_LongRayFromCorner) {
+    EXPECT_THAT(MakeRay<kSouthEast>(A8), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . X . . . . . ."
+                    "6: . . X . . . . ."
+                    "5: . . . X . . . ."
+                    "4: . . . . X . . ."
+                    "3: . . . . . X . ."
+                    "2: . . . . . . X ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, SouthEast_ZeroLengthRayFromG2) {
+    EXPECT_THAT(MakeRay<kSouthEast>(G2), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, SouthWest_LongRayFromCorner) {
+    EXPECT_THAT(MakeRay<kSouthWest>(H8), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . X ."
+                    "6: . . . . . X . ."
+                    "5: . . . . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . X . . . . ."
+                    "2: . X . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakeRay, SouthWest_ZeroLengthRayFromB2) {
+    EXPECT_THAT(MakeRay<kSouthWest>(B2), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
 TEST(Attacks, WhitePawn) {
     EXPECT_THAT(kPawnAttacks[kWhite][A2], EqualsBitboard(
                     "8: . . . . . . . ."
@@ -658,12 +896,22 @@ TEST(RookAttacksTest, PieceOnCornerH1) {
 }
 
 TEST(RookAttacksTest, PieceOnEdgeA4) {
-    Bitboard blockers;
+    Bitboard blockers(
+            "8: . . . X . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: X . . . . . . X"
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . X . . . ."
+            "   a b c d e f g h"
+            );
 
     EXPECT_THAT(GenerateAttacks<kRook>(A4, blockers), EqualsBitboard(
-                    "8: X . . . . . . ."
-                    "7: X . . . . . . ."
-                    "6: X . . . . . . ."
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
                     "5: X . . . . . . ."
                     "4: . X X X X X X X"
                     "3: X . . . . . . ."

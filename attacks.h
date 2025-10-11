@@ -65,11 +65,15 @@ template<Direction Direction>
 consteval Bitboard MakeRay(Square from) {
     Bitboard result;
     Bitboard curr(from);
+    Bitboard edge;
     while (curr) {
         curr = curr.Shift<Direction>();
+        if (curr) {
+            edge = curr;
+        }
         result |= curr;
     }
-    return result;
+    return result & ~edge;
 }
 
 template<Direction... Directions>
@@ -87,7 +91,7 @@ consteval std::array<Magic, kNumSquares> MakeMagic() {
     std::array<Magic, kNumSquares> result;
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard mask = (MakeRays<Directions>(static_cast<Square>(square)) | ...);
-        mask &= ~kEdges;
+        //mask &= ~kEdges;
         result[square].mask = mask;
     }
     return result;
