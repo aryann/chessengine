@@ -27,8 +27,8 @@ TEST(FEN, Initial) {
                     "1: R N B Q K B N R\n"
                     "   a b c d e f g h\n"
                     "\n"
-                    "      Turn: -\n"
-                    "  Castling: -\n"
+                    "      Turn: w\n"
+                    "  Castling: KQkq\n"
                     "En Passant: -\n"
                     "Half Moves: 0\n"
                     "Full Moves: 1\n"
@@ -43,10 +43,7 @@ TEST(FEN, CastlingRights) {
 
         ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
         auto castling_rights = position.value().GetCastlingRights();
-        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsFalse());
-        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsFalse());
-        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
-        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsFalse());
+        EXPECT_THAT(std::format("{}", castling_rights), Eq("-"));
     }
     //
     {
@@ -55,10 +52,7 @@ TEST(FEN, CastlingRights) {
 
         ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
         auto castling_rights = position.value().GetCastlingRights();
-        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsTrue());
-        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsTrue());
-        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsTrue());
-        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsTrue());
+        EXPECT_THAT(std::format("{}", castling_rights), Eq("KQkq"));
     }
     //
     {
@@ -67,10 +61,7 @@ TEST(FEN, CastlingRights) {
 
         ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
         auto castling_rights = position.value().GetCastlingRights();
-        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsFalse());
-        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsTrue());
-        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
-        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsTrue());
+        EXPECT_THAT(std::format("{}", castling_rights), Eq("kq"));
     }
     //
     {
@@ -79,10 +70,7 @@ TEST(FEN, CastlingRights) {
 
         ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
         auto castling_rights = position.value().GetCastlingRights();
-        EXPECT_THAT(castling_rights.HasKingSide(kWhite), IsTrue());
-        EXPECT_THAT(castling_rights.HasKingSide(kBlack), IsTrue());
-        EXPECT_THAT(castling_rights.HasQueenSide(kWhite), IsFalse());
-        EXPECT_THAT(castling_rights.HasQueenSide(kBlack), IsFalse());
+        EXPECT_THAT(std::format("{}", castling_rights), Eq("Kk"));
     }
     //
     {
@@ -148,8 +136,8 @@ TEST(FEN, Kiwipete) {
                     "1: R . . . K . . R\n"
                     "   a b c d e f g h\n"
                     "\n"
-                    "      Turn: -\n"
-                    "  Castling: -\n"
+                    "      Turn: w\n"
+                    "  Castling: KQkq\n"
                     "En Passant: -\n"
                     "Half Moves: 0\n"
                     "Full Moves: 1\n"
@@ -172,7 +160,7 @@ TEST(FEN, Sparse) {
                     "1: . . . . . . . .\n"
                     "   a b c d e f g h\n"
                     "\n"
-                    "      Turn: -\n"
+                    "      Turn: w\n"
                     "  Castling: -\n"
                     "En Passant: -\n"
                     "Half Moves: 0\n"

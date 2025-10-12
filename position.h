@@ -2,6 +2,7 @@
 #define CHESS_ENGINE_POSITION_H_
 
 #include <expected>
+#include <format>
 #include <string_view>
 
 #include "bitboard.h"
@@ -105,8 +106,8 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
             out = std::format_to(out, " {:c}", 'a' + col);
         }
         out = std::format_to(out, "\n\n");
-        out = std::format_to(out, "      Turn: -\n");
-        out = std::format_to(out, "  Castling: -\n");
+        out = std::format_to(out, "      Turn: {}\n", position.SideToMove() == chessengine::kWhite ? "w" : "b");
+        out = std::format_to(out, "  Castling: {}\n", position.GetCastlingRights());
         out = std::format_to(out, "En Passant: -\n");
         out = std::format_to(out, "Half Moves: {}\n", position.GetHalfMoves());
         out = std::format_to(out, "Full Moves: {}\n", position.GetFullMoves());
