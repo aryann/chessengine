@@ -34,6 +34,9 @@ MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(exp
 
     for (int i = 0; i < expected_parts.size(); ++i) {
         *result_listener << '\n' << expected_parts[i] << "      " << actual_parts[i];
+        if (expected_parts[i] != actual_parts[i]) {
+            *result_listener << "  <-";
+        }
     }
 
     return false;
@@ -68,6 +71,9 @@ MATCHER_P(EqualsPosition, expected, "") {
 
     for (int i = 0; i < expected_parts.size(); ++i) {
         *result_listener << '\n' << expected_parts[i] << "      " << actual_parts[i];
+        if (expected_parts[i] != actual_parts[i]) {
+            *result_listener << "  <-";
+        }
     }
 
     return false;

@@ -140,9 +140,9 @@ bool IsNumeric(std::string_view input) {
 } // namespace
 
 Position Position::Starting() {
-    static constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    constexpr absl::string_view kFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-    std::expected<Position, std::string> result = FromFen(kStartingPosition);
+    std::expected<Position, std::string> result = FromFen(kFen);
     CHECK(result.has_value()) << "Failed for parse starting position FEN: " << result.error();
     return result.value();
 }
