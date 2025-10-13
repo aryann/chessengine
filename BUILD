@@ -135,7 +135,17 @@ cc_library(
     hdrs = ["testing.h"],
     deps = [
         ":bitboard",
+        "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
+        "@googletest//:gtest",
+    ],
+)
+
+cc_test(
+    name = "testing_test",
+    srcs = ["testing_test.cc"],
+    deps = [
+        ":testing",
         "@googletest//:gtest",
     ],
 )
