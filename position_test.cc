@@ -146,7 +146,7 @@ TEST(FEN, Kiwipete) {
 
 TEST(FEN, Sparse) {
     std::expected<Position, std::string> position = Position::FromFen(
-            "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
+            "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - a3 0 1");
 
     ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
     EXPECT_THAT(std::format("{}", position.value()), Eq(
@@ -162,7 +162,7 @@ TEST(FEN, Sparse) {
                     "\n"
                     "      Turn: w\n"
                     "  Castling: -\n"
-                    "En Passant: -\n"
+                    "En Passant: a3\n"
                     "Half Moves: 0\n"
                     "Full Moves: 1\n"
                 ));

@@ -178,6 +178,13 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
         return std::unexpected(result.error());
     }
 
+    if (en_passant_target != "-") {
+        position.en_passant_target_ = ParseSquare(en_passant_target);
+        if (!position.en_passant_target_) {
+            return std::unexpected(std::format("Invalid en-passant target: {}", en_passant_target));
+        }
+    }
+
     if (!IsNumeric(half_moves)) {
         return std::unexpected(std::format("Invalid half moves: {}", half_moves));
     }
