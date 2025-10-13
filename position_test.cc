@@ -13,7 +13,22 @@ using ::testing::Eq;
 using ::testing::IsFalse;
 using ::testing::IsTrue;
 
-TEST(FEN, Initial) {
+TEST(Position, Starting) {
+    EXPECT_THAT(Position::Starting(), EqualsPosition(
+                    "8: r n b q k b n r"
+                    "7: p p p p p p p p"
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: P P P P P P P P"
+                    "1: R N B Q K B N R"
+                    "   a b c d e f g h"
+                    //
+                    "   w KQkq - 0 1"));
+}
+
+TEST(FEN, Starting) {
     std::expected<Position, std::string> position = Position::FromFen(
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
@@ -158,21 +173,50 @@ TEST(FEN, Sparse) {
                 ));
 }
 
-TEST(Position, Starting) {
+TEST(Position, DoMove) {
     Position position = Position::Starting();
 
+    position.DoMove(Move(B1, C3));
     EXPECT_THAT(position, EqualsPosition(
                     "8: r n b q k b n r"
                     "7: p p p p p p p p"
                     "6: . . . . . . . ."
                     "5: . . . . . . . ."
                     "4: . . . . . . . ."
-                    "3: . . . . . . . ."
+                    "3: . . N . . . . ."
                     "2: P P P P P P P P"
-                    "1: R N B Q K B N R"
+                    "1: R . B Q K B N R"
                     "   a b c d e f g h"
                     //
-                    "   w KQkq - 0 1"));
+                    "   b KQkq - 1 1"));
+
+    position.DoMove(Move(D7, D5));
+    EXPECT_THAT(position, EqualsPosition(
+                    "8: r n b q k b n r"
+                    "7: p p p . p p p p"
+                    "6: . . . . . . . ."
+                    "5: . . . p . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . N . . . . ."
+                    "2: P P P P P P P P"
+                    "1: R . B Q K B N R"
+                    "   a b c d e f g h"
+                    //
+                    "   w KQkq - 2 2"));
+
+    position.DoMove(Move(C3, D5));
+    EXPECT_THAT(position, EqualsPosition(
+                    "8: r n b q k b n r"
+                    "7: p p p . p p p p"
+                    "6: . . . . . . . ."
+                    "5: . . . N . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: P P P P P P P P"
+                    "1: R . B Q K B N R"
+                    "   a b c d e f g h"
+                    //
+                    "   b KQkq - 3 2"));
 
 }
 

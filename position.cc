@@ -197,4 +197,28 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
     return position;
 }
 
+void Position::DoMove(const Move &move) {
+    Piece to_piece = GetPiece(move.to());
+    pieces_[to_piece].Clear(move.to());
+
+    Piece from_piece = GetPiece(move.from());
+    pieces_[from_piece].Clear(move.from());
+    pieces_[from_piece].Set(move.to());
+
+    Side to_side = GetSide(move.to());
+    sides_[to_side].Clear(move.to());
+
+    Side from_side = GetSide(move.from());
+    sides_[from_side].Clear(move.from());
+    sides_[from_side].Set(move.to());
+
+    side_to_move_ = ~side_to_move_;
+
+    // TODO(aryann): Reset the half move clock if there was a capture or a pawn move.
+    ++half_moves_;
+    if (side_to_move_ == kWhite) {
+        ++full_moves_;
+    }
+}
+
 } // chessengine

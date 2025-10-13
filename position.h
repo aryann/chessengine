@@ -7,6 +7,7 @@
 
 #include "bitboard.h"
 #include "castling_rights.h"
+#include "move.h"
 #include "types.h"
 
 namespace chessengine {
@@ -54,6 +55,8 @@ public:
     }
 
     bool operator==(const Position &other) const = default;
+
+    void DoMove(const Move &move);
 
 private:
     Position():
