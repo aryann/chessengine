@@ -27,11 +27,7 @@ TEST(FEN, Initial) {
                     "1: R N B Q K B N R\n"
                     "   a b c d e f g h\n"
                     "\n"
-                    "      Turn: w\n"
-                    "  Castling: KQkq\n"
-                    "En Passant: -\n"
-                    "Half Moves: 0\n"
-                    "Full Moves: 1\n"
+                    "   w KQkq - 0 1\n"
                 ));
 }
 
@@ -136,11 +132,7 @@ TEST(FEN, Kiwipete) {
                     "1: R . . . K . . R\n"
                     "   a b c d e f g h\n"
                     "\n"
-                    "      Turn: w\n"
-                    "  Castling: KQkq\n"
-                    "En Passant: -\n"
-                    "Half Moves: 0\n"
-                    "Full Moves: 1\n"
+                    "   w KQkq - 0 1\n"
                 ));
 }
 
@@ -160,11 +152,7 @@ TEST(FEN, Sparse) {
                     "1: . . . . . . . .\n"
                     "   a b c d e f g h\n"
                     "\n"
-                    "      Turn: w\n"
-                    "  Castling: -\n"
-                    "En Passant: a3\n"
-                    "Half Moves: 0\n"
-                    "Full Moves: 1\n"
+                    "   w - a3 0 1\n"
                 ));
 }
 

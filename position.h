@@ -106,17 +106,18 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
             out = std::format_to(out, " {:c}", 'a' + col);
         }
         out = std::format_to(out, "\n\n");
-        out = std::format_to(out, "      Turn: {}\n", position.SideToMove() == chessengine::kWhite ? "w" : "b");
-        out = std::format_to(out, "  Castling: {}\n", position.GetCastlingRights());
 
-        std::string en_passant = "-";
+        char side = position.SideToMove() == chessengine::kWhite ? 'w' : 'b';
+        std::string en_passant_target = "-";
         if (position.GetEnPassantTarget()) {
-            en_passant = ToString(position.GetEnPassantTarget().value());
+            en_passant_target = ToString(position.GetEnPassantTarget().value());
         }
-        out = std::format_to(out, "En Passant: {}\n", en_passant);
-
-        out = std::format_to(out, "Half Moves: {}\n", position.GetHalfMoves());
-        out = std::format_to(out, "Full Moves: {}\n", position.GetFullMoves());
+        out = std::format_to(out, "   {} {} {} {} {}\n",
+                             side,
+                             position.GetCastlingRights(),
+                             en_passant_target,
+                             position.GetHalfMoves(),
+                             position.GetFullMoves());
         return out;
     }
 };
