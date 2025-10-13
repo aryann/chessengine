@@ -1,5 +1,7 @@
 #include "types.h"
 
+#include <optional>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -9,14 +11,21 @@ namespace chessengine {
 namespace {
 
 using ::testing::Eq;
-using ::testing::Not;
+using ::testing::Optional;
 
+TEST(Square, ParseSquare) {
+    EXPECT_THAT(ParseSquare("a8"), Optional(Eq(A8)));
+    EXPECT_THAT(ParseSquare("h8"), Optional(Eq(H8)));
+    EXPECT_THAT(ParseSquare("d5"), Optional(Eq(D5)));
+    EXPECT_THAT(ParseSquare("a1"), Optional(Eq(A1)));
+    EXPECT_THAT(ParseSquare("d1"), Optional(Eq(D1)));
+    EXPECT_THAT(ParseSquare("h1"), Optional(Eq(H1)));
 
-TEST(Square, FromString) {
-    EXPECT_THAT(FromString("a8"), IsExpectedValue(A7));
-    //EXPECT_THAT("a", Eq("b"));
-    //EXPECT_THAT(FromString("a8").value(), Eq(A7));
-
+    EXPECT_THAT(ParseSquare("aa8"), Eq(std::nullopt));
+    EXPECT_THAT(ParseSquare("h11"), Eq(std::nullopt));
+    EXPECT_THAT(ParseSquare("A1"), Eq(std::nullopt));
+    EXPECT_THAT(ParseSquare("a"), Eq(std::nullopt));
+    EXPECT_THAT(ParseSquare(""), Eq(std::nullopt));
 }
 
 TEST(Square, ToString) {

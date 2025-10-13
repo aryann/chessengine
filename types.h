@@ -1,7 +1,7 @@
 #ifndef CHESS_ENGINE_TYPES_H_
 #define CHESS_ENGINE_TYPES_H_
 
-#include <expected>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -23,7 +23,9 @@ using enum Square;
 
 constexpr std::size_t kNumSquares = 64;
 
-std::expected<Square, std::string> FromString(std::string_view input);
+// Parses a string of the form "a1" as a Square. Returns `std::nullopt`
+// if and only if the input is invalid.
+std::optional<Square> ParseSquare(std::string_view input);
 
 std::string ToString(Square square);
 

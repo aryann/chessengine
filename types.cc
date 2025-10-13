@@ -5,16 +5,16 @@
 
 namespace chessengine {
 
-std::expected<Square, std::string> FromString(std::string_view input) {
+std::optional<Square> ParseSquare(std::string_view input) {
     if (input.size() != 2) {
-        return std::unexpected(std::format("Invalid square: {}", input));
+        return std::nullopt;
     }
 
     char file = input[0];
     char rank = input[1];
 
     if (file < 'a' || file > 'h' || rank < '1' || rank > '8') {
-        return std::unexpected(std::format("Invalid square: {}", input));
+        return std::nullopt;
     }
 
     int file_index = file - 'a';
