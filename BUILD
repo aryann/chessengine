@@ -63,7 +63,9 @@ cc_library(
     deps = [
         ":bitboard",
         ":castling_rights",
+        ":move",
         ":types",
+        "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -73,6 +75,7 @@ cc_test(
     srcs = ["position_test.cc"],
     deps = [
         ":position",
+        ":testing",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -135,6 +138,7 @@ cc_library(
     hdrs = ["testing.h"],
     deps = [
         ":bitboard",
+        ":position",
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
         "@googletest//:gtest",

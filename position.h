@@ -53,6 +53,8 @@ public:
         return full_moves_;
     }
 
+    bool operator==(const Position &other) const = default;
+
 private:
     Position():
         side_to_move_(kWhite),

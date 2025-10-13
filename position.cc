@@ -1,15 +1,11 @@
 #include "position.h"
 
+#include "absl/log/check.h"
 #include "absl/strings/str_split.h"
 #include "bitboard.h"
 #include "castling_rights.h"
 
 namespace chessengine {
-namespace {
-
-constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
-} // namespace
 
 [[nodiscard]] Piece Position::GetPiece(Square square) const {
     if (pieces_[kPawn] & square) {
@@ -144,7 +140,10 @@ bool IsNumeric(std::string_view input) {
 } // namespace
 
 Position Position::Starting() {
+    static constexpr absl::string_view kStartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
     std::expected<Position, std::string> result = FromFen(kStartingPosition);
+    CHECK(result.has_value()) << "Failed for parse starting position FEN: " << result.error();
     return result.value();
 }
 
