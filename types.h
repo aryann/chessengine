@@ -1,7 +1,9 @@
 #ifndef CHESS_ENGINE_TYPES_H_
 #define CHESS_ENGINE_TYPES_H_
 
+#include <expected>
 #include <string>
+#include <string_view>
 
 namespace chessengine {
 
@@ -17,9 +19,18 @@ enum Square : std::uint8_t {
     A1, B1, C1, D1, E1, F1, G1, H1,
 };
 
+using enum Square;
+
 constexpr std::size_t kNumSquares = 64;
 
+std::expected<Square, std::string> FromString(std::string_view input);
+
 std::string ToString(Square square);
+
+// Required for GoogleTest to print Square in error messages.
+inline void PrintTo(const Square &square, std::ostream *os) {
+    *os << ToString(square);
+}
 
 enum Side : std::uint8_t {
     kWhite,

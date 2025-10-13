@@ -144,13 +144,16 @@ cc_library(
     name = "types",
     srcs = ["types.cc"],
     hdrs = ["types.h"],
-    deps = [],
+    deps = [
+        "@abseil-cpp//absl/strings:str_format",
+    ],
 )
 
 cc_test(
     name = "types_test",
     srcs = ["types_test.cc"],
     deps = [
+        ":testing",
         ":types",
         "@googletest//:gtest",
     ],
