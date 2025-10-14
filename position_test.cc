@@ -216,7 +216,7 @@ TEST(Position, Do) {
                     "1: R . B Q K B N R"
                     "   a b c d e f g h"
                     //
-                    "   b KQkq - 3 2"));
+                    "   b KQkq - 0 2"));
 
     position.Undo(Move(C3, D5, MoveOptions().SetCaptured(kPawn)));
     // EXPECT_THAT(position, EqualsPosition(

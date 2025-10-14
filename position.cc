@@ -198,27 +198,27 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
 }
 
 void Position::Do(const Move &move) {
-    Piece to_piece = GetPiece(move.to());
-    pieces_[to_piece].Clear(move.to());
-
-    Piece from_piece = GetPiece(move.from());
-    pieces_[from_piece].Clear(move.from());
-    pieces_[from_piece].Set(move.to());
-
-    Side to_side = GetSide(move.to());
-    sides_[to_side].Clear(move.to());
-
-    Side from_side = GetSide(move.from());
-    sides_[from_side].Clear(move.from());
-    sides_[from_side].Set(move.to());
-
-    side_to_move_ = ~side_to_move_;
-
-    // TODO(aryann): Reset the half move clock if there was a capture or a pawn move.
+    // TODO(aryann): Reset the half move clock if there was a pawn move.
     ++half_moves_;
-    if (side_to_move_ == kWhite) {
+    if (side_to_move_ == kBlack) {
         ++full_moves_;
     }
+
+    if (move.GetCapturedPiece() != kEmptyPiece) {
+        half_moves_ = 0;
+        pieces_[move.GetCapturedPiece()].Clear(move.to());
+        sides_[GetSide(move.to())].Clear(move.to());
+    }
+
+    Piece piece = GetPiece(move.from());
+    pieces_[piece].Clear(move.from());
+    pieces_[piece].Set(move.to());
+
+    Side side = GetSide(move.from());
+    sides_[side].Clear(move.from());
+    sides_[side].Set(move.to());
+
+    side_to_move_ = ~side_to_move_;
 }
 
 void Position::Undo(const Move &move) {
