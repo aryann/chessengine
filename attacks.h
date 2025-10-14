@@ -157,7 +157,6 @@ constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
     }
 
     return kEmptyBoard;
-
 }
 
 } // namespace chessengine

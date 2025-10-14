@@ -217,7 +217,178 @@ TEST(Position, DoMove) {
                     "   a b c d e f g h"
                     //
                     "   b KQkq - 3 2"));
+}
 
+TEST(GetPieces, StartingPosition) {
+    Position position = Position::Starting();
+
+    EXPECT_THAT(position.GetPieces(), EqualsBitboard(
+                    "8: X X X X X X X X"
+                    "7: X X X X X X X X"
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: X X X X X X X X"
+                    "1: X X X X X X X X"
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(position.GetPieces(kWhite), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: X X X X X X X X"
+                    "1: X X X X X X X X"
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kWhite, kPawn), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: X X X X X X X X"
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kWhite, kKnight), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . X . . . . X ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kWhite, kBishop), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . X . . X . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kWhite, kRook), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: X . . . . . . X"
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kWhite, kQueen), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . X . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kWhite, kKing), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . X . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(position.GetPieces(kBlack), EqualsBitboard(
+                    "8: X X X X X X X X"
+                    "7: X X X X X X X X"
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kBlack, kPawn), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: X X X X X X X X"
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kBlack, kKnight), EqualsBitboard(
+                    "8: . X . . . . X ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kBlack, kBishop), EqualsBitboard(
+                    "8: . . X . . X . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kBlack, kRook), EqualsBitboard(
+                    "8: X . . . . . . X"
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kBlack, kQueen), EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+    EXPECT_THAT(position.GetPieces(kBlack, kKing), EqualsBitboard(
+                    "8: . . . . X . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
 }
 
 } // namespace
