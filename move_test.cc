@@ -25,5 +25,14 @@ TEST(Move, Equality) {
     EXPECT_THAT(Move(A1, A2), Ne(Move(H1, H2)));
 }
 
+TEST(Move, CapturedPiece) {
+    EXPECT_THAT(Move(A1, A2).GetCapturedPiece(), Eq(kEmptyPiece));
+    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kPawn)).GetCapturedPiece(), Eq(kPawn));
+    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kKnight)).GetCapturedPiece(), Eq(kKnight));
+    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kBishop)).GetCapturedPiece(), Eq(kBishop));
+    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kRook)).GetCapturedPiece(), Eq(kRook));
+    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kKing)).GetCapturedPiece(), Eq(kKing));
+}
+
 } // namespace
 } // namespace chessengine

@@ -197,7 +197,7 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
     return position;
 }
 
-void Position::DoMove(const Move &move) {
+void Position::Do(const Move &move) {
     Piece to_piece = GetPiece(move.to());
     pieces_[to_piece].Clear(move.to());
 
@@ -219,6 +219,10 @@ void Position::DoMove(const Move &move) {
     if (side_to_move_ == kWhite) {
         ++full_moves_;
     }
+}
+
+void Position::Undo(const Move &move) {
+
 }
 
 } // chessengine

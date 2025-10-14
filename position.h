@@ -56,7 +56,9 @@ public:
 
     bool operator==(const Position &other) const = default;
 
-    void DoMove(const Move &move);
+    void Do(const Move &move);
+
+    void Undo(const Move &move);
 
 private:
     Position():

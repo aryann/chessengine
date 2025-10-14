@@ -173,10 +173,10 @@ TEST(FEN, Sparse) {
                 ));
 }
 
-TEST(Position, DoMove) {
+TEST(Position, Do) {
     Position position = Position::Starting();
 
-    position.DoMove(Move(B1, C3));
+    position.Do(Move(B1, C3));
     EXPECT_THAT(position, EqualsPosition(
                     "8: r n b q k b n r"
                     "7: p p p p p p p p"
@@ -190,7 +190,7 @@ TEST(Position, DoMove) {
                     //
                     "   b KQkq - 1 1"));
 
-    position.DoMove(Move(D7, D5));
+    position.Do(Move(D7, D5));
     EXPECT_THAT(position, EqualsPosition(
                     "8: r n b q k b n r"
                     "7: p p p . p p p p"
@@ -204,7 +204,7 @@ TEST(Position, DoMove) {
                     //
                     "   w KQkq - 2 2"));
 
-    position.DoMove(Move(C3, D5));
+    position.Do(Move(C3, D5, MoveOptions().SetCaptured(kPawn)));
     EXPECT_THAT(position, EqualsPosition(
                     "8: r n b q k b n r"
                     "7: p p p . p p p p"
@@ -217,6 +217,20 @@ TEST(Position, DoMove) {
                     "   a b c d e f g h"
                     //
                     "   b KQkq - 3 2"));
+
+    position.Undo(Move(C3, D5, MoveOptions().SetCaptured(kPawn)));
+    // EXPECT_THAT(position, EqualsPosition(
+    //                 "8: r n b q k b n r"
+    //                 "7: p p p . p p p p"
+    //                 "6: . . . . . . . ."
+    //                 "5: . . . p . . . ."
+    //                 "4: . . . . . . . ."
+    //                 "3: . . N . . . . ."
+    //                 "2: P P P P P P P P"
+    //                 "1: R . B Q K B N R"
+    //                 "   a b c d e f g h"
+    //                 //
+    //                 "   w KQkq - 2 2"));
 }
 
 TEST(GetPieces, StartingPosition) {

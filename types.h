@@ -68,6 +68,12 @@ enum Piece : std::uint8_t {
     kEmptyPiece,
 };
 
+// Required for GoogleTest to print Piece in error messages.
+inline void PrintTo(const Piece &piece, std::ostream *os) {
+    static std::string_view kPieceNames[] = {"P", "N", "B", "R", "Q", "K", "-"};
+    *os << kPieceNames[piece];
+}
+
 constexpr std::size_t kNumPieces = 6;
 
 enum class MoveType: std::uint8_t {
