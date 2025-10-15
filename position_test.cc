@@ -13,19 +13,21 @@ using ::testing::Eq;
 using ::testing::IsFalse;
 using ::testing::IsTrue;
 
+constexpr std::string_view kStartingPosition =
+        "8: r n b q k b n r"
+        "7: p p p p p p p p"
+        "6: . . . . . . . ."
+        "5: . . . . . . . ."
+        "4: . . . . . . . ."
+        "3: . . . . . . . ."
+        "2: P P P P P P P P"
+        "1: R N B Q K B N R"
+        "   a b c d e f g h"
+        //
+        "   w KQkq - 0 1";
+
 TEST(Position, Starting) {
-    EXPECT_THAT(Position::Starting(), EqualsPosition(
-                    "8: r n b q k b n r"
-                    "7: p p p p p p p p"
-                    "6: . . . . . . . ."
-                    "5: . . . . . . . ."
-                    "4: . . . . . . . ."
-                    "3: . . . . . . . ."
-                    "2: P P P P P P P P"
-                    "1: R N B Q K B N R"
-                    "   a b c d e f g h"
-                    //
-                    "   w KQkq - 0 1"));
+    EXPECT_THAT(Position::Starting(), EqualsPosition(kStartingPosition));
 }
 
 TEST(FEN, Starting) {
@@ -173,64 +175,74 @@ TEST(FEN, Sparse) {
                 ));
 }
 
-TEST(Position, Do) {
+TEST(Position, DoAndUndo) {
     Position position = Position::Starting();
 
-    position.Do(Move(B1, C3));
-    EXPECT_THAT(position, EqualsPosition(
-                    "8: r n b q k b n r"
-                    "7: p p p p p p p p"
-                    "6: . . . . . . . ."
-                    "5: . . . . . . . ."
-                    "4: . . . . . . . ."
-                    "3: . . N . . . . ."
-                    "2: P P P P P P P P"
-                    "1: R . B Q K B N R"
-                    "   a b c d e f g h"
-                    //
-                    "   b KQkq - 1 1"));
+    Move move_one(B1, C3);
+    std::string_view position_one =
+            "8: r n b q k b n r"
+            "7: p p p p p p p p"
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . N . . . . ."
+            "2: P P P P P P P P"
+            "1: R . B Q K B N R"
+            "   a b c d e f g h"
+            //
+            "   b KQkq - 1 1";
 
-    position.Do(Move(D7, D5));
-    EXPECT_THAT(position, EqualsPosition(
-                    "8: r n b q k b n r"
-                    "7: p p p . p p p p"
-                    "6: . . . . . . . ."
-                    "5: . . . p . . . ."
-                    "4: . . . . . . . ."
-                    "3: . . N . . . . ."
-                    "2: P P P P P P P P"
-                    "1: R . B Q K B N R"
-                    "   a b c d e f g h"
-                    //
-                    "   w KQkq - 2 2"));
+    Move move_two(D7, D5);
+    std::string_view position_two =
+            "8: r n b q k b n r"
+            "7: p p p . p p p p"
+            "6: . . . . . . . ."
+            "5: . . . p . . . ."
+            "4: . . . . . . . ."
+            "3: . . N . . . . ."
+            "2: P P P P P P P P"
+            "1: R . B Q K B N R"
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 2 2";
 
-    position.Do(Move(C3, D5, MoveOptions().SetCaptured(kPawn, 2)));
-    EXPECT_THAT(position, EqualsPosition(
-                    "8: r n b q k b n r"
-                    "7: p p p . p p p p"
-                    "6: . . . . . . . ."
-                    "5: . . . N . . . ."
-                    "4: . . . . . . . ."
-                    "3: . . . . . . . ."
-                    "2: P P P P P P P P"
-                    "1: R . B Q K B N R"
-                    "   a b c d e f g h"
-                    //
-                    "   b KQkq - 0 2"));
+    Move move_three(C3, D5, MoveOptions().SetCaptured(kPawn, 2));
+    std::string_view position_three =
+            "8: r n b q k b n r"
+            "7: p p p . p p p p"
+            "6: . . . . . . . ."
+            "5: . . . N . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: P P P P P P P P"
+            "1: R . B Q K B N R"
+            "   a b c d e f g h"
+            //
+            "   b KQkq - 0 2";
 
-    position.Undo(Move(C3, D5, MoveOptions().SetCaptured(kPawn, 2)));
-    // EXPECT_THAT(position, EqualsPosition(
-    //                 "8: r n b q k b n r"
-    //                 "7: p p p . p p p p"
-    //                 "6: . . . . . . . ."
-    //                 "5: . . . p . . . ."
-    //                 "4: . . . . . . . ."
-    //                 "3: . . N . . . . ."
-    //                 "2: P P P P P P P P"
-    //                 "1: R . B Q K B N R"
-    //                 "   a b c d e f g h"
-    //                 //
-    //                 "   w KQkq - 2 2"));
+    position.Do(move_one);
+    EXPECT_THAT(position, EqualsPosition(position_one));
+
+    position.Do(move_two);
+    EXPECT_THAT(position, EqualsPosition(position_two));
+
+    position.Do(move_three);
+    EXPECT_THAT(position, EqualsPosition(position_three));
+
+    position.Undo(move_three);
+    EXPECT_THAT(position, EqualsPosition(position_two));
+
+    position.Do(move_three);
+    EXPECT_THAT(position, EqualsPosition(position_three));
+
+    position.Undo(move_three);
+    EXPECT_THAT(position, EqualsPosition(position_two));
+
+    position.Undo(move_two);
+    EXPECT_THAT(position, EqualsPosition(position_one));
+
+    position.Undo(move_one);
+    EXPECT_THAT(position, EqualsPosition(kStartingPosition));
 }
 
 TEST(GetPieces, StartingPosition) {

@@ -210,6 +210,11 @@ void Position::Do(const Move &move) {
         sides_[GetSide(move.to())].Clear(move.to());
     }
 
+    // TODO(aryann): Consider replacing this with:
+    //
+    //   Bitboard from_to = move.from() | move.to();
+    //   pieces_[piece] ^= from_to;
+    //
     Piece piece = GetPiece(move.from());
     pieces_[piece].Clear(move.from());
     pieces_[piece].Set(move.to());
@@ -222,7 +227,27 @@ void Position::Do(const Move &move) {
 }
 
 void Position::Undo(const Move &move) {
+    Piece piece = GetPiece(move.to());
+    pieces_[piece].Clear(move.to());
+    pieces_[piece].Set(move.from());
 
+    Side side = GetSide(move.to());
+    sides_[side].Clear(move.to());
+    sides_[side].Set(move.from());
+
+    if (move.GetCapturedPiece() == kEmptyPiece) {
+        --half_moves_;
+    } else {
+        // Restores a captured piece.
+        half_moves_ = move.GetPreviousHalfMoves();
+        pieces_[move.GetCapturedPiece()].Set(move.to());
+        sides_[~side].Set(move.to());
+    }
+
+    if (side == kBlack) {
+        --full_moves_;
+    }
+    side_to_move_ = ~side_to_move_;
 }
 
 } // chessengine
