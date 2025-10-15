@@ -11,7 +11,7 @@ namespace {
 using ::testing::Eq;
 using ::testing::ElementsAre;
 
-void RunPerft(int depth, Position &position, std::vector<int> &nodes, std::map<Move, int> &unique_counts) {
+void RunPerft(int depth, Position &position, std::vector<int> &nodes) {
     ++nodes[nodes.size() - depth];
 
     if (depth <= 1) {
@@ -20,12 +20,8 @@ void RunPerft(int depth, Position &position, std::vector<int> &nodes, std::map<M
 
     std::vector<Move> moves = GenerateMoves<kQuiet>(position);
     for (const Move &move: moves) {
-        if (depth == 2) {
-            ++unique_counts[move];
-        }
-
         position.Do(move);
-        RunPerft(depth - 1, position, nodes, unique_counts);
+        RunPerft(depth - 1, position, nodes);
         position.Undo(move);
     }
 }
@@ -33,15 +29,9 @@ void RunPerft(int depth, Position &position, std::vector<int> &nodes, std::map<M
 TEST(Perft, StartingPosition) {
     const int depth = 3;
 
-    std::map<Move, int> unique_counts;
-
     Position position = Position::Starting();
     std::vector<int> nodes(depth);
-    RunPerft(depth, position, nodes, unique_counts);
-
-    for (auto [move, count]: unique_counts) {
-        std::cout << move << ": " << count << std::endl;
-    }
+    RunPerft(depth, position, nodes);
 
     EXPECT_THAT(nodes, ElementsAre(1, 20, 400));
 }
