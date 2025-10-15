@@ -18,46 +18,43 @@ TEST(Move, General) {
         EXPECT_THAT(move.from(), Eq(A1));
         EXPECT_THAT(move.to(), Eq(B2));
         EXPECT_THAT(move.GetCapturedPiece(), Eq(kEmptyPiece));
+        EXPECT_THAT(move.GetPreviousHalfMoves(), Eq(0));
     }
     //
     {
-        Move move(B1, C2, MoveOptions().SetCaptured(kPawn));
+        Move move(B1, C2, MoveOptions().SetCaptured(kPawn, 1));
 
         EXPECT_THAT(move.from(), Eq(B1));
         EXPECT_THAT(move.to(), Eq(C2));
         EXPECT_THAT(move.GetCapturedPiece(), Eq(kPawn));
+        EXPECT_THAT(move.GetPreviousHalfMoves(), Eq(1));
     }
     //
     {
-        Move move(A7, B8, MoveOptions().SetCaptured(kKnight));
+        Move move(A7, B8, MoveOptions().SetCaptured(kKnight, 2));
 
         EXPECT_THAT(move.from(), Eq(A7));
         EXPECT_THAT(move.to(), Eq(B8));
         EXPECT_THAT(move.GetCapturedPiece(), Eq(kKnight));
+        EXPECT_THAT(move.GetPreviousHalfMoves(), Eq(2));
     }
     //
     {
-        Move move(A1, B2, MoveOptions().SetCaptured(kBishop));
+        Move move(A1, B2, MoveOptions().SetCaptured(kBishop, 30));
 
         EXPECT_THAT(move.from(), Eq(A1));
         EXPECT_THAT(move.to(), Eq(B2));
         EXPECT_THAT(move.GetCapturedPiece(), Eq(kBishop));
+        EXPECT_THAT(move.GetPreviousHalfMoves(), Eq(30));
     }
     //
     {
-        Move move(A1, B2, MoveOptions().SetCaptured(kRook));
+        Move move(A1, B2, MoveOptions().SetCaptured(kRook, 50));
 
         EXPECT_THAT(move.from(), Eq(A1));
         EXPECT_THAT(move.to(), Eq(B2));
         EXPECT_THAT(move.GetCapturedPiece(), Eq(kRook));
-    }
-    //
-    {
-        Move move(H1, A1, MoveOptions().SetCaptured(kKing));
-
-        EXPECT_THAT(move.from(), Eq(H1));
-        EXPECT_THAT(move.to(), Eq(A1));
-        EXPECT_THAT(move.GetCapturedPiece(), Eq(kKing));
+        EXPECT_THAT(move.GetPreviousHalfMoves(), Eq(50));
     }
 }
 

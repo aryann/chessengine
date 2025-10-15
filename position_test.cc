@@ -204,7 +204,7 @@ TEST(Position, Do) {
                     //
                     "   w KQkq - 2 2"));
 
-    position.Do(Move(C3, D5, MoveOptions().SetCaptured(kPawn)));
+    position.Do(Move(C3, D5, MoveOptions().SetCaptured(kPawn, 2)));
     EXPECT_THAT(position, EqualsPosition(
                     "8: r n b q k b n r"
                     "7: p p p . p p p p"
@@ -218,7 +218,7 @@ TEST(Position, Do) {
                     //
                     "   b KQkq - 0 2"));
 
-    position.Undo(Move(C3, D5, MoveOptions().SetCaptured(kPawn)));
+    position.Undo(Move(C3, D5, MoveOptions().SetCaptured(kPawn, 2)));
     // EXPECT_THAT(position, EqualsPosition(
     //                 "8: r n b q k b n r"
     //                 "7: p p p . p p p p"
