@@ -22,7 +22,6 @@ cc_test(
     deps = [
         ":attacks",
         ":testing",
-        "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
 )
@@ -42,7 +41,6 @@ cc_test(
     deps = [
         ":bitboard",
         ":testing",
-        "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
 )
@@ -76,7 +74,6 @@ cc_test(
     deps = [
         ":position",
         ":testing",
-        "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
 )
@@ -103,7 +100,6 @@ cc_test(
     srcs = ["move_test.cc"],
     deps = [
         ":move",
-        "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
 )
@@ -116,7 +112,6 @@ cc_test(
         ":move_generator",
         ":position",
         "@abseil-cpp//absl/strings",
-        "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
 )
@@ -140,7 +135,7 @@ cc_test(
         ":move_generator",
         ":position",
         ":testing",
-        "@googletest//:gtest",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -163,7 +158,7 @@ cc_test(
     srcs = ["testing_test.cc"],
     deps = [
         ":testing",
-        "@googletest//:gtest",
+        "@googletest//:gtest_main",
     ],
 )
 
@@ -182,6 +177,6 @@ cc_test(
     deps = [
         ":testing",
         ":types",
-        "@googletest//:gtest",
+        "@googletest//:gtest_main",
     ],
 )
