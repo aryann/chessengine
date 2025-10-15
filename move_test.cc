@@ -10,11 +10,55 @@ using ::testing::Eq;
 using ::testing::Ne;
 using ::testing::Not;
 
-TEST(Move, Squares) {
-    Move move(A1, B2);
+TEST(Move, General) {
+    //
+    {
+        Move move(A1, B2);
 
-    EXPECT_THAT(move.from(), Eq(A1));
-    EXPECT_THAT(move.to(), Eq(B2));
+        EXPECT_THAT(move.from(), Eq(A1));
+        EXPECT_THAT(move.to(), Eq(B2));
+        EXPECT_THAT(move.GetCapturedPiece(), Eq(kEmptyPiece));
+    }
+    //
+    {
+        Move move(B1, C2, MoveOptions().SetCaptured(kPawn));
+
+        EXPECT_THAT(move.from(), Eq(B1));
+        EXPECT_THAT(move.to(), Eq(C2));
+        EXPECT_THAT(move.GetCapturedPiece(), Eq(kPawn));
+    }
+    //
+    {
+        Move move(A7, B8, MoveOptions().SetCaptured(kKnight));
+
+        EXPECT_THAT(move.from(), Eq(A7));
+        EXPECT_THAT(move.to(), Eq(B8));
+        EXPECT_THAT(move.GetCapturedPiece(), Eq(kKnight));
+    }
+    //
+    {
+        Move move(A1, B2, MoveOptions().SetCaptured(kBishop));
+
+        EXPECT_THAT(move.from(), Eq(A1));
+        EXPECT_THAT(move.to(), Eq(B2));
+        EXPECT_THAT(move.GetCapturedPiece(), Eq(kBishop));
+    }
+    //
+    {
+        Move move(A1, B2, MoveOptions().SetCaptured(kRook));
+
+        EXPECT_THAT(move.from(), Eq(A1));
+        EXPECT_THAT(move.to(), Eq(B2));
+        EXPECT_THAT(move.GetCapturedPiece(), Eq(kRook));
+    }
+    //
+    {
+        Move move(H1, A1, MoveOptions().SetCaptured(kKing));
+
+        EXPECT_THAT(move.from(), Eq(H1));
+        EXPECT_THAT(move.to(), Eq(A1));
+        EXPECT_THAT(move.GetCapturedPiece(), Eq(kKing));
+    }
 }
 
 TEST(Move, Equality) {
@@ -23,15 +67,6 @@ TEST(Move, Equality) {
 
     EXPECT_THAT(Move(A1, A2), Not(Ne(Move(A1, A2))));
     EXPECT_THAT(Move(A1, A2), Ne(Move(H1, H2)));
-}
-
-TEST(Move, CapturedPiece) {
-    EXPECT_THAT(Move(A1, A2).GetCapturedPiece(), Eq(kEmptyPiece));
-    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kPawn)).GetCapturedPiece(), Eq(kPawn));
-    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kKnight)).GetCapturedPiece(), Eq(kKnight));
-    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kBishop)).GetCapturedPiece(), Eq(kBishop));
-    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kRook)).GetCapturedPiece(), Eq(kRook));
-    EXPECT_THAT(Move(A1, A2, MoveOptions().SetCaptured(kKing)).GetCapturedPiece(), Eq(kKing));
 }
 
 } // namespace
