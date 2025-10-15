@@ -45,7 +45,7 @@ public:
         return (bits_ >> 20) & 0b111111;
     }
 
-    constexpr bool operator==(const Move &other) const = default;
+    constexpr auto operator<=>(const Move &other) const = default;
 
 private:
     // Stores the move state:

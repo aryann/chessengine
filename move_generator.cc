@@ -18,7 +18,7 @@ void AddPawnPushes(Bitboard destinations, int offset, std::vector<Move> &moves) 
 
 template<Side Side, MoveType MoveType>
 void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
-    constexpr Direction forward = Side == kWhite ? kNorth : kEast;
+    constexpr Direction forward = Side == kWhite ? kNorth : kSouth;
     Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
     Bitboard pre_promotion_rank = Side == kWhite ? rank::k7 : rank::k2;
     Bitboard empty_squares = ~position.GetPieces();

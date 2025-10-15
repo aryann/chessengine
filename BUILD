@@ -108,6 +108,18 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "perft_test",
+    srcs = ["perft_test.cc"],
+    deps = [
+        ":move",
+        ":move_generator",
+        ":position",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "move_generator",
     srcs = ["move_generator.cc"],
