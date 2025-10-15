@@ -115,6 +115,7 @@ cc_test(
         ":move",
         ":move_generator",
         ":position",
+        "@abseil-cpp//absl/strings",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
