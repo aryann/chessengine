@@ -476,7 +476,6 @@ TEST(Bitboard, PopLeastSignificantBit) {
     EXPECT_THAT(board.Data(), Eq(0b10000000));
     EXPECT_THAT(board.PopLeastSignificantBit(), Eq(H8));
     EXPECT_THAT(board.Data(), Eq(0b00000000));
-
 }
 
 } // namespace

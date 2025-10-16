@@ -44,6 +44,8 @@ MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(exp
 
 std::string TestPositionToFen(std::string_view input);
 
+Position MakePosition(std::string_view input);
+
 MATCHER_P(EqualsPosition, expected, "") {
     std::string fen = TestPositionToFen(expected);
     auto result = Position::FromFen(fen);

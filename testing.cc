@@ -56,4 +56,11 @@ std::string TestPositionToFen(std::string_view input) {
     return absl::StrCat(fen_board, " ", absl::StripAsciiWhitespace(parts[1]));
 }
 
+Position MakePosition(std::string_view input) {
+    std::expected<Position, std::string> position = Position::FromFen(
+            TestPositionToFen(input));
+    CHECK_EQ(position.error_or(""), "") << "Failed to create position.";
+    return position.value();
+}
+
 } // namespace chessengine
