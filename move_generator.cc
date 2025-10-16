@@ -16,14 +16,28 @@ void AddPawnPushes(Bitboard destinations, int offset, std::vector<Move> &moves) 
     }
 }
 
+void AddPawnPromotions(Bitboard promotions, int offset, std::vector<Move> &moves) {
+    while (promotions) {
+        Square to = promotions.PopLeastSignificantBit();
+        Square from = static_cast<Square>(to - offset);
+
+        moves.emplace_back(from, to, MoveOptions().SetPromoted(kQueen));
+        moves.emplace_back(from, to, MoveOptions().SetPromoted(kRook));
+        moves.emplace_back(from, to, MoveOptions().SetPromoted(kKnight));
+        moves.emplace_back(from, to, MoveOptions().SetPromoted(kBishop));
+    }
+}
+
 template<Side Side, MoveType MoveType>
 void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     constexpr Direction forward = Side == kWhite ? kNorth : kSouth;
     Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
-    Bitboard pre_promotion_rank = Side == kWhite ? rank::k7 : rank::k2;
+    Bitboard promotion_rank = Side == kWhite ? rank::k7 : rank::k2;
     Bitboard empty_squares = ~position.GetPieces();
 
-    Bitboard unpromotable_pawns = position.GetPieces(position.SideToMove(), kPawn) & ~pre_promotion_rank;
+    Bitboard pawns = position.GetPieces(position.SideToMove(), kPawn);
+    Bitboard unpromotable_pawns = pawns & ~promotion_rank;
+    Bitboard promotable_pawns = pawns & promotion_rank;
 
     if (MoveType == kQuiet) {
         Bitboard single_moves = unpromotable_pawns.Shift<forward>() & empty_squares;
@@ -31,6 +45,9 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
 
         Bitboard double_moves = (single_moves & second_rank).Shift<forward>() & empty_squares;
         AddPawnPushes(double_moves, forward * 2, moves);
+
+        Bitboard prompted_pawns = promotable_pawns.Shift<forward>() & empty_squares;
+        AddPawnPromotions(prompted_pawns, forward, moves);
     }
 }
 

@@ -103,5 +103,28 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
                 ));
 }
 
+TEST(Pawns, QuietPromotions) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . P . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
+                    Move(E7, E8, MoveOptions().SetPromoted(kQueen)),
+                    Move(E7, E8, MoveOptions().SetPromoted(kRook)),
+                    Move(E7, E8, MoveOptions().SetPromoted(kKnight)),
+                    Move(E7, E8, MoveOptions().SetPromoted(kBishop))
+                ));
+}
+
 } // namespace
 } // namespace chessengine
