@@ -28,6 +28,15 @@ void AddPawnPromotions(Bitboard promotions, int offset, std::vector<Move> &moves
     }
 }
 
+void AddPawnCaptures(Bitboard captures, int offset, const Position &position, std::vector<Move> &moves) {
+    while (captures) {
+        Square to = captures.PopLeastSignificantBit();
+        Square from = static_cast<Square>(to - offset);
+
+        moves.emplace_back(from, to, MoveOptions().SetCaptured(position.GetPiece(to), position.GetHalfMoves()));
+    }
+}
+
 template<Side Side, MoveType MoveType>
 void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     constexpr Direction forward = Side == kWhite ? kNorth : kSouth;
@@ -39,7 +48,7 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     Bitboard unpromotable_pawns = pawns & ~promotion_rank;
     Bitboard promotable_pawns = pawns & promotion_rank;
 
-    if (MoveType == kQuiet) {
+    if constexpr (MoveType == kQuiet) {
         Bitboard single_moves = unpromotable_pawns.Shift<forward>() & empty_squares;
         AddPawnPushes(single_moves, forward, moves);
 
@@ -48,6 +57,18 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
 
         Bitboard prompted_pawns = promotable_pawns.Shift<forward>() & empty_squares;
         AddPawnPromotions(prompted_pawns, forward, moves);
+    }
+
+    if constexpr (MoveType == kCapture) {
+        constexpr Direction left = Side == kWhite ? kNorthWest : kSouthEast;
+        constexpr Direction right = Side == kWhite ? kNorthEast : kSouthWest;
+        Bitboard enemies = position.GetPieces(~Side);
+
+        Bitboard left_captures = unpromotable_pawns.Shift<left>() & enemies;
+        Bitboard right_captures = unpromotable_pawns.Shift<right>() & enemies;
+
+        AddPawnCaptures(left_captures, left, position, moves);
+        AddPawnCaptures(right_captures, right, position, moves);
     }
 }
 

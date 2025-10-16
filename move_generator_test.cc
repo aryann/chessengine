@@ -103,27 +103,94 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
                 ));
 }
 
-TEST(Pawns, QuietPromotions) {
-    Position position = MakePosition(
-            "8: . . . . . . . ."
-            "7: . . . . P . . ."
-            "6: . . . . . . . ."
-            "5: . . . . . . . ."
-            "4: . . . . . . . ."
-            "3: . . . . . . . ."
-            "2: . . . . . . . ."
-            "1: . . . . . . . ."
-            "   a b c d e f g h"
-            //
-            "   w KQkq - 0 1"
-            );
+TEST(Pawns, QuietPromotions) { {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . P . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
 
-    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    Move(E7, E8, MoveOptions().SetPromoted(kQueen)),
-                    Move(E7, E8, MoveOptions().SetPromoted(kRook)),
-                    Move(E7, E8, MoveOptions().SetPromoted(kKnight)),
-                    Move(E7, E8, MoveOptions().SetPromoted(kBishop))
-                ));
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
+                        Move(E7, E8, MoveOptions().SetPromoted(kQueen)),
+                        Move(E7, E8, MoveOptions().SetPromoted(kRook)),
+                        Move(E7, E8, MoveOptions().SetPromoted(kKnight)),
+                        Move(E7, E8, MoveOptions().SetPromoted(kBishop))
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: p . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   b KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
+                        Move(A2, A1, MoveOptions().SetPromoted(kQueen)),
+                        Move(A2, A1, MoveOptions().SetPromoted(kRook)),
+                        Move(A2, A1, MoveOptions().SetPromoted(kKnight)),
+                        Move(A2, A1, MoveOptions().SetPromoted(kBishop))
+                    ));
+    }
+}
+
+TEST(Pawns, Captures) { {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . p . r . ."
+                "3: . . . . P . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
+                        Move(E3, D4, MoveOptions().SetCaptured(kPawn, 0)),
+                        Move(E3, F4, MoveOptions().SetCaptured(kRook, 0))
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . p . . . ."
+                "4: . . P . R . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   b KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
+                        Move(D5, C4, MoveOptions().SetCaptured(kPawn, 0)),
+                        Move(D5, E4, MoveOptions().SetCaptured(kRook, 0))
+                    ));
+    }
 }
 
 } // namespace
