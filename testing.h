@@ -6,6 +6,7 @@
 #include <iostream>
 #include <source_location>
 #include <string>
+#include <variant>
 
 #include "absl/strings/str_split.h"
 #include "absl/strings/str_cat.h"
@@ -43,17 +44,16 @@ MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(exp
     return false;
 }
 
-std::string TestPositionToFen(std::string_view input);
+std::expected<Position, std::string> TryMakePosition(std::string_view input);
 
 Position MakePosition(
         std::string_view input,
         std::source_location location = std::source_location::current());
 
 MATCHER_P(EqualsPosition, expected, "") {
-    std::string fen = TestPositionToFen(expected);
-    auto result = Position::FromFen(fen);
+    std::expected<Position, std::string> result = TryMakePosition(expected);
     if (!result.has_value()) {
-        *result_listener << "Could not parse position: " << result.error();
+        *result_listener << "could not parse position: " << result.error();
         return false;
     }
 

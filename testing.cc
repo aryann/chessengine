@@ -2,6 +2,7 @@
 
 #include <format>
 #include <ostream>
+#include <source_location>
 
 #include "absl/log/check.h"
 #include "absl/log/log.h"
@@ -10,12 +11,8 @@
 #include "bitboard.h"
 
 namespace chessengine {
-
+namespace {
 using namespace ::std::literals;
-
-void PrintTo(const Bitboard &bitboard, std::ostream *os) {
-    *os << std::format("Bitboard(0x{:})", bitboard.Data());
-}
 
 std::string TestPositionToFen(std::string_view input) {
     std::vector<std::string_view> parts = absl::StrSplit(input, "a b c d e f g h");
@@ -57,10 +54,14 @@ std::string TestPositionToFen(std::string_view input) {
     return absl::StrCat(fen_board, " ", absl::StripAsciiWhitespace(parts[1]));
 }
 
-Position MakePosition(std::string_view input, std::source_location location) {
-    std::expected<Position, std::string> position = Position::FromFen(
-            TestPositionToFen(input));
+} // namespace
 
+std::expected<Position, std::string> TryMakePosition(std::string_view input) {
+    return Position::FromFen(TestPositionToFen(input));
+}
+
+Position MakePosition(std::string_view input, std::source_location location) {
+    std::expected<Position, std::string> position = TryMakePosition(input);
     if (!position.has_value()) {
         LOG(FATAL)
             << location.file_name() << ":" << location.line() << ": "
@@ -68,6 +69,10 @@ Position MakePosition(std::string_view input, std::source_location location) {
     }
 
     return position.value();
+}
+
+void PrintTo(const Bitboard &bitboard, std::ostream *os) {
+    *os << std::format("Bitboard(0x{:})", bitboard.Data());
 }
 
 } // namespace chessengine

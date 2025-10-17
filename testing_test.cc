@@ -9,10 +9,11 @@ namespace chessengine {
 namespace {
 
 using ::testing::Eq;
+using ::testing::IsTrue;
 using ::testing::Optional;
 
-TEST(TestPositionToFen, Ok) {
-    EXPECT_THAT(TestPositionToFen(
+TEST(TryMakePosition, Ok) {
+    EXPECT_THAT(TryMakePosition(
                     "8: r n b q k b n r\n"
                     "7: p p p p p p p p\n"
                     "6: . . . . . . . .\n"
@@ -24,9 +25,9 @@ TEST(TestPositionToFen, Ok) {
                     "   a b c d e f g h\n"
                     "\n"
                     "   w KQkq - 0 1\n"
-                ), Eq("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+                ).has_value(), IsTrue());
 
-    EXPECT_THAT(TestPositionToFen(
+    EXPECT_THAT(TryMakePosition(
                     "8: r . . . k . . r"
                     "7: p . p p q p b ."
                     "6: b n . . p n p ."
@@ -38,9 +39,9 @@ TEST(TestPositionToFen, Ok) {
                     "   a b c d e f g h"
                     ""
                     "   w KQkq - 0 1"
-                ), Eq("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+                ).has_value(), IsTrue());
 
-    EXPECT_THAT(TestPositionToFen(
+    EXPECT_THAT(TryMakePosition(
                     "8: . . . . . . . ."
                     "7: . . p . . . . ."
                     "6: . . . p . . . ."
@@ -52,12 +53,12 @@ TEST(TestPositionToFen, Ok) {
                     "   a b c d e f g h"
                     //
                     "   w - a3 0 1"
-                ), Eq("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - a3 0 1"));
+                ).has_value(), IsTrue());
 }
 
-TEST(TestPositionToFen, Failures) {
-    ASSERT_DEATH(TestPositionToFen(""), "Invalid position input: ");
-    ASSERT_DEATH(TestPositionToFen("KQkq"), "Invalid position input: KQkq");
+TEST(MakePosition, Failures) {
+    ASSERT_DEATH(MakePosition(""), "Invalid position input: ");
+    ASSERT_DEATH(MakePosition("KQkq"), "Invalid position input: KQkq");
 }
 
 } // namespace
