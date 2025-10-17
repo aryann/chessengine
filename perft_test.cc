@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -36,12 +38,17 @@ protected:
             return;
         }
 
-        std::vector<Move> moves = GenerateMoves<kQuiet>(position);
-        for (const Move &move: moves) {
+        for (const Move &move: GenerateMoves<kQuiet>(position)) {
             position.Do(move);
             RunPerft(depth - 1, position, nodes);
             position.Undo(move);
         }
+        for (const Move &move: GenerateMoves<kCapture>(position)) {
+            position.Do(move);
+            RunPerft(depth - 1, position, nodes);
+            position.Undo(move);
+        }
+
     }
 };
 
@@ -70,27 +77,27 @@ INSTANTIATE_TEST_SUITE_P(
             PerftTestCase{
             .name = "StartingPosition",
             .fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-            .expected_node_counts = {1, 20, 400},
+            .expected_node_counts = {1, 20, 400, 8'902},
             },
 
             // https: //www.chessprogramming.org/Perft_Results#Position_2
             PerftTestCase{
-            .name = "Position10",
+            .name = "Position2",
             .fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1",
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 38, 1267, 48155},
+            .expected_node_counts = {1, 46, 1'870, 87'218},
             },
 
             // https: //www.chessprogramming.org/Perft_Results#Position_3
             PerftTestCase{
-            .name = "position10",
+            .name = "position3",
             .fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1",
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 15, 239, 3754},
+            .expected_node_counts = {1, 16, 276, 4'820},
             }
         ),
         GetTestName);
