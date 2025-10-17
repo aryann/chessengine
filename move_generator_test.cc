@@ -194,5 +194,57 @@ TEST(Pawns, Captures) { {
 }
 
 
+TEST(Knights, QuietMoves) { {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . N . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
+                        Move(E3, D5),
+                        Move(E3, F5),
+                        Move(E3, C4),
+                        Move(E3, G4),
+                        Move(E3, C2),
+                        Move(E3, G2),
+                        Move(E3, D1),
+                        Move(E3, F1)
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . r . r . ."
+                "4: . . . . . . . ."
+                "3: . . . . N . . ."
+                "2: . . . . . . . ."
+                "1: . . . r . r . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
+                        Move(E3, C4),
+                        Move(E3, G4),
+                        Move(E3, C2),
+                        Move(E3, G2)
+                    ));
+    }
+}
+
+
 } // namespace
 } // namespace chessengine
