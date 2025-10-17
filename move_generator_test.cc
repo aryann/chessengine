@@ -8,7 +8,9 @@
 
 namespace chessengine {
 namespace {
+
 using ::testing::Eq;
+using ::testing::IsEmpty;
 using ::testing::UnorderedElementsAre;
 
 TEST(GenerateMoves, QuietMoves_StartingPosition) {
@@ -237,14 +239,55 @@ TEST(Knights, QuietMoves) { {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(E3, C4),
-                        Move(E3, G4),
                         Move(E3, C2),
-                        Move(E3, G2)
+                        Move(E3, C4),
+                        Move(E3, G2),
+                        Move(E3, G4)
                     ));
     }
 }
 
+TEST(Knights, Captures) { {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . N . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kCapture>(position), IsEmpty());
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . b . b . ."
+                "4: . . . . . . . ."
+                "3: . . . . N . . ."
+                "2: . . . . . . . ."
+                "1: . . . r . r . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 12 20"
+                );
+
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
+                        Move(E3, D1, MoveOptions().SetCaptured(kRook, 12)),
+                        Move(E3, D5, MoveOptions().SetCaptured(kBishop, 12)),
+                        Move(E3, F1, MoveOptions().SetCaptured(kRook, 12)),
+                        Move(E3, F5, MoveOptions().SetCaptured(kBishop, 12))
+                    ));
+    }
+}
 
 } // namespace
 } // namespace chessengine

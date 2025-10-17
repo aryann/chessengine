@@ -72,7 +72,7 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     }
 }
 
-template<Side Side, Piece Piece>
+template<Side Side, MoveType MoveType, Piece Piece>
 void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move> &moves) {
     Bitboard pieces = position.GetPieces(Side, Piece);
 
@@ -82,7 +82,12 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
 
         while (attacks) {
             Square to = attacks.PopLeastSignificantBit();
-            moves.emplace_back(from, to);
+
+            MoveOptions options;
+            if constexpr (MoveType == kCapture) {
+                options.SetCaptured(position.GetPiece(to), position.GetHalfMoves());
+            }
+            moves.emplace_back(from, to, options);
         }
     }
 }
@@ -101,18 +106,18 @@ Bitboard GetTargets(const Position &position) {
 }
 
 template<Side Side, MoveType MoveType>
-std::vector<Move> GenerateAllMoves(const Position &position) {
+std::vector<Move> GenerateMoves(const Position &position) {
     static_assert(MoveType == kQuiet || MoveType == kCapture);
 
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
     std::vector<Move> moves;
     GeneratePawnMoves<Side, MoveType>(position, moves);
-    GenerateMoves<Side, kKnight>(position, targets, moves);
-    GenerateMoves<Side, kBishop>(position, targets, moves);
-    GenerateMoves<Side, kRook>(position, targets, moves);
-    GenerateMoves<Side, kQueen>(position, targets, moves);
-    GenerateMoves<Side, kKing>(position, targets, moves);
+    GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
+    GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);
+    GenerateMoves<Side, MoveType, kRook>(position, targets, moves);
+    GenerateMoves<Side, MoveType, kQueen>(position, targets, moves);
+    GenerateMoves<Side, MoveType, kKing>(position, targets, moves);
     return moves;
 }
 
@@ -123,9 +128,9 @@ std::vector<Move> GenerateMoves(const Position &position) {
     static_assert(MoveType == kQuiet || MoveType == kCapture);
 
     if (position.SideToMove() == kWhite) {
-        return GenerateAllMoves<kWhite, MoveType>(position);
+        return GenerateMoves<kWhite, MoveType>(position);
     } else {
-        return GenerateAllMoves<kBlack, MoveType>(position);
+        return GenerateMoves<kBlack, MoveType>(position);
     }
 }
 
