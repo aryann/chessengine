@@ -147,6 +147,7 @@ cc_library(
     deps = [
         ":bitboard",
         ":position",
+        "@abseil-cpp//absl/log",
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
         "@googletest//:gtest",

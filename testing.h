@@ -4,6 +4,7 @@
 #include <format>
 #include <gmock/gmock.h>
 #include <iostream>
+#include <source_location>
 #include <string>
 
 #include "absl/strings/str_split.h"
@@ -44,7 +45,9 @@ MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(exp
 
 std::string TestPositionToFen(std::string_view input);
 
-Position MakePosition(std::string_view input);
+Position MakePosition(
+        std::string_view input,
+        std::source_location location = std::source_location::current());
 
 MATCHER_P(EqualsPosition, expected, "") {
     std::string fen = TestPositionToFen(expected);

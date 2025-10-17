@@ -193,5 +193,6 @@ TEST(Pawns, Captures) { {
     }
 }
 
+
 } // namespace
 } // namespace chessengine

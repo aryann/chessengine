@@ -87,14 +87,14 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
     }
 }
 
-template<MoveType MoveType>
+template<Side Side, MoveType MoveType>
 Bitboard GetTargets(const Position &position) {
     if constexpr (MoveType == kQuiet) {
         return ~position.GetPieces();
     }
 
     if constexpr (MoveType == kCapture) {
-        return position.GetPieces(~position.SideToMove());
+        return position.GetPieces(~Side);
     }
 
     return {};
@@ -104,7 +104,7 @@ template<Side Side, MoveType MoveType>
 std::vector<Move> GenerateAllMoves(const Position &position) {
     static_assert(MoveType == kQuiet || MoveType == kCapture);
 
-    Bitboard targets = GetTargets<MoveType>(position);
+    Bitboard targets = GetTargets<Side, MoveType>(position);
 
     std::vector<Move> moves;
     GeneratePawnMoves<Side, MoveType>(position, moves);

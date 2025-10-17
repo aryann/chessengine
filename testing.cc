@@ -4,6 +4,7 @@
 #include <ostream>
 
 #include "absl/log/check.h"
+#include "absl/log/log.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_split.h"
 #include "bitboard.h"
@@ -56,10 +57,16 @@ std::string TestPositionToFen(std::string_view input) {
     return absl::StrCat(fen_board, " ", absl::StripAsciiWhitespace(parts[1]));
 }
 
-Position MakePosition(std::string_view input) {
+Position MakePosition(std::string_view input, std::source_location location) {
     std::expected<Position, std::string> position = Position::FromFen(
             TestPositionToFen(input));
-    CHECK_EQ(position.error_or(""), "") << "Failed to create position.";
+
+    if (!position.has_value()) {
+        LOG(FATAL)
+            << location.file_name() << ":" << location.line() << ": "
+            << "Invalid position: " << position.error();
+    }
+
     return position.value();
 }
 
