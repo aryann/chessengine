@@ -61,7 +61,7 @@ Bitboard Position::GetAttackers(Square to) const {
     Bitboard occupied = GetPieces();
     Bitboard attackers;
 
-    attackers |= GenerateAttacks<kPawn>(to, occupied) & GetPieces(kPawn);
+    attackers |= GetPawnAttacks(to, SideToMove()) & GetPieces(kPawn);
     attackers |= GenerateAttacks<kKnight>(to, occupied) & GetPieces(kKnight);
     attackers |= GenerateAttacks<kKing>(to, occupied) & GetPieces(kKing);
 

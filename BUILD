@@ -7,6 +7,7 @@ cc_library(
     hdrs = ["attacks.h"],
     deps = [
         ":bitboard",
+        "@abseil-cpp//absl/log:check",
     ],
 )
 

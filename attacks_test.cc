@@ -248,7 +248,7 @@ TEST(MakeRay, SouthWest_ZeroLengthRayFromB2) {
 }
 
 TEST(Attacks, WhitePawn) {
-    EXPECT_THAT(GenerateAttacks<kPawn>(A1, kEmptyBoard), EqualsBitboard(
+    EXPECT_THAT(GetPawnAttacks(A1, kWhite), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -260,11 +260,49 @@ TEST(Attacks, WhitePawn) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(GenerateAttacks<kPawn>(E4, kEmptyBoard), EqualsBitboard(
+    EXPECT_THAT(GetPawnAttacks(E4, kWhite), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
                     "5: . . . X . X . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(GetPawnAttacks(H7, kWhite), EqualsBitboard(
+                    "8: . . . . . . X ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(Attacks, BlackPawn) {
+    EXPECT_THAT(GetPawnAttacks(A2, kBlack), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . X . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(GetPawnAttacks(E4, kBlack), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
                     "4: . . . . . . . ."
                     "3: . . . X . X . ."
                     "2: . . . . . . . ."
@@ -272,7 +310,7 @@ TEST(Attacks, WhitePawn) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(GenerateAttacks<kPawn>(H8, kEmptyBoard), EqualsBitboard(
+    EXPECT_THAT(GetPawnAttacks(H8, kBlack), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . X ."
                     "6: . . . . . . . ."

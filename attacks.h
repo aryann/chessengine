@@ -3,9 +3,30 @@
 
 #include <array>
 
+#include "absl/log/check.h"
 #include "bitboard.h"
 
 namespace chessengine {
+
+template<Direction ... Directions>
+consteval void MakePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+    for (int square = A8; square < kNumSquares; ++square) {
+        Bitboard start(static_cast<Square>(square));
+        attacks[square] = (start.Shift<Directions>() | ...);
+    }
+}
+
+consteval auto MakePawnAttacks() {
+    std::array<std::array<Bitboard, kNumSquares>, kNumSides> attacks;
+    MakePawnAttacks<kNorthEast, kNorthWest>(attacks[kWhite]);
+    MakePawnAttacks<kSouthEast, kSouthWest>(attacks[kBlack]);
+    return attacks;
+}
+
+constexpr Bitboard GetPawnAttacks(Square square, Side side) {
+    static std::array<std::array<Bitboard, kNumSquares>, kNumSides> kPawnAttacks = MakePawnAttacks();
+    return kPawnAttacks[side][square];
+}
 
 consteval auto GeneratePawnAttacks() {
     std::array<Bitboard, kNumSquares> attacks;
@@ -130,10 +151,7 @@ constexpr Bitboard GenerateRookAttacks(Square square, Bitboard occupied) {
 
 template<Piece Piece>
 constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
-    if constexpr (Piece == kPawn) {
-        static std::array<Bitboard, kNumSquares> kPawnAttacks = GeneratePawnAttacks();
-        return kPawnAttacks[square];
-    }
+    DCHECK(Piece != kPawn);
 
     if constexpr (Piece == kKnight) {
         static std::array<Bitboard, kNumSquares> kKnightAttacks = GenerateKnightAttacks();
