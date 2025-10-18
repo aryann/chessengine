@@ -10,12 +10,6 @@ cc_library(
     ],
 )
 
-cc_binary(
-    name = "attacks_main",
-    srcs = ["attacks_main.cc"],
-    deps = [":attacks"],
-)
-
 cc_test(
     name = "attacks_test",
     srcs = ["attacks_test.cc"],

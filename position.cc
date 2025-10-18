@@ -61,15 +61,15 @@ namespace chessengine {
     Bitboard occupied = GetPieces();
     Bitboard attackers;
 
+    attackers |= GenerateAttacks<kPawn>(to, occupied) & GetPieces(kPawn);
+    attackers |= GenerateAttacks<kKnight>(to, occupied) & GetPieces(kKnight);
+    attackers |= GenerateAttacks<kKing>(to, occupied) & GetPieces(kKing);
+
     // Generates attacks from rooks, bishops, and queens:
     attackers |= GenerateAttacks<kRook>(to, occupied) &
             (GetPieces(kRook) | GetPieces(kQueen));
     attackers |= GenerateAttacks<kBishop>(to, occupied) &
             (GetPieces(kBishop) | GetPieces(kQueen));
-
-    attackers |= GenerateAttacks<kKnight>(to, occupied) & GetPieces(kKnight);
-
-    attackers |= GenerateAttacks<kKing>(to, occupied) & GetPieces(kKing);
 
     return attackers;
 }

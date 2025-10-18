@@ -417,6 +417,34 @@ TEST(GetPieces, StartingPosition) {
                 ));
 }
 
+TEST(GetAttackers, Pawn) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . p p p p p ."
+            "4: . . P . . . P ."
+            "3: . . P P P P P ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(position.GetAttackers(E4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . X . X . ."
+                    "4: . . . . . . . ."
+                    "3: . . . X . X . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
 TEST(GetAttackers, Rook) {
     //
     {
@@ -555,6 +583,34 @@ TEST(GetAttackers, Knight) {
                     "4: . . . . . . . ."
                     "3: . . X . . . X ."
                     "2: . . . X . X . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GetAttackers, King) {
+    Position position = MakePosition(
+            "8: . K . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . K k K . ."
+            "4: . . . k . K . ."
+            "3: . . . k K k . ."
+            "2: . . . . . . . ."
+            "1: . k . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(position.GetAttackers(E4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . X X X . ."
+                    "4: . . . X . X . ."
+                    "3: . . . X X X . ."
+                    "2: . . . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));

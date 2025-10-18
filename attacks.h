@@ -7,22 +7,18 @@
 
 namespace chessengine {
 
-template<Direction ... Directions>
-consteval void MakePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
+consteval auto GeneratePawnAttacks() {
+    std::array<Bitboard, kNumSquares> attacks;
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard start(static_cast<Square>(square));
-        attacks[square] = (start.Shift<Directions>() | ...);
+        attacks[square] = kEmptyBoard
+                          | start.Shift<kNorthEast>()
+                          | start.Shift<kSouthEast>()
+                          | start.Shift<kSouthWest>()
+                          | start.Shift<kNorthWest>();
     }
-}
-
-consteval auto MakePawnAttacks() {
-    std::array<std::array<Bitboard, kNumSquares>, kNumSides> attacks;
-    MakePawnAttacks<kNorthEast, kNorthWest>(attacks[kWhite]);
-    MakePawnAttacks<kSouthEast, kSouthWest>(attacks[kBlack]);
     return attacks;
 }
-
-constexpr auto kPawnAttacks = MakePawnAttacks();
 
 consteval std::array<Bitboard, kNumSquares> GenerateKnightAttacks() {
     std::array<Bitboard, kNumSquares> attacks;
@@ -134,6 +130,11 @@ constexpr Bitboard GenerateRookAttacks(Square square, Bitboard occupied) {
 
 template<Piece Piece>
 constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
+    if constexpr (Piece == kPawn) {
+        static std::array<Bitboard, kNumSquares> kPawnAttacks = GeneratePawnAttacks();
+        return kPawnAttacks[square];
+    }
+
     if constexpr (Piece == kKnight) {
         static std::array<Bitboard, kNumSquares> kKnightAttacks = GenerateKnightAttacks();
         return kKnightAttacks[square];
