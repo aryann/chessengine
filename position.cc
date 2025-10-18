@@ -76,7 +76,11 @@ Bitboard Position::GetAttackers(Square to) const {
 
 Bitboard Position::GetCheckers() const {
     Side side = SideToMove();
-    Square king_square = GetPieces(side, kKing).LeastSignificantBit();
+    Bitboard king = GetPieces(side, kKing);
+    DCHECK(king && !king.HasMoreThanOneBit())
+        << "Board must have exactly one king of each color.";
+
+    Square king_square = king.LeastSignificantBit();
     return GetAttackers(king_square) & GetPieces(~side);
 }
 
