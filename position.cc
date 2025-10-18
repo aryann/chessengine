@@ -74,6 +74,12 @@ Bitboard Position::GetAttackers(Square to) const {
     return attackers;
 }
 
+Bitboard Position::GetCheckers() const {
+    Side side = SideToMove();
+    Square king_square = GetPieces(side, kKing).LeastSignificantBit();
+    return GetAttackers(king_square) & GetPieces(~side);
+}
+
 namespace {
 
 std::expected<void, std::string> FillPiece(char curr, Square square, std::array<Bitboard, kNumPieces> &pieces) {

@@ -616,5 +616,257 @@ TEST(GetAttackers, King) {
                 ));
 }
 
+TEST(GetCheckers, NoCheck) {
+    //
+    {
+        Position position = MakePosition(
+                "8: r n b q k b n r"
+                "7: p p p p . p p p"
+                "6: . . . . . . . ."
+                "5: . . . . p . . ."
+                "4: . . . . P . . ."
+                "3: . . . . . N . ."
+                "2: P P P P . P P P"
+                "1: R N B Q K B . R"
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 2");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: r . . . k . . r"
+                "7: p p . . q p b p"
+                "6: . . n p . n . ."
+                "5: . . b . P . p ."
+                "4: . . P B . . . ."
+                "3: . . . . . N . ."
+                "2: P P . . . P P P"
+                "1: R . . Q K . B R"
+                "   a b c d e f g h"
+                //
+                "   b - - 0 15");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+}
+
+TEST(GetCheckers, SingleCheck) {
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . q . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . K . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . X . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . k ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . R ."
+                "   a b c d e f g h"
+                //
+                "   b - - 0 1");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . X ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . b . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . K . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . X . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . k . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . N . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   b - - 0 1");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . X . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . p . . . ."
+                "4: . . . . K . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . X . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+}
+
+TEST(GetCheckers, DoubleCheck) {
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . b . . n . ."
+                "2: . . . . . . . ."
+                "1: . . . . K . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 10");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . X . . X . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . k . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . N . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . R . . ."
+                "   a b c d e f g h"
+                //
+                "   b - - 0 12");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . X . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . X . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+}
+
 } // namespace
 } // namespace chessengine

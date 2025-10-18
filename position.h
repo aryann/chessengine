@@ -43,6 +43,9 @@ public:
     // Returns all pieces that attack the given square, irrespective of side.
     [[nodiscard]] Bitboard GetAttackers(Square to) const;
 
+    // Returns the king checkers for the side to move.
+    [[nodiscard]] Bitboard GetCheckers() const;
+
     [[nodiscard]] const CastlingRights &GetCastlingRights() const {
         return castling_rights_;
     }
