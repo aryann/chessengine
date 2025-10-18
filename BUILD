@@ -59,6 +59,7 @@ cc_library(
     srcs = ["position.cc"],
     hdrs = ["position.h"],
     deps = [
+        ":attacks",
         ":bitboard",
         ":castling_rights",
         ":move",

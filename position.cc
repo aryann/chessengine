@@ -1,5 +1,6 @@
 #include "position.h"
 
+#include "attacks.h"
 #include "absl/log/check.h"
 #include "absl/strings/str_split.h"
 #include "bitboard.h"
@@ -48,8 +49,29 @@ namespace chessengine {
     return sides_[side];
 }
 
+[[nodiscard]] Bitboard Position::GetPieces(Piece type) const {
+    return pieces_[type];
+}
+
 [[nodiscard]] Bitboard Position::GetPieces(Side side, Piece type) const {
     return sides_[side] & pieces_[type];
+}
+
+[[nodiscard]] Bitboard Position::GetAttackers(Square to) const {
+    Bitboard occupied = GetPieces();
+    Bitboard attackers;
+
+    // Generates attacks from rooks, bishops, and queens:
+    attackers |= GenerateAttacks<kRook>(to, occupied) &
+            (GetPieces(kRook) | GetPieces(kQueen));
+    attackers |= GenerateAttacks<kBishop>(to, occupied) &
+            (GetPieces(kBishop) | GetPieces(kQueen));
+
+    attackers |= GenerateAttacks<kKnight>(to, occupied) & GetPieces(kKnight);
+
+    attackers |= GenerateAttacks<kKing>(to, occupied) & GetPieces(kKing);
+
+    return attackers;
 }
 
 namespace {

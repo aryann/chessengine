@@ -32,11 +32,16 @@ public:
 
     [[nodiscard]] Bitboard GetPieces(Side side) const;
 
+    [[nodiscard]] Bitboard GetPieces(Piece type) const;
+
     [[nodiscard]] Bitboard GetPieces(Side side, Piece type) const;
 
     [[nodiscard]] Side SideToMove() const {
         return side_to_move_;
     }
+
+    // Returns all pieces that attack the given square, irrespective of side.
+    [[nodiscard]] Bitboard GetAttackers(Square to) const;
 
     [[nodiscard]] const CastlingRights &GetCastlingRights() const {
         return castling_rights_;

@@ -296,7 +296,6 @@ TEST(Knights, Captures) {
     }
 }
 
-
 TEST(Bishops, QuietMoves) {
     Position position = MakePosition(
             "8: . . . . . . . ."

@@ -417,5 +417,148 @@ TEST(GetPieces, StartingPosition) {
                 ));
 }
 
+TEST(GetAttackers, Rook) {
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . r . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . r r . . r . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(position.GetAttackers(D1), EqualsBitboard(
+                        "8: . . . X . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . X . . X . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . r . . . ."
+                "7: . R . r . . . ."
+                "6: . . . R . . . ."
+                "5: . . . . . . . ."
+                "4: R R R . . r R r"
+                "3: . . . r . . . ."
+                "2: . . . R . . r ."
+                "1: . . . r . . . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(position.GetAttackers(D4), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . X . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . X . . X . ."
+                        "3: . . . X . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
+}
+
+TEST(GetAttackers, Bishop) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . b . . . B . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . B . . . b . ."
+            "1: B . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(position.GetAttackers(D4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . X . . . X . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . X . . . X . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GetAttackers, Queen) {
+    Position position = MakePosition(
+            "8: . . . Q . . . Q"
+            "7: . . . . . . B ."
+            "6: . q . . . q . ."
+            "5: . . . r . . . ."
+            "4: Q . n . . . . q"
+            "3: . . . . . . . ."
+            "2: . . R . q . . ."
+            "1: Q . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(position.GetAttackers(D4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . X . . . X . ."
+                    "5: . . . X . . . ."
+                    "4: . . . . . . . X"
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: X . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GetAttackers, Knight) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . n . N . ."
+            "5: . . N . . . n ."
+            "4: . . . . . . . ."
+            "3: . . N . . . N ."
+            "2: . . . N . n . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(position.GetAttackers(E4), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . X . X . ."
+                    "5: . . X . . . X ."
+                    "4: . . . . . . . ."
+                    "3: . . X . . . X ."
+                    "2: . . . X . X . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
 } // namespace
 } // namespace chessengine
