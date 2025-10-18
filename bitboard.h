@@ -149,6 +149,10 @@ public:
         return square;
     }
 
+    [[nodiscard]] constexpr bool HasMoreThanOneBit() const {
+        return (data_ & (data_ - 1)) != 0;
+    }
+
     template<Direction D>
     [[nodiscard]] constexpr Bitboard Shift() const;
 

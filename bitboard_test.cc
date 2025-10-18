@@ -478,5 +478,12 @@ TEST(Bitboard, PopLeastSignificantBit) {
     EXPECT_THAT(board.Data(), Eq(0b00000000));
 }
 
+TEST(Bitboard, HasMoreThanOneBit) {
+    EXPECT_THAT(Bitboard(0b0).HasMoreThanOneBit(), IsFalse());
+    EXPECT_THAT(Bitboard(0b1).HasMoreThanOneBit(), IsFalse());
+    EXPECT_THAT(Bitboard(0b100).HasMoreThanOneBit(), IsFalse());
+    EXPECT_THAT(Bitboard(0b10011110).HasMoreThanOneBit(), IsTrue());
+}
+
 } // namespace
 } // namespace chessengine
