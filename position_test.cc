@@ -866,6 +866,33 @@ TEST(GetCheckers, DoubleCheck) {
                         "   a b c d e f g h"
                     ));
     }
+    //
+    {
+        Position position = MakePosition(
+                "8: r . b q k . . r"
+                "7: p p p . . p p p"
+                "6: . . . . . N . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: P P P P . P P P"
+                "1: R . B Q R . K ."
+                "   a b c d e f g h"
+                //
+                "   b kq - 0 10");
+
+        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . X . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . X . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
 }
 
 } // namespace
