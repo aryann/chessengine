@@ -8,7 +8,7 @@
 
 namespace chessengine {
 
-[[nodiscard]] Piece Position::GetPiece(Square square) const {
+Piece Position::GetPiece(Square square) const {
     if (pieces_[kPawn] & square) {
         return kPawn;
     }
@@ -31,7 +31,7 @@ namespace chessengine {
     return kEmptyPiece;
 }
 
-[[nodiscard]] Side Position::GetSide(Square square) const {
+Side Position::GetSide(Square square) const {
     if (sides_[kWhite] & square) {
         return kWhite;
     }
@@ -41,23 +41,23 @@ namespace chessengine {
     return kEmptySide;
 }
 
-[[nodiscard]] Bitboard Position::GetPieces() const {
+Bitboard Position::GetPieces() const {
     return sides_[kWhite] | sides_[kBlack];
 }
 
-[[nodiscard]] Bitboard Position::GetPieces(Side side) const {
+Bitboard Position::GetPieces(Side side) const {
     return sides_[side];
 }
 
-[[nodiscard]] Bitboard Position::GetPieces(Piece type) const {
+Bitboard Position::GetPieces(Piece type) const {
     return pieces_[type];
 }
 
-[[nodiscard]] Bitboard Position::GetPieces(Side side, Piece type) const {
+Bitboard Position::GetPieces(Side side, Piece type) const {
     return sides_[side] & pieces_[type];
 }
 
-[[nodiscard]] Bitboard Position::GetAttackers(Square to) const {
+Bitboard Position::GetAttackers(Square to) const {
     Bitboard occupied = GetPieces();
     Bitboard attackers;
 
