@@ -105,7 +105,9 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
                 ));
 }
 
-TEST(Pawns, QuietPromotions) { {
+TEST(Pawns, QuietPromotions) {
+    //
+    {
         Position position = MakePosition(
                 "8: . . . . . . . ."
                 "7: . . . . P . . ."
@@ -152,7 +154,9 @@ TEST(Pawns, QuietPromotions) { {
     }
 }
 
-TEST(Pawns, Captures) { {
+TEST(Pawns, Captures) {
+    //
+    {
         Position position = MakePosition(
                 "8: . . . . . . . ."
                 "7: . . . . . . . ."
@@ -195,8 +199,9 @@ TEST(Pawns, Captures) { {
     }
 }
 
-
-TEST(Knights, QuietMoves) { {
+TEST(Knights, QuietMoves) {
+    //
+    {
         Position position = MakePosition(
                 "8: . . . . . . . ."
                 "7: . . . . . . . ."
@@ -247,7 +252,9 @@ TEST(Knights, QuietMoves) { {
     }
 }
 
-TEST(Knights, Captures) { {
+TEST(Knights, Captures) {
+    //
+    {
         Position position = MakePosition(
                 "8: . . . . . . . ."
                 "7: . . . . . . . ."
@@ -287,6 +294,54 @@ TEST(Knights, Captures) { {
                         Move(E3, F5, MoveOptions().SetCaptured(kBishop, 12))
                     ));
     }
+}
+
+
+TEST(Bishops, QuietMoves) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . p . . . p . ."
+            "5: . . . . . . . ."
+            "4: . . . B . . . ."
+            "3: . . . . . . . ."
+            "2: . p . . . r . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
+                    Move(D4, C5),
+                    Move(D4, C3),
+                    Move(D4, E5),
+                    Move(D4, E3)
+                ));
+}
+
+TEST(Bishops, Captures) {
+
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . p . . . p . ."
+            "5: . . . . . . . ."
+            "4: . . . B . . . ."
+            "3: . . . . . . . ."
+            "2: . p . . . r . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 12 20"
+            );
+
+    EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
+                    Move(D4, B6, MoveOptions().SetCaptured(kPawn, 12)),
+                    Move(D4, B2, MoveOptions().SetCaptured(kPawn, 12)),
+                    Move(D4, F6, MoveOptions().SetCaptured(kPawn, 12)),
+                    Move(D4, F2, MoveOptions().SetCaptured(kRook, 12))
+                ));
 }
 
 } // namespace
