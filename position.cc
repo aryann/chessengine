@@ -74,14 +74,16 @@ Bitboard Position::GetAttackers(Square to) const {
     return attackers;
 }
 
-Bitboard Position::GetCheckers() const {
-    Side side = SideToMove();
-    Bitboard king = GetPieces(side, kKing);
+Square Position::GetKing() const {
+    Bitboard king = GetPieces(SideToMove(), kKing);
     DCHECK(king && !king.HasMoreThanOneBit())
         << "Board must have exactly one king of each color.";
 
-    Square king_square = king.LeastSignificantBit();
-    return GetAttackers(king_square) & GetPieces(~side);
+    return king.LeastSignificantBit();
+   }
+
+Bitboard Position::GetCheckers() const {
+    return GetAttackers(GetKing()) & GetPieces(~SideToMove());
 }
 
 namespace {

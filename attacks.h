@@ -108,7 +108,6 @@ consteval std::array<Magic, kNumSquares> MakeMagic() {
     std::array<Magic, kNumSquares> result;
     for (int square = A8; square < kNumSquares; ++square) {
         Bitboard mask = (MakeRays<Directions>(static_cast<Square>(square)) | ...);
-        //mask &= ~kEdges;
         result[square].mask = mask;
     }
     return result;
