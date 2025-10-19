@@ -77,6 +77,12 @@ private:
 
 std::ostream &operator<<(std::ostream &os, const Move &move);
 
+struct UndoInfo {
+    Move move;
+    Piece captured_piece;
+    std::uint8_t previous_half_moves;
+};
+
 } // namespace chessengine
 
 #endif // CHESS_ENGINE_MOVE_H_

@@ -234,7 +234,7 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
     return position;
 }
 
-void Position::Do(const Move &move) {
+UndoInfo Position::Do(const Move &move) {
     // TODO(aryann): Reset the half move clock if there was a pawn move.
     ++half_moves_;
     if (side_to_move_ == kBlack) {
@@ -268,9 +268,13 @@ void Position::Do(const Move &move) {
     sides_[side].Set(move.to());
 
     side_to_move_ = ~side_to_move_;
+
+    return {.move = move};;
 }
 
-void Position::Undo(const Move &move) {
+void Position::Undo(const UndoInfo &undo_info) {
+    const Move &move = undo_info.move;
+
     Piece piece = GetPiece(move.to());
     DCHECK(piece != kEmptyPiece);
 

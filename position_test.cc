@@ -178,7 +178,6 @@ TEST(FEN, Sparse) {
 TEST(Position, DoAndUndo) {
     Position position = Position::Starting();
 
-    Move move_one(B1, C3);
     std::string_view position_one =
             "8: r n b q k b n r"
             "7: p p p p p p p p"
@@ -192,7 +191,6 @@ TEST(Position, DoAndUndo) {
             //
             "   b KQkq - 1 1";
 
-    Move move_two(D7, D5);
     std::string_view position_two =
             "8: r n b q k b n r"
             "7: p p p . p p p p"
@@ -206,7 +204,6 @@ TEST(Position, DoAndUndo) {
             //
             "   w KQkq - 2 2";
 
-    Move move_three(C3, D5, MoveOptions().SetCaptured(kPawn, 2));
     std::string_view position_three =
             "8: r n b q k b n r"
             "7: p p p . p p p p"
@@ -220,19 +217,13 @@ TEST(Position, DoAndUndo) {
             //
             "   b KQkq - 0 2";
 
-    position.Do(move_one);
+    UndoInfo move_one = position.Do(Move(B1, C3));
     EXPECT_THAT(position, EqualsPosition(position_one));
 
-    position.Do(move_two);
+    UndoInfo move_two = position.Do(Move(D7, D5));
     EXPECT_THAT(position, EqualsPosition(position_two));
 
-    position.Do(move_three);
-    EXPECT_THAT(position, EqualsPosition(position_three));
-
-    position.Undo(move_three);
-    EXPECT_THAT(position, EqualsPosition(position_two));
-
-    position.Do(move_three);
+    UndoInfo move_three = position.Do(Move(C3, D5, MoveOptions().SetCaptured(kPawn, 2)));
     EXPECT_THAT(position, EqualsPosition(position_three));
 
     position.Undo(move_three);

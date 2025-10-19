@@ -47,29 +47,29 @@ protected:
         if (position.GetCheckers()) {
             std::vector<Move> evasive_moves = GenerateMoves<kEvasion>(position);
             for (const Move &move: evasive_moves) {
-                position.Do(move);
+                UndoInfo undo_info = position.Do(move);
 
                 if (!position.GetCheckers()) {
                     RunPerft(depth - 1, position, nodes);
                 }
 
-                position.Undo(move);
+                position.Undo(undo_info);
             }
             return;
         }
 
         std::vector<Move> quiet_moves = GenerateMoves<kQuiet>(position);
         for (const Move &move: quiet_moves) {
-            position.Do(move);
+            UndoInfo undo_info = position.Do(move);
             RunPerft(depth - 1, position, nodes);
-            position.Undo(move);
+            position.Undo(undo_info);
         }
 
         std::vector<Move> capture_moves = GenerateMoves<kCapture>(position);
         for (const Move &move: capture_moves) {
-            position.Do(move);
+            UndoInfo undo_info = position.Do(move);
             RunPerft(depth - 1, position, nodes);
-            position.Undo(move);
+            position.Undo(undo_info);
         }
     }
 };
