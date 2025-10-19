@@ -12,7 +12,7 @@ TEST(GetLine, Vertical) {
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
-                    "5: X . . . . . . ."
+                    "5: . . . . . . . ."
                     "4: X . . . . . . ."
                     "3: X . . . . . . ."
                     "2: X . . . . . . ."
@@ -25,7 +25,7 @@ TEST(GetLine, Vertical) {
                     "6: . . . . . . . X"
                     "5: . . . . . . . X"
                     "4: . . . . . . . X"
-                    "3: . . . . . . . X"
+                    "3: . . . . . . . ."
                     "2: . . . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
@@ -39,7 +39,7 @@ TEST(GetLine, Vertical) {
                     "4: . . . X . . . ."
                     "3: . . . X . . . ."
                     "2: . . . X . . . ."
-                    "1: . . . X . . . ."
+                    "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
 }
@@ -53,13 +53,13 @@ TEST(GetLine, Horizontal) {
                     "4: . . . . . . . ."
                     "3: . . . . . . . ."
                     "2: . . . . . . . ."
-                    "1: X X X X X . . ."
+                    "1: X X X X . . . ."
                     "   a b c d e f g h"
                 ));
 
     EXPECT_THAT(GetLine(H7, C7), EqualsBitboard(
                     "8: . . . . . . . ."
-                    "7: . . X X X X X X"
+                    "7: . . . X X X X X"
                     "6: . . . . . . . ."
                     "5: . . . . . . . ."
                     "4: . . . . . . . ."
@@ -74,7 +74,7 @@ TEST(GetLine, Horizontal) {
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
                     "5: . . . . . . . ."
-                    "4: X X X X X X X X"
+                    "4: X X X X X X X ."
                     "3: . . . . . . . ."
                     "2: . . . . . . . ."
                     "1: . . . . . . . ."
@@ -84,7 +84,7 @@ TEST(GetLine, Horizontal) {
 
 TEST(GetLine, Diagonal) {
     EXPECT_THAT(GetLine(A1, H8), EqualsBitboard(
-                    "8: . . . . . . . X"
+                    "8: . . . . . . . ."
                     "7: . . . . . . X ."
                     "6: . . . . . X . ."
                     "5: . . . . X . . ."
@@ -96,7 +96,7 @@ TEST(GetLine, Diagonal) {
                 ));
 
     EXPECT_THAT(GetLine(H1, A8), EqualsBitboard(
-                    "8: X . . . . . . ."
+                    "8: . . . . . . . ."
                     "7: . X . . . . . ."
                     "6: . . X . . . . ."
                     "5: . . . X . . . ."
@@ -111,7 +111,7 @@ TEST(GetLine, Diagonal) {
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
-                    "5: . . . . . X . ."
+                    "5: . . . . . . . ."
                     "4: . . . . X . . ."
                     "3: . . . X . . . ."
                     "2: . . X . . . . ."
@@ -125,7 +125,7 @@ TEST(GetLine, Diagonal) {
                     "6: . X . . . . . ."
                     "5: . . X . . . . ."
                     "4: . . . X . . . ."
-                    "3: . . . . X . . ."
+                    "3: . . . . . . . ."
                     "2: . . . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
@@ -133,35 +133,26 @@ TEST(GetLine, Diagonal) {
 }
 
 TEST(GetLine, EdgeCases) {
-    EXPECT_THAT(GetLine(A1, A1), EqualsBitboard(
-                    "8: . . . . . . . ."
-                    "7: . . . . . . . ."
-                    "6: . . . . . . . ."
-                    "5: . . . . . . . ."
-                    "4: . . . . . . . ."
-                    "3: . . . . . . . ."
-                    "2: . . . . . . . ."
-                    "1: X . . . . . . ."
-                    "   a b c d e f g h"
-                ));
+    EXPECT_THAT(GetLine(A1, A1), EqualsBitboard(kEmptyBoard));
 
     EXPECT_THAT(GetLine(D4, D5), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
-                    "5: . . . X . . . ."
+                    "5: . . . . . . . ."
                     "4: . . . X . . . ."
                     "3: . . . . . . . ."
                     "2: . . . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
+
     EXPECT_THAT(GetLine(G4, H4), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
                     "5: . . . . . . . ."
-                    "4: . . . . . . X X"
+                    "4: . . . . . . X ."
                     "3: . . . . . . . ."
                     "2: . . . . . . . ."
                     "1: . . . . . . . ."
@@ -174,7 +165,7 @@ TEST(GetLine, EdgeCases) {
                     "6: . . . . . . . ."
                     "5: . . . . . . . ."
                     "4: . . . . . . . ."
-                    "3: . . . . . . X ."
+                    "3: . . . . . . . ."
                     "2: . . . . . X . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"

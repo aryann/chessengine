@@ -107,8 +107,9 @@ Bitboard GetTargets(const Position &position) {
     }
 
     if constexpr (MoveType == kEvasion) {
-        Bitboard checkers = position.GetCheckers();
-        return GetLine(position.GetKing(), checkers.LeastSignificantBit()) & ~Bitboard(position.GetKing());
+        Square from = position.GetCheckers().LeastSignificantBit();
+        Square to = position.GetKing();
+        return GetLine(from, to);
     }
 
     return {};
