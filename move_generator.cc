@@ -102,6 +102,10 @@ Bitboard GetTargets(const Position &position) {
         return position.GetPieces(~Side);
     }
 
+    if constexpr (MoveType == kEvasion) {
+
+    }
+
     return {};
 }
 
@@ -112,11 +116,18 @@ std::vector<Move> GenerateMoves(const Position &position) {
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
     std::vector<Move> moves;
-    GeneratePawnMoves<Side, MoveType>(position, moves);
-    GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
-    GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);
-    GenerateMoves<Side, MoveType, kRook>(position, targets, moves);
-    GenerateMoves<Side, MoveType, kQueen>(position, targets, moves);
+
+    if constexpr (MoveType != kEvasion || !position.GetCheckers().HasMoreThanOneBit()) {
+        Bitboard targets = GetTargets<Side, MoveType>(position);
+
+        GeneratePawnMoves<Side, MoveType>(position, moves);
+        GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
+        GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);
+        GenerateMoves<Side, MoveType, kRook>(position, targets, moves);
+        GenerateMoves<Side, MoveType, kQueen>(position, targets, moves);
+    }
+
+
     GenerateMoves<Side, MoveType, kKing>(position, targets, moves);
     return moves;
 }

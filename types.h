@@ -79,6 +79,7 @@ constexpr std::size_t kNumPieces = 6;
 enum class MoveType: std::uint8_t {
     kQuiet,
     kCapture,
+    kEvasion,
 };
 
 using enum MoveType;
