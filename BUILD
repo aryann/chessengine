@@ -27,6 +27,7 @@ cc_library(
     hdrs = ["bitboard.h"],
     deps = [
         ":types",
+        "@abseil-cpp//absl/log:check",
     ],
 )
 
@@ -139,6 +140,7 @@ cc_library(
     hdrs = ["move_generator.h"],
     deps = [
         ":attacks",
+        ":line",
         ":move",
         ":position",
         ":types",

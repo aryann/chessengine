@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <string>
 
+#include "absl/log/check.h"
 #include "types.h"
 
 namespace chessengine {
@@ -136,6 +137,7 @@ public:
     //
     // Precondition: The Bitboard must not be empty.
     [[nodiscard]] constexpr Square LeastSignificantBit() const {
+        DCHECK(data_ != 0ULL);;
         return static_cast<Square>(std::countr_zero(data_));
     }
 

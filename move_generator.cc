@@ -2,7 +2,9 @@
 
 #include <vector>
 
+#include "absl/log/check.h"
 #include "attacks.h"
+#include "line.h"
 #include "types.h"
 
 namespace chessengine {
@@ -103,7 +105,10 @@ Bitboard GetTargets(const Position &position) {
     }
 
     if constexpr (MoveType == kEvasion) {
+        Bitboard checkers = position.GetCheckers();
+        DCHECK(!checkers.HasMoreThanOneBit());
 
+        return GetLine(position.GetKing(), checkers.LeastSignificantBit());
     }
 
     return {};
@@ -111,15 +116,10 @@ Bitboard GetTargets(const Position &position) {
 
 template<Side Side, MoveType MoveType>
 std::vector<Move> GenerateMoves(const Position &position) {
-    static_assert(MoveType == kQuiet || MoveType == kCapture);
-
+    std::vector<Move> moves;
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
-    std::vector<Move> moves;
-
-    if constexpr (MoveType != kEvasion || !position.GetCheckers().HasMoreThanOneBit()) {
-        Bitboard targets = GetTargets<Side, MoveType>(position);
-
+    if (MoveType != kEvasion || !position.GetCheckers().HasMoreThanOneBit()) {
         GeneratePawnMoves<Side, MoveType>(position, moves);
         GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
         GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);
@@ -127,6 +127,11 @@ std::vector<Move> GenerateMoves(const Position &position) {
         GenerateMoves<Side, MoveType, kQueen>(position, targets, moves);
     }
 
+    if constexpr (MoveType == kEvasion) {
+        // If the move type is an evasion, then the king should be allowed to move
+        // to any square that is not occupied by its own side.
+        targets = ~position.GetPieces(Side);
+    }
 
     GenerateMoves<Side, MoveType, kKing>(position, targets, moves);
     return moves;
@@ -136,8 +141,6 @@ std::vector<Move> GenerateMoves(const Position &position) {
 
 template<MoveType MoveType>
 std::vector<Move> GenerateMoves(const Position &position) {
-    static_assert(MoveType == kQuiet || MoveType == kCapture);
-
     if (position.SideToMove() == kWhite) {
         return GenerateMoves<kWhite, MoveType>(position);
     } else {
@@ -153,5 +156,8 @@ std::vector<Move> GenerateMoves<kQuiet>(const Position &position);
 
 template
 std::vector<Move> GenerateMoves<kCapture>(const Position &position);
+
+template
+std::vector<Move> GenerateMoves<kEvasion>(const Position &position);
 
 } // namespace chessengine
