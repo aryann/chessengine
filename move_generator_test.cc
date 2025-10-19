@@ -320,7 +320,6 @@ TEST(Bishops, QuietMoves) {
 }
 
 TEST(Bishops, Captures) {
-
     Position position = MakePosition(
             "8: . . . . . . . ."
             "7: . . . . . . . ."
@@ -341,6 +340,36 @@ TEST(Bishops, Captures) {
                     Move(D4, F6, MoveOptions().SetCaptured(kPawn, 12)),
                     Move(D4, F2, MoveOptions().SetCaptured(kRook, 12))
                 ));
+}
+
+TEST(King, Evasions) {
+    // N.B.: Evasions can still leave the king in check.
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . r . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . K . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kEvasion>(position), UnorderedElementsAre(
+                        Move(D4, C5),
+                        Move(D4, C4),
+                        Move(D4, C3),
+                        Move(D4, D5),
+                        Move(D4, D3),
+                        Move(D4, E5),
+                        Move(D4, E4),
+                        Move(D4, E3)
+                    ));
+    }
 }
 
 } // namespace

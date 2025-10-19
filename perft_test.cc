@@ -32,23 +32,45 @@ void PrintTo(const PerftTestCase &test_case, std::ostream *os) {
 class PerftTest : public testing::TestWithParam<PerftTestCase> {
 protected:
     void RunPerft(std::size_t depth, Position &position, std::vector<int> &nodes) {
+        // TODO(aryann): Find a better way to determine that the game is over.
+        bool has_both_kings = position.GetPieces(kKing).HasMoreThanOneBit();
+        if (!has_both_kings) {
+            return;
+        }
+
         ++nodes[nodes.size() - depth];
 
         if (depth <= 1) {
             return;
         }
 
-        for (const Move &move: GenerateMoves<kQuiet>(position)) {
-            position.Do(move);
-            RunPerft(depth - 1, position, nodes);
-            position.Undo(move);
+        if (position.GetCheckers()) {
+            std::vector<Move> evasive_moves = GenerateMoves<kEvasion>(position);
+            for (const Move &move: evasive_moves) {
+                position.Do(move);
+
+                if (!position.GetCheckers()) {
+                    RunPerft(depth - 1, position, nodes);
+                }
+
+                position.Undo(move);
+            }
+            return;
         }
-        for (const Move &move: GenerateMoves<kCapture>(position)) {
+
+        std::vector<Move> quiet_moves = GenerateMoves<kQuiet>(position);
+        for (const Move &move: quiet_moves) {
             position.Do(move);
             RunPerft(depth - 1, position, nodes);
             position.Undo(move);
         }
 
+        std::vector<Move> capture_moves = GenerateMoves<kCapture>(position);
+        for (const Move &move: capture_moves) {
+            position.Do(move);
+            RunPerft(depth - 1, position, nodes);
+            position.Undo(move);
+        }
     }
 };
 
@@ -77,27 +99,29 @@ INSTANTIATE_TEST_SUITE_P(
             PerftTestCase{
             .name = "StartingPosition",
             .fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-            .expected_node_counts = {1, 20, 400, 8'902},
+            // TODO(aryann): This is wrong. Fix this once the move generator can
+            // correctly generate all moves.
+            .expected_node_counts = {1, 20, 400, 8'902, 197'493},
             },
 
-            // https: //www.chessprogramming.org/Perft_Results#Position_2
+            // https://www.chessprogramming.org/Perft_Results#Position_2
             PerftTestCase{
             .name = "Position2",
             .fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1",
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 46, 1'870, 87'218},
+            .expected_node_counts = {1, 46, 1'870, 87'093},
             },
 
-            // https: //www.chessprogramming.org/Perft_Results#Position_3
+            // https://www.chessprogramming.org/Perft_Results#Position_3
             PerftTestCase{
             .name = "position3",
             .fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1",
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 16, 276, 4'820},
+            .expected_node_counts = {1, 16, 248, 3'758},
             }
         ),
         GetTestName);

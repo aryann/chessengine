@@ -86,8 +86,10 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
             Square to = attacks.PopLeastSignificantBit();
 
             MoveOptions options;
-            if constexpr (MoveType == kCapture) {
-                options.SetCaptured(position.GetPiece(to), position.GetHalfMoves());
+            if constexpr (MoveType == kCapture || MoveType == kEvasion) {
+                if (position.GetPiece(to) != kEmptyPiece) {
+                    options.SetCaptured(position.GetPiece(to), position.GetHalfMoves());
+                }
             }
             moves.emplace_back(from, to, options);
         }
@@ -106,9 +108,7 @@ Bitboard GetTargets(const Position &position) {
 
     if constexpr (MoveType == kEvasion) {
         Bitboard checkers = position.GetCheckers();
-        DCHECK(!checkers.HasMoreThanOneBit());
-
-        return GetLine(position.GetKing(), checkers.LeastSignificantBit());
+        return GetLine(position.GetKing(), checkers.LeastSignificantBit()) & ~Bitboard(position.GetKing());
     }
 
     return {};

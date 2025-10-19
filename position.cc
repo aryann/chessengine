@@ -1,5 +1,7 @@
 #include "position.h"
 
+#include "absl/strings/str_cat.h"
+
 #include "attacks.h"
 #include "absl/log/check.h"
 #include "absl/strings/str_split.h"
@@ -77,10 +79,11 @@ Bitboard Position::GetAttackers(Square to) const {
 Square Position::GetKing() const {
     Bitboard king = GetPieces(SideToMove(), kKing);
     DCHECK(king && !king.HasMoreThanOneBit())
-        << "Board must have exactly one king of each color.";
+        << "Board must have exactly one king of each color.\n\n"
+        << std::format("{}", *this);
 
     return king.LeastSignificantBit();
-   }
+}
 
 Bitboard Position::GetCheckers() const {
     return GetAttackers(GetKing()) & GetPieces(~SideToMove());
@@ -241,7 +244,10 @@ void Position::Do(const Move &move) {
     if (move.GetCapturedPiece() != kEmptyPiece) {
         half_moves_ = 0;
         pieces_[move.GetCapturedPiece()].Clear(move.to());
-        sides_[GetSide(move.to())].Clear(move.to());
+
+        Side side = GetSide(move.to());
+        DCHECK(side != kEmptySide);
+        sides_[side].Clear(move.to());
     }
 
     // TODO(aryann): Consider replacing this with:
@@ -250,10 +256,14 @@ void Position::Do(const Move &move) {
     //   pieces_[piece] ^= from_to;
     //
     Piece piece = GetPiece(move.from());
+    DCHECK(piece != kEmptyPiece);
+
     pieces_[piece].Clear(move.from());
     pieces_[piece].Set(move.to());
 
     Side side = GetSide(move.from());
+    DCHECK(side != kEmptySide);
+
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
@@ -262,10 +272,14 @@ void Position::Do(const Move &move) {
 
 void Position::Undo(const Move &move) {
     Piece piece = GetPiece(move.to());
+    DCHECK(piece != kEmptyPiece);
+
     pieces_[piece].Clear(move.to());
     pieces_[piece].Set(move.from());
 
     Side side = GetSide(move.to());
+    DCHECK(side != kEmptySide);
+
     sides_[side].Clear(move.to());
     sides_[side].Set(move.from());
 
