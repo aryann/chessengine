@@ -230,7 +230,6 @@ constexpr Bitboard Bitboard::Shift() const {
     return kEmptyBoard;
 }
 
-
 } // namespace chessengine
 
 // A std::formatter specialization for printing a Bitboard.

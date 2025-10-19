@@ -50,6 +50,27 @@ cc_library(
 )
 
 cc_library(
+    name = "line",
+    srcs = [],
+    hdrs = ["line.h"],
+    deps = [
+        ":bitboard",
+        ":types",
+        "@abseil-cpp//absl/log:check",
+    ],
+)
+
+cc_test(
+    name = "line_test",
+    srcs = ["line_test.cc"],
+    deps = [
+        ":line",
+        ":testing",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
     name = "position",
     srcs = ["position.cc"],
     hdrs = ["position.h"],
