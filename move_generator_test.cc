@@ -123,10 +123,10 @@ TEST(Pawns, QuietPromotions) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(E7, E8, MoveOptions().SetPromoted(kQueen)),
-                        Move(E7, E8, MoveOptions().SetPromoted(kRook)),
-                        Move(E7, E8, MoveOptions().SetPromoted(kKnight)),
-                        Move(E7, E8, MoveOptions().SetPromoted(kBishop))
+                        Move(E7, E8, kQueen),
+                        Move(E7, E8, kRook),
+                        Move(E7, E8, kKnight),
+                        Move(E7, E8, kBishop)
                     ));
     }
     //
@@ -146,10 +146,10 @@ TEST(Pawns, QuietPromotions) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(A2, A1, MoveOptions().SetPromoted(kQueen)),
-                        Move(A2, A1, MoveOptions().SetPromoted(kRook)),
-                        Move(A2, A1, MoveOptions().SetPromoted(kKnight)),
-                        Move(A2, A1, MoveOptions().SetPromoted(kBishop))
+                        Move(A2, A1, kQueen),
+                        Move(A2, A1, kRook),
+                        Move(A2, A1, kKnight),
+                        Move(A2, A1, kBishop)
                     ));
     }
 }
@@ -172,8 +172,8 @@ TEST(Pawns, Captures) {
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        Move(E3, D4, MoveOptions().SetCaptured(kPawn, 0)),
-                        Move(E3, F4, MoveOptions().SetCaptured(kRook, 0))
+                        Move(E3, D4),
+                        Move(E3, F4)
                     ));
     }
     //
@@ -193,8 +193,8 @@ TEST(Pawns, Captures) {
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        Move(D5, C4, MoveOptions().SetCaptured(kPawn, 0)),
-                        Move(D5, E4, MoveOptions().SetCaptured(kRook, 0))
+                        Move(D5, C4),
+                        Move(D5, E4)
                     ));
     }
 }
@@ -288,10 +288,10 @@ TEST(Knights, Captures) {
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        Move(E3, D1, MoveOptions().SetCaptured(kRook, 12)),
-                        Move(E3, D5, MoveOptions().SetCaptured(kBishop, 12)),
-                        Move(E3, F1, MoveOptions().SetCaptured(kRook, 12)),
-                        Move(E3, F5, MoveOptions().SetCaptured(kBishop, 12))
+                        Move(E3, D1),
+                        Move(E3, D5),
+                        Move(E3, F1),
+                        Move(E3, F5)
                     ));
     }
 }
@@ -335,10 +335,10 @@ TEST(Bishops, Captures) {
             );
 
     EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                    Move(D4, B6, MoveOptions().SetCaptured(kPawn, 12)),
-                    Move(D4, B2, MoveOptions().SetCaptured(kPawn, 12)),
-                    Move(D4, F6, MoveOptions().SetCaptured(kPawn, 12)),
-                    Move(D4, F2, MoveOptions().SetCaptured(kRook, 12))
+                    Move(D4, B6),
+                    Move(D4, B2),
+                    Move(D4, F6),
+                    Move(D4, F2)
                 ));
 }
 

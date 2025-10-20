@@ -110,6 +110,7 @@ cc_library(
     hdrs = ["move.h"],
     deps = [
         ":types",
+        "@abseil-cpp//absl/log:check",
     ],
 )
 

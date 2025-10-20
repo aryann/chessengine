@@ -23,10 +23,10 @@ void AddPawnPromotions(Bitboard promotions, int offset, std::vector<Move> &moves
         Square to = promotions.PopLeastSignificantBit();
         Square from = static_cast<Square>(to - offset);
 
-        moves.emplace_back(from, to, MoveOptions().SetPromoted(kQueen));
-        moves.emplace_back(from, to, MoveOptions().SetPromoted(kRook));
-        moves.emplace_back(from, to, MoveOptions().SetPromoted(kKnight));
-        moves.emplace_back(from, to, MoveOptions().SetPromoted(kBishop));
+        moves.emplace_back(from, to, kKnight);
+        moves.emplace_back(from, to, kBishop);
+        moves.emplace_back(from, to, kRook);
+        moves.emplace_back(from, to, kQueen);
     }
 }
 
@@ -35,7 +35,7 @@ void AddPawnCaptures(Bitboard captures, int offset, const Position &position, st
         Square to = captures.PopLeastSignificantBit();
         Square from = static_cast<Square>(to - offset);
 
-        moves.emplace_back(from, to, MoveOptions().SetCaptured(position.GetPiece(to), position.GetHalfMoves()));
+        moves.emplace_back(from, to);
     }
 }
 
@@ -84,14 +84,7 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
 
         while (attacks) {
             Square to = attacks.PopLeastSignificantBit();
-
-            MoveOptions options;
-            if constexpr (MoveType == kCapture || MoveType == kEvasion) {
-                if (position.GetPiece(to) != kEmptyPiece) {
-                    options.SetCaptured(position.GetPiece(to), position.GetHalfMoves());
-                }
-            }
-            moves.emplace_back(from, to, options);
+            moves.emplace_back(from, to);
         }
     }
 }

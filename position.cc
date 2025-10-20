@@ -236,18 +236,17 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
 
 UndoInfo Position::Do(const Move &move) {
     // TODO(aryann): Reset the half move clock if there was a pawn move.
-    ++half_moves_;
-    if (side_to_move_ == kBlack) {
-        ++full_moves_;
-    }
+    std::uint8_t previous_half_moves = half_moves_;
 
-    if (move.GetCapturedPiece() != kEmptyPiece) {
+    Piece victim = GetPiece(move.to());
+    if (victim == kEmptyPiece) {
+        ++half_moves_;
+    } else {
+        DCHECK(GetSide(move.to()) == ~side_to_move_);
+
+        pieces_[victim].Clear(move.to());
+        sides_[~side_to_move_].Clear(move.to());
         half_moves_ = 0;
-        pieces_[move.GetCapturedPiece()].Clear(move.to());
-
-        Side side = GetSide(move.to());
-        DCHECK(side != kEmptySide);
-        sides_[side].Clear(move.to());
     }
 
     // TODO(aryann): Consider replacing this with:
@@ -267,9 +266,18 @@ UndoInfo Position::Do(const Move &move) {
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
+    UndoInfo undo_info = {
+            .move = move,
+            .captured_piece = victim,
+            .previous_half_moves = previous_half_moves,
+    };
+
+    if (side_to_move_ == kBlack) {
+        ++full_moves_;
+    }
     side_to_move_ = ~side_to_move_;
 
-    return {.move = move};;
+    return undo_info;
 }
 
 void Position::Undo(const UndoInfo &undo_info) {
@@ -287,12 +295,12 @@ void Position::Undo(const UndoInfo &undo_info) {
     sides_[side].Clear(move.to());
     sides_[side].Set(move.from());
 
-    if (move.GetCapturedPiece() == kEmptyPiece) {
+    if (undo_info.captured_piece == kEmptyPiece) {
         --half_moves_;
     } else {
         // Restores a captured piece.
-        half_moves_ = move.GetPreviousHalfMoves();
-        pieces_[move.GetCapturedPiece()].Set(move.to());
+        half_moves_ = undo_info.previous_half_moves;
+        pieces_[undo_info.captured_piece].Set(move.to());
         sides_[~side].Set(move.to());
     }
 

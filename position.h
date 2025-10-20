@@ -87,7 +87,7 @@ private:
 
     std::optional<Square> en_passant_target_;
 
-    int half_moves_;
+    std::uint8_t half_moves_;
     int full_moves_;
 };
 

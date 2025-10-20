@@ -223,7 +223,7 @@ TEST(Position, DoAndUndo) {
     UndoInfo move_two = position.Do(Move(D7, D5));
     EXPECT_THAT(position, EqualsPosition(position_two));
 
-    UndoInfo move_three = position.Do(Move(C3, D5, MoveOptions().SetCaptured(kPawn, 2)));
+    UndoInfo move_three = position.Do(Move(C3, D5));
     EXPECT_THAT(position, EqualsPosition(position_three));
 
     position.Undo(move_three);
