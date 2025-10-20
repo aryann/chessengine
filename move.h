@@ -6,20 +6,6 @@
 
 namespace chessengine {
 
-// An adaptation of https://www.chessprogramming.org/Encoding_Moves.
-enum class MoveFlag : std::uint8_t {
-    // TODO(aryann): Determine whether we also need quiet and capture flags.
-
-    kDoublePawnPush = /*  */ 0b0001,
-    kKingCastle = /*      */ 0b0010,
-    kQueenCastle = /*     */ 0b0011,
-    kEnPassantCapture = /**/ 0b0101,
-
-    // The two lower bits of this flag are reserved for
-    // the four piece types (knight, bishop, rook, and queen).
-    kPromotion = /*       */ 0b1000,
-};
-
 class Move {
 public:
     explicit constexpr Move(Square from, Square to) :
@@ -37,7 +23,7 @@ public:
         DCHECK(kRook - kKnight == 2);
         DCHECK(kQueen - kKnight == 3);
 
-        int flags = static_cast<int>(MoveFlag::kPromotion) | (promoted_piece - kKnight);
+        int flags = static_cast<int>(kPromotionFlag) | (promoted_piece - kKnight);
         data_ += flags << 12;
     }
 
@@ -50,11 +36,11 @@ public:
     }
 
     [[nodiscard]] constexpr bool IsPromotion() const {
-        return GetFlag<MoveFlag::kPromotion>();
+        return GetFlags() & kPromotionFlag;
     }
 
     [[nodiscard]] constexpr Piece GetPromotedPiece() const {
-        DCHECK(GetFlag<MoveFlag::kPromotion>());
+        DCHECK(IsPromotion());
         return static_cast<Piece>((GetFlags() & 0b11) + kKnight);
     }
 
@@ -65,10 +51,13 @@ private:
         return data_ >> 12;
     }
 
-    template<MoveFlag Flag>
-    [[nodiscard]] constexpr bool GetFlag() const {
-        return GetFlags() & static_cast<std::uint8_t>(Flag);
-    }
+
+    // The two lower bits of this flag are reserved for the four piece types
+    // (knight, bishop, rook, and queen).
+    //
+    // This scheme is forward-compatible with the scheme documented at
+    // https://www.chessprogramming.org/Encoding_Moves.
+    constexpr static std::uint8_t kPromotionFlag = 0b1000;
 
     // Stores the move state:
     //
