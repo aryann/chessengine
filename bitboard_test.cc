@@ -478,11 +478,11 @@ TEST(Bitboard, PopLeastSignificantBit) {
     EXPECT_THAT(board.Data(), Eq(0b00000000));
 }
 
-TEST(Bitboard, HasMoreThanOneBit) {
-    EXPECT_THAT(Bitboard(0b0).HasMoreThanOneBit(), IsFalse());
-    EXPECT_THAT(Bitboard(0b1).HasMoreThanOneBit(), IsFalse());
-    EXPECT_THAT(Bitboard(0b100).HasMoreThanOneBit(), IsFalse());
-    EXPECT_THAT(Bitboard(0b10011110).HasMoreThanOneBit(), IsTrue());
+TEST(Bitboard, GetCount) {
+    EXPECT_THAT(Bitboard(0b0).GetCount(), Eq(0));
+    EXPECT_THAT(Bitboard(0b1).GetCount(), Eq(1));
+    EXPECT_THAT(Bitboard(0b100).GetCount(), Eq(1));
+    EXPECT_THAT(Bitboard(0b10011110).GetCount(), Eq(5));
 }
 
 } // namespace

@@ -78,7 +78,7 @@ Bitboard Position::GetAttackers(Square to) const {
 
 Square Position::GetKing() const {
     Bitboard king = GetPieces(SideToMove(), kKing);
-    DCHECK(king && !king.HasMoreThanOneBit())
+    DCHECK(king.GetCount() == 1)
         << "Board must have exactly one king of each color.\n\n"
         << std::format("{}", *this);
 

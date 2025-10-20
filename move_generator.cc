@@ -120,7 +120,7 @@ std::vector<Move> GenerateMoves(const Position &position) {
     std::vector<Move> moves;
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
-    if (MoveType != kEvasion || !position.GetCheckers().HasMoreThanOneBit()) {
+    if (MoveType != kEvasion || position.GetCheckers().GetCount() < 2) {
         GeneratePawnMoves<Side, MoveType>(position, moves);
         GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
         GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);

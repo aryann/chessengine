@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_BITBOARD_H_
 #define CHESS_ENGINE_BITBOARD_H_
 
+#include <bit>
 #include <format>
 #include <initializer_list>
 #include <string>
@@ -151,8 +152,9 @@ public:
         return square;
     }
 
-    [[nodiscard]] constexpr bool HasMoreThanOneBit() const {
-        return (data_ & (data_ - 1)) != 0;
+    // Returns the number of bits set.
+    [[nodiscard]] constexpr int GetCount() const {
+        return std::popcount(data_);
     }
 
     template<Direction D>

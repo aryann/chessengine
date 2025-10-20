@@ -33,7 +33,7 @@ class PerftTest : public testing::TestWithParam<PerftTestCase> {
 protected:
     void RunPerft(std::size_t depth, Position &position, std::vector<int> &nodes) {
         // TODO(aryann): Find a better way to determine that the game is over.
-        bool has_both_kings = position.GetPieces(kKing).HasMoreThanOneBit();
+        bool has_both_kings = position.GetPieces(kKing).GetCount() == 2;
         if (!has_both_kings) {
             return;
         }
