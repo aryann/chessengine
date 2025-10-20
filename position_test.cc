@@ -623,7 +623,7 @@ TEST(GetCheckers, NoCheck) {
                 //
                 "   w KQkq - 0 2");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -650,7 +650,7 @@ TEST(GetCheckers, NoCheck) {
                 //
                 "   b - - 0 15");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kBlack), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -680,7 +680,7 @@ TEST(GetCheckers, SingleCheck) {
                 //
                 "   w - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . X . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -707,7 +707,7 @@ TEST(GetCheckers, SingleCheck) {
                 //
                 "   b - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kBlack), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -734,7 +734,7 @@ TEST(GetCheckers, SingleCheck) {
                 //
                 "   w - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -761,7 +761,7 @@ TEST(GetCheckers, SingleCheck) {
                 //
                 "   b - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kBlack), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . X . ."
@@ -788,7 +788,7 @@ TEST(GetCheckers, SingleCheck) {
                 //
                 "   w - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -818,7 +818,7 @@ TEST(GetCheckers, DoubleCheck) {
                 //
                 "   w - - 0 10");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -845,7 +845,7 @@ TEST(GetCheckers, DoubleCheck) {
                 //
                 "   b - - 0 12");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kBlack), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . X . ."
@@ -872,7 +872,7 @@ TEST(GetCheckers, DoubleCheck) {
                 //
                 "   b kq - 0 10");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kBlack), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . X . ."
@@ -902,7 +902,7 @@ TEST(GetCheckers, Pawns) {
                 //
                 "   w - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -930,7 +930,7 @@ TEST(GetCheckers, Pawns) {
                 //
                 "   w - - 0 1");
 
-        EXPECT_THAT(position.GetCheckers(), EqualsBitboard(
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."

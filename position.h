@@ -44,10 +44,10 @@ public:
     [[nodiscard]] Bitboard GetAttackers(Square to) const;
 
     // Returns the king for the side to move.
-    [[nodiscard]] Square GetKing() const;
+    [[nodiscard]] Square GetKing(Side side) const;
 
     // Returns the king checkers for the side to move.
-    [[nodiscard]] Bitboard GetCheckers() const;
+    [[nodiscard]] Bitboard GetCheckers(Side side) const;
 
     [[nodiscard]] const CastlingRights &GetCastlingRights() const {
         return castling_rights_;

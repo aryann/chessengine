@@ -76,8 +76,8 @@ Bitboard Position::GetAttackers(Square to) const {
     return attackers;
 }
 
-Square Position::GetKing() const {
-    Bitboard king = GetPieces(SideToMove(), kKing);
+Square Position::GetKing(Side side) const {
+    Bitboard king = GetPieces(side, kKing);
     DCHECK(king.GetCount() == 1)
         << "Board must have exactly one king of each color.\n\n"
         << std::format("{}", *this);
@@ -85,8 +85,8 @@ Square Position::GetKing() const {
     return king.LeastSignificantBit();
 }
 
-Bitboard Position::GetCheckers() const {
-    return GetAttackers(GetKing()) & GetPieces(~SideToMove());
+Bitboard Position::GetCheckers(Side side) const {
+    return GetAttackers(GetKing(side)) & GetPieces(~side);
 }
 
 namespace {

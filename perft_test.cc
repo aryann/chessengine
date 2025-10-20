@@ -31,7 +31,8 @@ void PrintTo(const PerftTestCase &test_case, std::ostream *os) {
 
 class PerftTest : public testing::TestWithParam<PerftTestCase> {
 protected:
-    void RunPerft(std::size_t depth, Position &position, std::vector<int> &nodes) {
+    void RunPerft(std::size_t depth, Position &position, std::vector<int> &nodes,
+                  std::vector<Move> current_moves, std::vector<std::vector<Move> > &all_moves) {
         // TODO(aryann): Find a better way to determine that the game is over.
         bool has_both_kings = position.GetPieces(kKing).GetCount() == 2;
         if (!has_both_kings) {
@@ -41,16 +42,21 @@ protected:
         ++nodes[nodes.size() - depth];
 
         if (depth <= 1) {
+            all_moves.push_back(current_moves);
             return;
         }
 
-        if (position.GetCheckers()) {
+        Side side = position.SideToMove();
+
+        if (position.GetCheckers(side)) {
             std::vector<Move> evasive_moves = GenerateMoves<kEvasion>(position);
             for (const Move &move: evasive_moves) {
                 UndoInfo undo_info = position.Do(move);
 
-                if (!position.GetCheckers()) {
-                    RunPerft(depth - 1, position, nodes);
+                if (!position.GetCheckers(side)) {
+                    current_moves.push_back(move);
+                    RunPerft(depth - 1, position, nodes, current_moves, all_moves);
+                    current_moves.pop_back();
                 }
 
                 position.Undo(undo_info);
@@ -61,14 +67,26 @@ protected:
         std::vector<Move> quiet_moves = GenerateMoves<kQuiet>(position);
         for (const Move &move: quiet_moves) {
             UndoInfo undo_info = position.Do(move);
-            RunPerft(depth - 1, position, nodes);
+
+            if (!position.GetCheckers(side)) {
+                current_moves.push_back(move);
+                RunPerft(depth - 1, position, nodes, current_moves, all_moves);
+                current_moves.pop_back();
+            }
+
             position.Undo(undo_info);
         }
 
         std::vector<Move> capture_moves = GenerateMoves<kCapture>(position);
         for (const Move &move: capture_moves) {
             UndoInfo undo_info = position.Do(move);
-            RunPerft(depth - 1, position, nodes);
+
+            if (!position.GetCheckers(side)) {
+                current_moves.push_back(move);
+                RunPerft(depth - 1, position, nodes, current_moves, all_moves);
+                current_moves.pop_back();
+            }
+
             position.Undo(undo_info);
         }
     }
@@ -85,8 +103,17 @@ TEST_P(PerftTest, Run) {
     std::expected<Position, std::string> position = Position::FromFen(fen);
     ASSERT_THAT(position.error_or(""), IsEmpty());
 
+    std::vector<Move> curr_moves;
+    std::vector<std::vector<Move> > all_moves;
     std::vector<int> nodes(depth);
-    RunPerft(depth, position.value(), nodes);
+    RunPerft(depth, position.value(), nodes, curr_moves, all_moves);
+
+    // for (const auto &moves: all_moves) {
+    //     for (const auto &move: moves) {
+    //         std::cout << move << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
 
     EXPECT_THAT(nodes, ElementsAreArray(expected_node_count));
 }
@@ -101,7 +128,7 @@ INSTANTIATE_TEST_SUITE_P(
             .fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 20, 400, 8'902, 197'493},
+            .expected_node_counts = {1, 20, 400, 8'902, 197'265},
             },
 
             // https://www.chessprogramming.org/Perft_Results#Position_2
@@ -111,7 +138,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 46, 1'870, 87'093},
+            .expected_node_counts = {1, 46, 1'865},
             },
 
             // https://www.chessprogramming.org/Perft_Results#Position_3
@@ -121,7 +148,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 16, 248, 3'758},
+            .expected_node_counts = {1, 15, 217, 3'211},
             }
         ),
         GetTestName);

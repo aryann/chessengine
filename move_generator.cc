@@ -100,8 +100,8 @@ Bitboard GetTargets(const Position &position) {
     }
 
     if constexpr (MoveType == kEvasion) {
-        Square from = position.GetCheckers().LeastSignificantBit();
-        Square to = position.GetKing();
+        Square from = position.GetCheckers(Side).LeastSignificantBit();
+        Square to = position.GetKing(Side);
         return GetLine(from, to);
     }
 
@@ -132,7 +132,7 @@ std::vector<Move> GenerateMoves(const Position &position) {
     //      If the checker is a knight, then no moves are generated because
     //      there is no line between the knight and the king.
     //
-    if (MoveType == kQuiet || MoveType == kCapture || position.GetCheckers().GetCount() == 1) {
+    if (MoveType == kQuiet || MoveType == kCapture || position.GetCheckers(Side).GetCount() == 1) {
         GeneratePawnMoves<Side, MoveType>(position, moves);
         GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
         GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);
