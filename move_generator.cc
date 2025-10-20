@@ -120,7 +120,26 @@ std::vector<Move> GenerateMoves(const Position &position) {
     std::vector<Move> moves;
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
-    if (MoveType != kEvasion || position.GetCheckers().GetCount() < 2) {
+    // Generate moves for all non-king pieces. This logic is shared for two
+    // main scenarios:
+    //
+    //   1. Normal Moves (MoveType == kQuiet || MoveType == kCapture):
+    //      The `targets` bitboard is set to all empty squares (for quiet)
+    //      or all enemy pieces (for captures), and we generate all moves.
+    //
+    //   2. Evasion Moves (position.GetCheckers().GetCount() == 1):
+    //      This block only runs if there is *exactly one* checker. In a
+    //      double check, only the king can move, so this is skipped.
+    //
+    //      When MoveType is kEvasion, `GetTargets()` returns a bitboard of
+    //      *only* the squares between the checker and the king (excluding
+    //      the king square itself). This causes the piece generators to find
+    //      all legal *blocking* moves.
+    //
+    //      If the checker is a knight, then no moves are generated because
+    //      there is no line between the knight and the king.
+    //
+    if (MoveType == kQuiet || MoveType == kCapture || position.GetCheckers().GetCount() == 1) {
         GeneratePawnMoves<Side, MoveType>(position, moves);
         GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
         GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);

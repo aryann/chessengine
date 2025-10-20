@@ -152,7 +152,7 @@ public:
         return square;
     }
 
-    // Returns the number of bits set.
+    // Returns the number of set bits (aka, population count).
     [[nodiscard]] constexpr int GetCount() const {
         return std::popcount(data_);
     }
