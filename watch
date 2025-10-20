@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+fswatch -o ./*.cc ./*.h | \
+  xargs -n1 -I{} bazel test ... --test_output=streamed
