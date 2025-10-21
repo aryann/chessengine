@@ -25,6 +25,10 @@ Move MakeMove(
         std::string_view input,
         std::source_location location = std::source_location::current());
 
+std::vector<Move> MakeMoves(
+        std::initializer_list<std::string_view> input,
+        std::source_location location = std::source_location::current());
+
 void PrintTo(const Bitboard &bitboard, std::ostream *os);
 
 MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(expected).Data())) {

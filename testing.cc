@@ -68,6 +68,16 @@ Move MakeMove(std::string_view input, std::source_location location) {
     return move.value();
 }
 
+std::vector<Move> MakeMoves(
+        std::initializer_list<std::string_view> input,
+        std::source_location location) {
+    std::vector<Move> moves;
+    for (std::string_view curr: input) {
+        moves.push_back(MakeMove(curr, location));
+    }
+    return moves;
+}
+
 std::expected<Position, std::string> TryMakePosition(std::string_view input) {
     return Position::FromFen(TestPositionToFen(input));
 }

@@ -11,32 +11,35 @@ namespace {
 
 using ::testing::Eq;
 using ::testing::IsEmpty;
+using ::testing::UnorderedElementsAreArray;
 using ::testing::UnorderedElementsAre;
 
 TEST(GenerateMoves, QuietMoves_StartingPosition) {
     auto position = Position::Starting();
 
-    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    MakeMove("a2a3"),
-                    MakeMove("a2a4"),
-                    MakeMove("b1a3"),
-                    MakeMove("b1c3"),
-                    MakeMove("b2b3"),
-                    MakeMove("b2b4"),
-                    MakeMove("c2c3"),
-                    MakeMove("c2c4"),
-                    MakeMove("d2d3"),
-                    MakeMove("d2d4"),
-                    MakeMove("e2e3"),
-                    MakeMove("e2e4"),
-                    MakeMove("f2f3"),
-                    MakeMove("f2f4"),
-                    MakeMove("g1f3"),
-                    MakeMove("g1h3"),
-                    MakeMove("g2g3"),
-                    MakeMove("g2g4"),
-                    MakeMove("h2h3"),
-                    MakeMove("h2h4")
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                    MakeMoves({
+                        "a2a3",
+                        "a2a4",
+                        "b1a3",
+                        "b1c3",
+                        "b2b3",
+                        "b2b4",
+                        "c2c3",
+                        "c2c4",
+                        "d2d3",
+                        "d2d4",
+                        "e2e3",
+                        "e2e4",
+                        "f2f3",
+                        "f2f4",
+                        "g1f3",
+                        "g1h3",
+                        "g2g3",
+                        "g2g4",
+                        "h2h3",
+                        "h2h4",
+                        })
                 ));
 }
 
@@ -55,37 +58,39 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
             "   w KQkq c6 0 2"
             );
 
-    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    MakeMove("a2a3"),
-                    MakeMove("a2a4"),
-                    MakeMove("b1a3"),
-                    MakeMove("b1c3"),
-                    MakeMove("b2b3"),
-                    MakeMove("b2b4"),
-                    MakeMove("c2c3"),
-                    MakeMove("c2c4"),
-                    MakeMove("d1e2"),
-                    MakeMove("d1f3"),
-                    MakeMove("d1g4"),
-                    MakeMove("d1h5"),
-                    MakeMove("d2d3"),
-                    MakeMove("d2d4"),
-                    MakeMove("e1e2"),
-                    MakeMove("e4e5"),
-                    MakeMove("f1a6"),
-                    MakeMove("f1b5"),
-                    MakeMove("f1c4"),
-                    MakeMove("f1d3"),
-                    MakeMove("f1e2"),
-                    MakeMove("f2f3"),
-                    MakeMove("f2f4"),
-                    MakeMove("g1e2"),
-                    MakeMove("g1f3"),
-                    MakeMove("g1h3"),
-                    MakeMove("g2g3"),
-                    MakeMove("g2g4"),
-                    MakeMove("h2h3"),
-                    MakeMove("h2h4")
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                    MakeMoves({
+                        "a2a3",
+                        "a2a4",
+                        "b1a3",
+                        "b1c3",
+                        "b2b3",
+                        "b2b4",
+                        "c2c3",
+                        "c2c4",
+                        "d1e2",
+                        "d1f3",
+                        "d1g4",
+                        "d1h5",
+                        "d2d3",
+                        "d2d4",
+                        "e1e2",
+                        "e4e5",
+                        "f1a6",
+                        "f1b5",
+                        "f1c4",
+                        "f1d3",
+                        "f1e2",
+                        "f2f3",
+                        "f2f4",
+                        "g1e2",
+                        "g1f3",
+                        "g1h3",
+                        "g2g3",
+                        "g2g4",
+                        "h2h3",
+                        "h2h4",
+                        })
                 ));
 }
 
@@ -106,11 +111,13 @@ TEST(Pawns, QuietPromotions) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        MakeMove("e7e8n"),
-                        MakeMove("e7e8b"),
-                        MakeMove("e7e8r"),
-                        MakeMove("e7e8q")
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "e7e8n",
+                            "e7e8b",
+                            "e7e8r",
+                            "e7e8q",
+                            })
                     ));
     }
     //
@@ -129,11 +136,13 @@ TEST(Pawns, QuietPromotions) {
                 "   b KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        MakeMove("a2a1n"),
-                        MakeMove("a2a1b"),
-                        MakeMove("a2a1r"),
-                        MakeMove("a2a1q")
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "a2a1n",
+                            "a2a1b",
+                            "a2a1r",
+                            "a2a1q",
+                            })
                     ));
     }
 }
@@ -155,9 +164,11 @@ TEST(Pawns, Captures) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        MakeMove("e3d4"),
-                        MakeMove("e3f4")
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "e3d4",
+                            "e3f4",
+                            })
                     ));
     }
     //
@@ -176,9 +187,11 @@ TEST(Pawns, Captures) {
                 "   b KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        MakeMove("d5c4"),
-                        MakeMove("d5e4")
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "d5c4",
+                            "d5e4",
+                            })
                     ));
     }
 }
@@ -200,15 +213,17 @@ TEST(Knights, QuietMoves) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        MakeMove("e3d5"),
-                        MakeMove("e3f5"),
-                        MakeMove("e3c4"),
-                        MakeMove("e3g4"),
-                        MakeMove("e3c2"),
-                        MakeMove("e3g2"),
-                        MakeMove("e3d1"),
-                        MakeMove("e3f1")
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "e3d5",
+                            "e3f5",
+                            "e3c4",
+                            "e3g4",
+                            "e3c2",
+                            "e3g2",
+                            "e3d1",
+                            "e3f1",
+                            })
                     ));
     }
     //
@@ -227,11 +242,13 @@ TEST(Knights, QuietMoves) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        MakeMove("e3c2"),
-                        MakeMove("e3c4"),
-                        MakeMove("e3g2"),
-                        MakeMove("e3g4")
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "e3c2",
+                            "e3c4",
+                            "e3g2",
+                            "e3g4",
+                            })
                     ));
     }
 }
@@ -271,11 +288,13 @@ TEST(Knights, Captures) {
                 "   w KQkq - 12 20"
                 );
 
-        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        MakeMove("e3d1"),
-                        MakeMove("e3d5"),
-                        MakeMove("e3f1"),
-                        MakeMove("e3f5")
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "e3d1",
+                            "e3d5",
+                            "e3f1",
+                            "e3f5",
+                            })
                     ));
     }
 }
@@ -295,11 +314,13 @@ TEST(Bishops, QuietMoves) {
             "   w KQkq - 0 1"
             );
 
-    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    MakeMove("d4c5"),
-                    MakeMove("d4c3"),
-                    MakeMove("d4e5"),
-                    MakeMove("d4e3")
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                    MakeMoves({
+                        "d4c5",
+                        "d4c3",
+                        "d4e5",
+                        "d4e3",
+                        })
                 ));
 }
 
@@ -318,11 +339,13 @@ TEST(Bishops, Captures) {
             "   w KQkq - 12 20"
             );
 
-    EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                    MakeMove("d4b6"),
-                    MakeMove("d4b2"),
-                    MakeMove("d4f6"),
-                    MakeMove("d4f2")
+    EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
+                    MakeMoves({
+                        "d4b6",
+                        "d4b2",
+                        "d4f6",
+                        "d4f2",
+                        })
                 ));
 }
 
@@ -343,15 +366,17 @@ TEST(King, Evasions) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(GenerateMoves<kEvasion>(position), UnorderedElementsAre(
-                        MakeMove("d4c5"),
-                        MakeMove("d4c4"),
-                        MakeMove("d4c3"),
-                        MakeMove("d4d5"),
-                        MakeMove("d4d3"),
-                        MakeMove("d4e5"),
-                        MakeMove("d4e4"),
-                        MakeMove("d4e3")
+        EXPECT_THAT(GenerateMoves<kEvasion>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "d4c5",
+                            "d4c4",
+                            "d4c3",
+                            "d4d5",
+                            "d4d3",
+                            "d4e5",
+                            "d4e4",
+                            "d4e3",
+                            })
                     ));
     }
 }
