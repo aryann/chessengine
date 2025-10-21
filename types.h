@@ -5,6 +5,8 @@
 #include <string>
 #include <string_view>
 
+#include "absl/log/check.h"
+
 namespace chessengine {
 
 // See `Bitboard` comment.
@@ -26,6 +28,22 @@ constexpr std::size_t kNumSquares = 64;
 // Parses a string of the form "a1" as a Square. Returns `std::nullopt`
 // if and only if the input is invalid.
 std::optional<Square> ParseSquare(std::string_view input);
+
+constexpr std::uint8_t GetRank(Square square) {
+    return square / 8;
+}
+
+constexpr std::uint8_t GetFile(Square square) {
+    return square % 8;
+}
+
+constexpr Square MakeSquare(std::uint8_t rank, std::uint8_t file) {
+    DCHECK_GE(rank, 0);
+    DCHECK_LT(rank, 8);
+    DCHECK_GE(file, 0);
+    DCHECK_LT(file, 8);
+    return static_cast<Square>(rank * 8 + file);
+}
 
 std::string ToString(Square square);
 

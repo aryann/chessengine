@@ -977,5 +977,40 @@ TEST(EnPassant, Black) {
     EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
 }
 
+TEST(EnPassant, Capture) {
+    std::string_view initial =
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . p P . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq d6 2 10";
+
+    Position position = MakePosition(initial);
+
+    UndoInfo move = position.Do(MakeMove("e5d6"));
+    EXPECT_THAT(position, EqualsPosition(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . P . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                    //
+                    "   b KQkq - 0 10"
+                ));
+
+    position.Undo(move);
+    EXPECT_THAT(position, EqualsPosition(initial));
+}
+
 } // namespace
 } // namespace chessengine

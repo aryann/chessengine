@@ -262,7 +262,12 @@ UndoInfo Position::Do(const Move &move) {
     Piece piece = GetPiece(move.from());
     DCHECK(piece != kEmptyPiece);
 
-    en_passant_target_ = GetEnPassantTargetFromMove(piece, move);
+    if (en_passant_target_ && move.to() == *en_passant_target_) {
+        Square victim_square = MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
+        pieces_[kPawn].Clear(victim_square);
+        sides_[~side_to_move_].Clear(victim_square);
+        half_moves_ = 0;
+    }
 
     pieces_[piece].Clear(move.from());
     pieces_[piece].Set(move.to());
@@ -273,11 +278,11 @@ UndoInfo Position::Do(const Move &move) {
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
-
     if (side_to_move_ == kBlack) {
         ++full_moves_;
     }
     side_to_move_ = ~side_to_move_;
+    en_passant_target_ = GetEnPassantTargetFromMove(piece, move);
 
     return undo_info;
 }
@@ -285,7 +290,6 @@ UndoInfo Position::Do(const Move &move) {
 void Position::Undo(const UndoInfo &undo_info) {
     const Move &move = undo_info.move;
     en_passant_target_ = undo_info.en_passant_target;
-
     Piece piece = GetPiece(move.to());
     DCHECK(piece != kEmptyPiece);
 
@@ -298,11 +302,14 @@ void Position::Undo(const UndoInfo &undo_info) {
     sides_[side].Clear(move.to());
     sides_[side].Set(move.from());
 
-    if (undo_info.captured_piece == kEmptyPiece) {
-        --half_moves_;
-    } else {
-        // Restores a captured piece.
-        half_moves_ = undo_info.half_moves;
+    if (en_passant_target_ && move.to() == *en_passant_target_ && piece == kPawn) {
+        Square victim_square = MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
+        pieces_[kPawn].Set(victim_square);
+        sides_[~side].Set(victim_square);
+    }
+
+    if (undo_info.captured_piece != kEmptyPiece) {
+        // Restores a non-passant captured piece.
         pieces_[undo_info.captured_piece].Set(move.to());
         sides_[~side].Set(move.to());
     }
@@ -311,6 +318,7 @@ void Position::Undo(const UndoInfo &undo_info) {
         --full_moves_;
     }
     side_to_move_ = ~side_to_move_;
+    half_moves_ = undo_info.half_moves;
 }
 
 } // chessengine

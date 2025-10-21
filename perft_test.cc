@@ -138,7 +138,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 46, 1'865},
+            .expected_node_counts = {1, 46, 1'866},
             },
 
             // https://www.chessprogramming.org/Perft_Results#Position_3
@@ -148,7 +148,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 15, 217, 3'211},
+            .expected_node_counts = {1, 15, 217, 3'212},
             }
         ),
         GetTestName);

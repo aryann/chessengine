@@ -62,9 +62,14 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     }
 
     if constexpr (MoveType == kCapture) {
+        Bitboard enemies = position.GetPieces(~Side);
+        std::optional<Square> en_passant_target = position.GetEnPassantTarget();
+        if (en_passant_target) {
+            enemies.Set(*en_passant_target);
+        }
+
         constexpr Direction left = Side == kWhite ? kNorthWest : kSouthEast;
         constexpr Direction right = Side == kWhite ? kNorthEast : kSouthWest;
-        Bitboard enemies = position.GetPieces(~Side);
 
         Bitboard left_captures = unpromotable_pawns.Shift<left>() & enemies;
         Bitboard right_captures = unpromotable_pawns.Shift<right>() & enemies;

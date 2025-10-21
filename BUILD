@@ -188,6 +188,7 @@ cc_library(
     srcs = ["types.cc"],
     hdrs = ["types.h"],
     deps = [
+        "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings:str_format",
     ],
 )
