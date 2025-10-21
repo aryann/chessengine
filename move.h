@@ -55,7 +55,6 @@ private:
         return data_ >> 12;
     }
 
-
     // The two lower bits of this flag are reserved for the four piece types
     // (knight, bishop, rook, and queen).
     //
@@ -75,10 +74,26 @@ private:
 
 std::ostream &operator<<(std::ostream &os, const Move &move);
 
+constexpr std::optional<Square> GetEnPassantTargetFromMove(Piece piece, const Move &move) {
+    if (piece != kPawn) {
+        return std::nullopt;
+    }
+
+    int diff = move.to() - move.from();
+    if (diff == 16) {
+        return static_cast<Square>(move.from() + 8);
+    }
+    if (diff == -16) {
+        return static_cast<Square>(move.from() - 8);
+    }
+    return std::nullopt;
+}
+
 struct UndoInfo {
     Move move;
     Piece captured_piece;
-    std::uint8_t previous_half_moves;
+    std::uint8_t half_moves;
+    std::optional<Square> en_passant_target;
 };
 
 } // namespace chessengine

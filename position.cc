@@ -236,9 +236,14 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
 
 UndoInfo Position::Do(const Move &move) {
     // TODO(aryann): Reset the half move clock if there was a pawn move.
-    std::uint8_t previous_half_moves = half_moves_;
-
     Piece victim = GetPiece(move.to());
+    const UndoInfo undo_info = {
+            .move = move,
+            .captured_piece = victim,
+            .half_moves = half_moves_,
+            .en_passant_target = en_passant_target_,
+    };
+
     if (victim == kEmptyPiece) {
         ++half_moves_;
     } else {
@@ -257,6 +262,8 @@ UndoInfo Position::Do(const Move &move) {
     Piece piece = GetPiece(move.from());
     DCHECK(piece != kEmptyPiece);
 
+    en_passant_target_ = GetEnPassantTargetFromMove(piece, move);
+
     pieces_[piece].Clear(move.from());
     pieces_[piece].Set(move.to());
 
@@ -266,11 +273,6 @@ UndoInfo Position::Do(const Move &move) {
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
-    UndoInfo undo_info = {
-            .move = move,
-            .captured_piece = victim,
-            .previous_half_moves = previous_half_moves,
-    };
 
     if (side_to_move_ == kBlack) {
         ++full_moves_;
@@ -282,6 +284,7 @@ UndoInfo Position::Do(const Move &move) {
 
 void Position::Undo(const UndoInfo &undo_info) {
     const Move &move = undo_info.move;
+    en_passant_target_ = undo_info.en_passant_target;
 
     Piece piece = GetPiece(move.to());
     DCHECK(piece != kEmptyPiece);
@@ -299,7 +302,7 @@ void Position::Undo(const UndoInfo &undo_info) {
         --half_moves_;
     } else {
         // Restores a captured piece.
-        half_moves_ = undo_info.previous_half_moves;
+        half_moves_ = undo_info.half_moves;
         pieces_[undo_info.captured_piece].Set(move.to());
         sides_[~side].Set(move.to());
     }

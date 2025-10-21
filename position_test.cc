@@ -202,7 +202,7 @@ TEST(Position, DoAndUndo) {
             "1: R . B Q K B N R"
             "   a b c d e f g h"
             //
-            "   w KQkq - 2 2";
+            "   w KQkq d6 2 2";
 
     std::string_view position_three =
             "8: r n b q k b n r"
@@ -942,6 +942,39 @@ TEST(GetCheckers, Pawns) {
                         "   a b c d e f g h"
                     ));
     }
+}
+
+TEST(EnPassant, White) {
+    Position position = Position::Starting();
+
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
+
+    position.Do(MakeMove("d2d3"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
+
+    position.Do(MakeMove("d7d6"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
+
+    position.Do(MakeMove("a2a4"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(A3));
+
+    position.Do(MakeMove("a7a6"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
+}
+
+TEST(EnPassant, Black) {
+    Position position = Position::Starting();
+
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
+
+    position.Do(MakeMove("d2d3"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
+
+    position.Do(MakeMove("d7d5"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(D6));
+
+    position.Do(MakeMove("a2a3"));
+    EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
 }
 
 } // namespace
