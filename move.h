@@ -1,6 +1,8 @@
 #ifndef CHESS_ENGINE_MOVE_H_
 #define CHESS_ENGINE_MOVE_H_
 
+#include <expected>
+
 #include "absl/log/check.h"
 #include "types.h"
 
@@ -26,6 +28,8 @@ public:
         int flags = static_cast<int>(kPromotionFlag) | (promoted_piece - kKnight);
         data_ += flags << 12;
     }
+
+    static std::expected<Move, std::string> FromUCI(std::string_view input);
 
     [[nodiscard]] constexpr Square from() const {
         return static_cast<Square>(data_ & 0b111111);
