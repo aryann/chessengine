@@ -15,6 +15,16 @@
 
 namespace chessengine {
 
+std::expected<Position, std::string> TryMakePosition(std::string_view input);
+
+Position MakePosition(
+        std::string_view input,
+        std::source_location location = std::source_location::current());
+
+Move MakeMove(
+        std::string_view input,
+        std::source_location location = std::source_location::current());
+
 void PrintTo(const Bitboard &bitboard, std::ostream *os);
 
 MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(expected).Data())) {
@@ -43,12 +53,6 @@ MATCHER_P(EqualsBitboard, expected, std::format("Bitboard(0x{:x})", Bitboard(exp
 
     return false;
 }
-
-std::expected<Position, std::string> TryMakePosition(std::string_view input);
-
-Position MakePosition(
-        std::string_view input,
-        std::source_location location = std::source_location::current());
 
 MATCHER_P(EqualsPosition, expected, "") {
     std::expected<Position, std::string> result = TryMakePosition(expected);
@@ -83,6 +87,7 @@ MATCHER_P(EqualsPosition, expected, "") {
 
     return false;
 }
+
 
 } // namespace chessengine
 

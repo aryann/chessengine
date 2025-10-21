@@ -17,31 +17,26 @@ TEST(GenerateMoves, QuietMoves_StartingPosition) {
     auto position = Position::Starting();
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    // Pawn single moves:
-                    Move(A2, A3),
-                    Move(B2, B3),
-                    Move(C2, C3),
-                    Move(D2, D3),
-                    Move(E2, E3),
-                    Move(F2, F3),
-                    Move(G2, G3),
-                    Move(H2, H3),
-
-                    // Pawn double moves:
-                    Move(A2, A4),
-                    Move(B2, B4),
-                    Move(C2, C4),
-                    Move(D2, D4),
-                    Move(E2, E4),
-                    Move(F2, F4),
-                    Move(G2, G4),
-                    Move(H2, H4),
-
-                    // Knight moves:
-                    Move(B1, A3),
-                    Move(B1, C3),
-                    Move(G1, F3),
-                    Move(G1, H3)
+                    MakeMove("a2a3"),
+                    MakeMove("a2a4"),
+                    MakeMove("b1a3"),
+                    MakeMove("b1c3"),
+                    MakeMove("b2b3"),
+                    MakeMove("b2b4"),
+                    MakeMove("c2c3"),
+                    MakeMove("c2c4"),
+                    MakeMove("d2d3"),
+                    MakeMove("d2d4"),
+                    MakeMove("e2e3"),
+                    MakeMove("e2e4"),
+                    MakeMove("f2f3"),
+                    MakeMove("f2f4"),
+                    MakeMove("g1f3"),
+                    MakeMove("g1h3"),
+                    MakeMove("g2g3"),
+                    MakeMove("g2g4"),
+                    MakeMove("h2h3"),
+                    MakeMove("h2h4")
                 ));
 }
 
@@ -61,47 +56,36 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    // Pawn single moves:
-                    Move(A2, A3),
-                    Move(B2, B3),
-                    Move(C2, C3),
-                    Move(D2, D3),
-                    Move(E4, E5),
-                    Move(F2, F3),
-                    Move(G2, G3),
-                    Move(H2, H3),
-
-                    // Pawn double moves:
-                    Move(A2, A4),
-                    Move(B2, B4),
-                    Move(C2, C4),
-                    Move(D2, D4),
-                    Move(F2, F4),
-                    Move(G2, G4),
-                    Move(H2, H4),
-
-                    // Knight moves:
-                    Move(B1, A3),
-                    Move(B1, C3),
-                    Move(G1, F3),
-                    Move(G1, H3),
-                    Move(G1, E2),
-
-                    // Bishop moves:
-                    Move(F1, A6),
-                    Move(F1, B5),
-                    Move(F1, C4),
-                    Move(F1, D3),
-                    Move(F1, E2),
-
-                    // Queen moves:
-                    Move(D1, E2),
-                    Move(D1, F3),
-                    Move(D1, G4),
-                    Move(D1, H5),
-
-                    // King move:
-                    Move(E1, E2)
+                    MakeMove("a2a3"),
+                    MakeMove("a2a4"),
+                    MakeMove("b1a3"),
+                    MakeMove("b1c3"),
+                    MakeMove("b2b3"),
+                    MakeMove("b2b4"),
+                    MakeMove("c2c3"),
+                    MakeMove("c2c4"),
+                    MakeMove("d1e2"),
+                    MakeMove("d1f3"),
+                    MakeMove("d1g4"),
+                    MakeMove("d1h5"),
+                    MakeMove("d2d3"),
+                    MakeMove("d2d4"),
+                    MakeMove("e1e2"),
+                    MakeMove("e4e5"),
+                    MakeMove("f1a6"),
+                    MakeMove("f1b5"),
+                    MakeMove("f1c4"),
+                    MakeMove("f1d3"),
+                    MakeMove("f1e2"),
+                    MakeMove("f2f3"),
+                    MakeMove("f2f4"),
+                    MakeMove("g1e2"),
+                    MakeMove("g1f3"),
+                    MakeMove("g1h3"),
+                    MakeMove("g2g3"),
+                    MakeMove("g2g4"),
+                    MakeMove("h2h3"),
+                    MakeMove("h2h4")
                 ));
 }
 
@@ -123,10 +107,10 @@ TEST(Pawns, QuietPromotions) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(E7, E8, kQueen),
-                        Move(E7, E8, kRook),
-                        Move(E7, E8, kKnight),
-                        Move(E7, E8, kBishop)
+                        MakeMove("e7e8n"),
+                        MakeMove("e7e8b"),
+                        MakeMove("e7e8r"),
+                        MakeMove("e7e8q")
                     ));
     }
     //
@@ -146,10 +130,10 @@ TEST(Pawns, QuietPromotions) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(A2, A1, kQueen),
-                        Move(A2, A1, kRook),
-                        Move(A2, A1, kKnight),
-                        Move(A2, A1, kBishop)
+                        MakeMove("a2a1n"),
+                        MakeMove("a2a1b"),
+                        MakeMove("a2a1r"),
+                        MakeMove("a2a1q")
                     ));
     }
 }
@@ -172,8 +156,8 @@ TEST(Pawns, Captures) {
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        Move(E3, D4),
-                        Move(E3, F4)
+                        MakeMove("e3d4"),
+                        MakeMove("e3f4")
                     ));
     }
     //
@@ -193,8 +177,8 @@ TEST(Pawns, Captures) {
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        Move(D5, C4),
-                        Move(D5, E4)
+                        MakeMove("d5c4"),
+                        MakeMove("d5e4")
                     ));
     }
 }
@@ -217,14 +201,14 @@ TEST(Knights, QuietMoves) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(E3, D5),
-                        Move(E3, F5),
-                        Move(E3, C4),
-                        Move(E3, G4),
-                        Move(E3, C2),
-                        Move(E3, G2),
-                        Move(E3, D1),
-                        Move(E3, F1)
+                        MakeMove("e3d5"),
+                        MakeMove("e3f5"),
+                        MakeMove("e3c4"),
+                        MakeMove("e3g4"),
+                        MakeMove("e3c2"),
+                        MakeMove("e3g2"),
+                        MakeMove("e3d1"),
+                        MakeMove("e3f1")
                     ));
     }
     //
@@ -244,10 +228,10 @@ TEST(Knights, QuietMoves) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                        Move(E3, C2),
-                        Move(E3, C4),
-                        Move(E3, G2),
-                        Move(E3, G4)
+                        MakeMove("e3c2"),
+                        MakeMove("e3c4"),
+                        MakeMove("e3g2"),
+                        MakeMove("e3g4")
                     ));
     }
 }
@@ -288,10 +272,10 @@ TEST(Knights, Captures) {
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                        Move(E3, D1),
-                        Move(E3, D5),
-                        Move(E3, F1),
-                        Move(E3, F5)
+                        MakeMove("e3d1"),
+                        MakeMove("e3d5"),
+                        MakeMove("e3f1"),
+                        MakeMove("e3f5")
                     ));
     }
 }
@@ -312,10 +296,10 @@ TEST(Bishops, QuietMoves) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAre(
-                    Move(D4, C5),
-                    Move(D4, C3),
-                    Move(D4, E5),
-                    Move(D4, E3)
+                    MakeMove("d4c5"),
+                    MakeMove("d4c3"),
+                    MakeMove("d4e5"),
+                    MakeMove("d4e3")
                 ));
 }
 
@@ -335,10 +319,10 @@ TEST(Bishops, Captures) {
             );
 
     EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAre(
-                    Move(D4, B6),
-                    Move(D4, B2),
-                    Move(D4, F6),
-                    Move(D4, F2)
+                    MakeMove("d4b6"),
+                    MakeMove("d4b2"),
+                    MakeMove("d4f6"),
+                    MakeMove("d4f2")
                 ));
 }
 
@@ -360,14 +344,14 @@ TEST(King, Evasions) {
                 );
 
         EXPECT_THAT(GenerateMoves<kEvasion>(position), UnorderedElementsAre(
-                        Move(D4, C5),
-                        Move(D4, C4),
-                        Move(D4, C3),
-                        Move(D4, D5),
-                        Move(D4, D3),
-                        Move(D4, E5),
-                        Move(D4, E4),
-                        Move(D4, E3)
+                        MakeMove("d4c5"),
+                        MakeMove("d4c4"),
+                        MakeMove("d4c3"),
+                        MakeMove("d4d5"),
+                        MakeMove("d4d3"),
+                        MakeMove("d4e5"),
+                        MakeMove("d4e4"),
+                        MakeMove("d4e3")
                     ));
     }
 }

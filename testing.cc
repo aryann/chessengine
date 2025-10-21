@@ -12,6 +12,7 @@
 
 namespace chessengine {
 namespace {
+
 using namespace ::std::literals;
 
 std::string TestPositionToFen(std::string_view input) {
@@ -55,6 +56,17 @@ std::string TestPositionToFen(std::string_view input) {
 }
 
 } // namespace
+
+Move MakeMove(std::string_view input, std::source_location location) {
+    std::expected<Move, std::string> move = Move::FromUCI(input);
+    if (!move.has_value()) {
+        LOG(FATAL)
+            << location.file_name() << ":" << location.line() << ": "
+            << "Invalid move: " << move.error();
+    }
+
+    return move.value();
+}
 
 std::expected<Position, std::string> TryMakePosition(std::string_view input) {
     return Position::FromFen(TestPositionToFen(input));
