@@ -4,9 +4,32 @@
 #include <cstdint>
 #include <format>
 
+#include "bitboard.h"
 #include "types.h"
 
 namespace chessengine {
+
+template<Side Side>
+constexpr Bitboard GetKingSideCastlingPath() {
+    static_assert(Side == kWhite || Side == kBlack);
+
+    static constexpr Bitboard kPaths[] = {
+            Bitboard(F1) | Bitboard(G1),
+            Bitboard(F8) | Bitboard(G8),
+    };
+    return kPaths[Side];
+}
+
+template<Side Side>
+constexpr Bitboard GetQueenSideCastlingPath() {
+    static_assert(Side == kWhite || Side == kBlack);
+
+    static constexpr Bitboard kPaths[] = {
+            Bitboard(B1) | Bitboard(C1) | Bitboard(D1),
+            Bitboard(B8) | Bitboard(C8) | Bitboard(D8),
+    };
+    return kPaths[Side];
+}
 
 class CastlingRights {
 public:
@@ -49,9 +72,9 @@ public:
 private:
     template<Side Side>
     [[nodiscard]] constexpr bool Has(Flags flags) const {
-        DCHECK(Side == kWhite || Side == kBlack);
-        DCHECK_EQ(kWhite, 0);
-        DCHECK_EQ(kBlack, 1);
+        static_assert(Side == kWhite || Side == kBlack);
+        static_assert(kWhite == 0);
+        static_assert(kBlack == 1);
 
         return rights_ & (static_cast<std::uint8_t>(flags) << (Side * 2));
     }

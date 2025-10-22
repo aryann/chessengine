@@ -42,13 +42,6 @@ public:
         data_(1ULL << square) {
     }
 
-    constexpr Bitboard(std::initializer_list<Square> squares):
-        data_(0ULL) {
-        for (Square square: squares) {
-            data_ |= 1ULL << square;
-        }
-    }
-
     explicit constexpr Bitboard(std::string_view input):
         data_(0ULL) {
         int square = 0;

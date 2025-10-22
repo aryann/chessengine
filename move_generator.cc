@@ -97,11 +97,15 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
 template<Side Side>
 void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
     if (position.GetCastlingRights().HasKingSide<Side>()) {
-
+        if (GetKingSideCastlingPath<Side>() & position.GetPieces()) {
+            return;
+        }
     }
 
     if (position.GetCastlingRights().HasQueenSide<Side>()) {
-
+        if (GetQueenSideCastlingPath<Side>() & position.GetPieces()) {
+            return;
+        }
     }
 }
 
