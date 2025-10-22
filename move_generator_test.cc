@@ -9,8 +9,11 @@
 namespace chessengine {
 namespace {
 
+using ::testing::AllOf;
+using ::testing::Contains;
 using ::testing::Eq;
 using ::testing::IsEmpty;
+using ::testing::Not;
 using ::testing::UnorderedElementsAreArray;
 using ::testing::UnorderedElementsAre;
 
@@ -377,6 +380,177 @@ TEST(King, Evasions) {
                             "d4e4",
                             "d4e3",
                             })
+                    ));
+    }
+}
+
+TEST(Castling, WhiteCastling) {
+    Position position = MakePosition(
+            "8: r . . . k . . r"
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: R . . . K . . R"
+            "   a b c d e f g h"
+            //
+            "   w KQ - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                    Contains(MakeMove("e1g1")),
+                    Contains(MakeMove("e1c1"))
+                ));
+}
+
+TEST(Castling, WhiteKingSideOnly) {
+    Position position = MakePosition(
+            "8: . . . . k . . r"
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . r . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: R . . . K . . R"
+            "   a b c d e f g h"
+            //
+            "   w KQ - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                    Contains(MakeMove("e1g1")),
+                    Not(Contains(MakeMove("e1c1")))
+                ));
+}
+
+TEST(Castling, WhiteQueenSideOnly) {
+    Position position = MakePosition(
+            "8: r . . . k . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . r ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: R . . . K . . R"
+            "   a b c d e f g h"
+            //
+            "   w KQ - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                    Contains(MakeMove("e1c1")),
+                    Not(Contains(MakeMove("e1g1")))
+                ));
+}
+
+TEST(Castling, Black) {
+    Position position = MakePosition(
+            "8: r . . . k . . r"
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: R . . . K . . R"
+            "   a b c d e f g h"
+            //
+            "   b kq - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                    Contains(MakeMove("e8g8")),
+                    Contains(MakeMove("e8c8"))
+                ));
+}
+
+TEST(Castling, BlackKingSideOnly) {
+    Position position = MakePosition(
+            "8: r . . . k . . r"
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . B . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: R . . . K . . R"
+            "   a b c d e f g h"
+            //
+            "   b kq - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                    Contains(MakeMove("e8g8")),
+                    Not(Contains(MakeMove("e8c8")))
+                ));
+}
+
+TEST(Castling, BlackQueenSideOnly) {
+    Position position = MakePosition(
+            "8: r . . . k . . r"
+            "7: . . . . . . . ."
+            "6: . . . . . . . N"
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: R . . . K . . R"
+            "   a b c d e f g h"
+            //
+            "   b kq - 0 1"
+            );
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                    Contains(MakeMove("e8c8")),
+                    Not(Contains(MakeMove("e8g8")))
+                ));
+}
+
+TEST(Castling, None) {
+    //
+    {
+        Position position = MakePosition(
+                "8: r . . . k . . r"
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: R . . . K . . R"
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                        Not(Contains(MakeMove("e1g1"))),
+                        Not(Contains(MakeMove("e1c1")))
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: r . . . k . . r"
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: R . . . K . . R"
+                "   a b c d e f g h"
+                //
+                "   b - - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
+                        Not(Contains(MakeMove("e8g8"))),
+                        Not(Contains(MakeMove("e8c8")))
                     ));
     }
 }
