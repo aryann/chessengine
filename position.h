@@ -6,7 +6,7 @@
 #include <string_view>
 
 #include "bitboard.h"
-#include "castling_rights.h"
+#include "castling.h"
 #include "move.h"
 #include "types.h"
 
@@ -37,6 +37,7 @@ public:
     [[nodiscard]] Bitboard GetPieces(Side side, Piece type) const;
 
     [[nodiscard]] Side SideToMove() const {
+        DCHECK(side_to_move_ == kWhite || side_to_move_ == kBlack);
         return side_to_move_;
     }
 

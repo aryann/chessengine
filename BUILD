@@ -42,9 +42,9 @@ cc_test(
 )
 
 cc_library(
-    name = "castling_rights",
-    srcs = ["castling_rights.cc"],
-    hdrs = ["castling_rights.h"],
+    name = "castling",
+    srcs = [],
+    hdrs = ["castling.h"],
     deps = [
         ":types",
     ],
@@ -78,7 +78,7 @@ cc_library(
     deps = [
         ":attacks",
         ":bitboard",
-        ":castling_rights",
+        ":castling",
         ":move",
         ":types",
         "@abseil-cpp//absl/log:check",

@@ -6,7 +6,7 @@
 #include "absl/log/check.h"
 #include "absl/strings/str_split.h"
 #include "bitboard.h"
-#include "castling_rights.h"
+#include "castling.h"
 
 namespace chessengine {
 
@@ -145,7 +145,7 @@ std::expected<void, std::string> ParseBoard(std::string_view board,
     return {};
 }
 
-std::expected<void, std::string> SetCastlingRights(std::string_view input, CastlingRights &rights) {
+std::expected<CastlingRights, std::string> SetCastlingRights(std::string_view input, CastlingRights &rights) {
     if (input == "-") {
         return {};
     }
@@ -155,16 +155,16 @@ std::expected<void, std::string> SetCastlingRights(std::string_view input, Castl
     }
 
     if (input.contains("K")) {
-        rights.SetKingSide(kWhite);
-    }
-    if (input.contains("k")) {
-        rights.SetKingSide(kBlack);
+        rights.Set(kWhiteKing);
     }
     if (input.contains("Q")) {
-        rights.SetQueenSide(kWhite);
+        rights.Set(kWhiteQueen);
+    }
+    if (input.contains("k")) {
+        rights.Set(kBlackKing);
     }
     if (input.contains("q")) {
-        rights.SetQueenSide(kBlack);
+        rights.Set(kBlackQueen);
     }
 
     return {};

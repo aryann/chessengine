@@ -94,6 +94,17 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
     }
 }
 
+template<Side Side>
+void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
+    if (position.GetCastlingRights().HasKingSide<Side>()) {
+
+    }
+
+    if (position.GetCastlingRights().HasQueenSide<Side>()) {
+
+    }
+}
+
 template<Side Side, MoveType MoveType>
 Bitboard GetTargets(const Position &position) {
     if constexpr (MoveType == kQuiet) {
@@ -150,8 +161,12 @@ std::vector<Move> GenerateMoves(const Position &position) {
         // to any square that is not occupied by its own side.
         targets = ~position.GetPieces(Side);
     }
-
     GenerateMoves<Side, MoveType, kKing>(position, targets, moves);
+
+    if constexpr (MoveType == kQuiet) {
+        GenerateCastlingMoves<Side>(position, moves);
+    }
+
     return moves;
 }
 
