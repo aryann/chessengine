@@ -95,16 +95,38 @@ void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move>
 }
 
 template<Side Side>
-void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
-    if (position.GetCastlingRights().HasKingSide<Side>()) {
-        if (GetKingSideCastlingPath<Side>() & position.GetPieces()) {
-            return;
+[[nodiscard]] bool CanCastle(const Position &position, Bitboard path) {
+    if (position.GetPieces() & path) {
+        return false;
+    }
+
+    while (path) {
+        Square square = path.PopLeastSignificantBit();
+        if (position.GetAttackers(square) & position.GetPieces(~Side)) {
+            return false;
         }
     }
 
-    if (position.GetCastlingRights().HasQueenSide<Side>()) {
-        if (GetQueenSideCastlingPath<Side>() & position.GetPieces()) {
-            return;
+    return true;
+}
+
+template<Side Side>
+void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
+    if (position.GetCastlingRights().HasKingSide<Side>() &&
+        CanCastle<Side>(position, GetKingSideCastlingPath<Side>())) {
+        if constexpr (Side == kWhite) {
+            moves.emplace_back(E1, G1);
+        } else {
+            moves.emplace_back(E8, G8);
+        }
+    }
+
+    if (position.GetCastlingRights().HasQueenSide<Side>() &&
+        CanCastle<Side>(position, GetQueenSideCastlingPath<Side>())) {
+        if constexpr (Side == kWhite) {
+            moves.emplace_back(E1, C1);
+        } else {
+            moves.emplace_back(E8, C8);
         }
     }
 }

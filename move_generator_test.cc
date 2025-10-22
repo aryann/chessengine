@@ -108,7 +108,7 @@ TEST(Pawns, QuietPromotions) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 0 1"
+                "   w - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
@@ -133,7 +133,7 @@ TEST(Pawns, QuietPromotions) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   b KQkq - 0 1"
+                "   b - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
@@ -161,7 +161,7 @@ TEST(Pawns, Captures) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 0 1"
+                "   w - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
@@ -184,7 +184,7 @@ TEST(Pawns, Captures) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   b KQkq - 0 1"
+                "   b - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
@@ -210,7 +210,7 @@ TEST(Knights, QuietMoves) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 0 1"
+                "   w - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
@@ -239,7 +239,7 @@ TEST(Knights, QuietMoves) {
                 "1: . . . r . r . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 0 1"
+                "   w - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
@@ -267,7 +267,7 @@ TEST(Knights, Captures) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 0 1"
+                "   w - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), IsEmpty());
@@ -285,7 +285,7 @@ TEST(Knights, Captures) {
                 "1: . . . r . r . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 12 20"
+                "   w - - 12 20"
                 );
 
         EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
@@ -311,7 +311,7 @@ TEST(Bishops, QuietMoves) {
             "1: . . . . . . . ."
             "   a b c d e f g h"
             //
-            "   w KQkq - 0 1"
+            "   w - - 0 1"
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
@@ -336,7 +336,7 @@ TEST(Bishops, Captures) {
             "1: . . . . . . . ."
             "   a b c d e f g h"
             //
-            "   w KQkq - 12 20"
+            "   w - - 12 20"
             );
 
     EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
@@ -363,7 +363,7 @@ TEST(King, Evasions) {
                 "1: . . . . . . . ."
                 "   a b c d e f g h"
                 //
-                "   w KQkq - 0 1"
+                "   w - - 0 1"
                 );
 
         EXPECT_THAT(GenerateMoves<kEvasion>(position), UnorderedElementsAreArray(
