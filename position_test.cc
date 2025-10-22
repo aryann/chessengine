@@ -423,7 +423,7 @@ TEST(GetAttackers, Pawn) {
             "   w KQkq - 0 1"
             );
 
-    EXPECT_THAT(position.GetAttackers(E4), EqualsBitboard(
+    EXPECT_THAT(position.GetAttackers(E4, kBlack), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
@@ -453,7 +453,7 @@ TEST(GetAttackers, Rook) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(position.GetAttackers(D1), EqualsBitboard(
+        EXPECT_THAT(position.GetAttackers(D1, kBlack), EqualsBitboard(
                         "8: . . . X . . . ."
                         "7: . . . . . . . ."
                         "6: . . . . . . . ."
@@ -481,13 +481,13 @@ TEST(GetAttackers, Rook) {
                 "   w KQkq - 0 1"
                 );
 
-        EXPECT_THAT(position.GetAttackers(D4), EqualsBitboard(
+        EXPECT_THAT(position.GetAttackers(D4, kWhite), EqualsBitboard(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
                         "6: . . . X . . . ."
                         "5: . . . . . . . ."
-                        "4: . . X . . X . ."
-                        "3: . . . X . . . ."
+                        "4: . . X . . . . ."
+                        "3: . . . . . . . ."
                         "2: . . . . . . . ."
                         "1: . . . . . . . ."
                         "   a b c d e f g h"
@@ -510,14 +510,14 @@ TEST(GetAttackers, Bishop) {
             "   w KQkq - 0 1"
             );
 
-    EXPECT_THAT(position.GetAttackers(D4), EqualsBitboard(
+    EXPECT_THAT(position.GetAttackers(D4, kWhite), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
-                    "6: . X . . . X . ."
+                    "6: . . . . . X . ."
                     "5: . . . . . . . ."
                     "4: . . . . . . . ."
                     "3: . . . . . . . ."
-                    "2: . X . . . X . ."
+                    "2: . X . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
@@ -538,7 +538,7 @@ TEST(GetAttackers, Queen) {
             "   w KQkq - 0 1"
             );
 
-    EXPECT_THAT(position.GetAttackers(D4), EqualsBitboard(
+    EXPECT_THAT(position.GetAttackers(D4, kBlack), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . X . . . X . ."
@@ -546,7 +546,7 @@ TEST(GetAttackers, Queen) {
                     "4: . . . . . . . X"
                     "3: . . . . . . . ."
                     "2: . . . . . . . ."
-                    "1: X . . . . . . ."
+                    "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
 }
@@ -566,14 +566,14 @@ TEST(GetAttackers, Knight) {
             "   w KQkq - 0 1"
             );
 
-    EXPECT_THAT(position.GetAttackers(E4), EqualsBitboard(
+    EXPECT_THAT(position.GetAttackers(E4, kWhite), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
-                    "6: . . . X . X . ."
-                    "5: . . X . . . X ."
+                    "6: . . . . . X . ."
+                    "5: . . X . . . . ."
                     "4: . . . . . . . ."
                     "3: . . X . . . X ."
-                    "2: . . . X . X . ."
+                    "2: . . . X . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
@@ -594,13 +594,13 @@ TEST(GetAttackers, King) {
             "   w KQkq - 0 1"
             );
 
-    EXPECT_THAT(position.GetAttackers(E4), EqualsBitboard(
+    EXPECT_THAT(position.GetAttackers(E4, kWhite), EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
-                    "5: . . . X X X . ."
-                    "4: . . . X . X . ."
-                    "3: . . . X X X . ."
+                    "5: . . . X . X . ."
+                    "4: . . . . . X . ."
+                    "3: . . . . X . . ."
                     "2: . . . . . . . ."
                     "1: . . . . . . . ."
                     "   a b c d e f g h"

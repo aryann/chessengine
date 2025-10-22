@@ -59,7 +59,7 @@ Bitboard Position::GetPieces(Side side, Piece type) const {
     return sides_[side] & pieces_[type];
 }
 
-Bitboard Position::GetAttackers(Square to) const {
+Bitboard Position::GetAttackers(Square to, Side by) const {
     Bitboard occupied = GetPieces();
     Bitboard attackers;
 
@@ -73,7 +73,7 @@ Bitboard Position::GetAttackers(Square to) const {
     attackers |= GenerateAttacks<kBishop>(to, occupied) &
             (GetPieces(kBishop) | GetPieces(kQueen));
 
-    return attackers;
+    return attackers & GetPieces(by);
 }
 
 Square Position::GetKing(Side side) const {
@@ -85,8 +85,8 @@ Square Position::GetKing(Side side) const {
     return king.LeastSignificantBit();
 }
 
-Bitboard Position::GetCheckers(Side side) const {
-    return GetAttackers(GetKing(side)) & GetPieces(~side);
+Bitboard Position::GetCheckers(Side of) const {
+    return GetAttackers(GetKing(of), ~of);
 }
 
 namespace {

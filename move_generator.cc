@@ -102,7 +102,7 @@ template<Side Side>
 
     while (path) {
         Square square = path.PopLeastSignificantBit();
-        if (position.GetAttackers(square) & position.GetPieces(~Side)) {
+        if (position.GetAttackers(square, ~Side)) {
             return false;
         }
     }
