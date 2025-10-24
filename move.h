@@ -3,6 +3,7 @@
 
 #include <expected>
 
+#include "castling.h"
 #include "absl/log/check.h"
 #include "types.h"
 
@@ -91,10 +92,19 @@ constexpr std::optional<Square> GetEnPassantTargetFromMove(Piece piece, const Mo
 
 struct UndoInfo {
     Move move;
+    std::optional<Square> en_passant_target;
     Piece captured_piece;
     std::uint8_t half_moves;
-    std::optional<Square> en_passant_target;
+    CastlingRights castling_rights;
 };
+
+static_assert(sizeof(UndoInfo) == 8,
+              "UndoInfo size is not 8 bytes! "
+              "Check field ordering for padding or new members.");
+
+static_assert(alignof(UndoInfo) == 2,
+              "UndoInfo alignment is not 2 bytes! "
+              "Check for new members with larger alignment.");
 
 } // namespace chessengine
 

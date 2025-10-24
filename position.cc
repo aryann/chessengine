@@ -154,6 +154,7 @@ std::expected<CastlingRights, std::string> SetCastlingRights(std::string_view in
         return std::unexpected(std::format("Invalid castling rights: {}", input));
     }
 
+
     if (input.contains("K")) {
         rights.Set(kWhiteKing);
     }
@@ -242,6 +243,7 @@ UndoInfo Position::Do(const Move &move) {
             .captured_piece = victim,
             .half_moves = half_moves_,
             .en_passant_target = en_passant_target_,
+            .castling_rights = castling_rights_,
     };
 
     if (victim == kEmptyPiece) {
@@ -278,6 +280,9 @@ UndoInfo Position::Do(const Move &move) {
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
+    castling_rights_.InvalidateOnMove(move.from());
+    castling_rights_.InvalidateOnMove(move.to());
+
     if (side_to_move_ == kBlack) {
         ++full_moves_;
     }
@@ -290,6 +295,8 @@ UndoInfo Position::Do(const Move &move) {
 void Position::Undo(const UndoInfo &undo_info) {
     const Move &move = undo_info.move;
     en_passant_target_ = undo_info.en_passant_target;
+    castling_rights_ = undo_info.castling_rights;
+
     Piece piece = GetPiece(move.to());
     DCHECK(piece != kEmptyPiece);
 

@@ -1,7 +1,6 @@
 #ifndef CHESS_ENGINE_CASTLING_RIGHTS_H_
 #define CHESS_ENGINE_CASTLING_RIGHTS_H_
 
-#include <cstdint>
 #include <format>
 
 #include "bitboard.h"
@@ -13,22 +12,22 @@ template<Side Side>
 constexpr Bitboard GetKingSideCastlingPath() {
     static_assert(Side == kWhite || Side == kBlack);
 
-    static constexpr Bitboard kPaths[] = {
-            Bitboard(F1) | Bitboard(G1),
-            Bitboard(F8) | Bitboard(G8),
-    };
-    return kPaths[Side];
+    if constexpr (Side == kWhite) {
+        return Bitboard(F1) | Bitboard(G1);
+    } else {
+        return Bitboard(F8) | Bitboard(G8);
+    }
 }
 
 template<Side Side>
 constexpr Bitboard GetQueenSideCastlingPath() {
     static_assert(Side == kWhite || Side == kBlack);
 
-    static constexpr Bitboard kPaths[] = {
-            Bitboard(B1) | Bitboard(C1) | Bitboard(D1),
-            Bitboard(B8) | Bitboard(C8) | Bitboard(D8),
-    };
-    return kPaths[Side];
+    if constexpr (Side == kWhite) {
+        return Bitboard(B1) | Bitboard(C1) | Bitboard(D1);
+    } else {
+        return Bitboard(B8) | Bitboard(C8) | Bitboard(D8);
+    }
 }
 
 class CastlingRights {
@@ -47,20 +46,49 @@ public:
 
     template<Side Side>
     [[nodiscard]] constexpr bool HasKingSide() const {
-        return Has<Side>(kWhiteKing);
+        static_assert(Side == kWhite || Side == kBlack);
+
+        if constexpr (Side == kWhite) {
+            return rights_ & kWhiteKing;
+        } else {
+            return rights_ & kBlackKing;
+        }
     }
 
     template<Side Side>
     [[nodiscard]] constexpr bool HasQueenSide() const {
-        return Has<Side>(kWhiteQueen);
+        static_assert(Side == kWhite || Side == kBlack);
+
+        if constexpr (Side == kWhite) {
+            return rights_ & kWhiteQueen;
+        } else {
+            return rights_ & kBlackQueen;
+        }
+    }
+
+    constexpr void InvalidateOnMove(Square square) {
+        static constexpr std::array<std::uint8_t, kNumSquares> kCastlingMasks = [] {
+            std::array<std::uint8_t, kNumSquares> masks{};
+            masks.fill(0b1111);
+
+            // White masks:
+            masks[A1] = ~kWhiteQueen;
+            masks[E1] = ~(kWhiteKing | kWhiteQueen);
+            masks[H1] = ~kWhiteKing;
+
+            // Black masks:
+            masks[A1] = ~kBlackQueen;
+            masks[E8] = ~(kBlackKing | kBlackQueen);
+            masks[H8] = ~kBlackKing;
+
+            return masks;
+        }();
+
+        rights_ &= kCastlingMasks[square];
     }
 
     constexpr void Set(Flags flags) {
         rights_ |= static_cast<std::uint8_t>(flags);
-    }
-
-    constexpr void Clear(Flags flags_to_clear) {
-        rights_ &= ~static_cast<std::uint8_t>(flags_to_clear);
     }
 
     constexpr bool operator==(const CastlingRights &other) const = default;
@@ -70,15 +98,6 @@ public:
     }
 
 private:
-    template<Side Side>
-    [[nodiscard]] constexpr bool Has(Flags flags) const {
-        static_assert(Side == kWhite || Side == kBlack);
-        static_assert(kWhite == 0);
-        static_assert(kBlack == 1);
-
-        return rights_ & (static_cast<std::uint8_t>(flags) << (Side * 2));
-    }
-
     std::uint8_t rights_;
 };
 

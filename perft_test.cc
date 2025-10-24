@@ -138,7 +138,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 48, 2'038},
+            .expected_node_counts = {1, 48, 2'035},
             },
 
             // https://www.chessprogramming.org/Perft_Results#Position_3

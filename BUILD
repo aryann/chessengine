@@ -46,6 +46,7 @@ cc_library(
     srcs = [],
     hdrs = ["castling.h"],
     deps = [
+        ":bitboard",
         ":types",
     ],
 )
@@ -109,6 +110,7 @@ cc_library(
     srcs = ["move.cc"],
     hdrs = ["move.h"],
     deps = [
+        ":castling",
         ":types",
         "@abseil-cpp//absl/log:check",
     ],
