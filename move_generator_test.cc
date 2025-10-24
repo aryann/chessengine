@@ -400,8 +400,8 @@ TEST(Castling, WhiteCastling) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                    Contains(MakeMove("e1g1")),
-                    Contains(MakeMove("e1c1"))
+                    Contains(MakeMove("e1g1#c")),
+                    Contains(MakeMove("e1c1#c"))
                 ));
 }
 
@@ -421,8 +421,8 @@ TEST(Castling, WhiteKingSideOnly) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                    Contains(MakeMove("e1g1")),
-                    Not(Contains(MakeMove("e1c1")))
+                    Contains(MakeMove("e1g1#c")),
+                    Not(Contains(MakeMove("e1c1#c")))
                 ));
 }
 
@@ -442,8 +442,8 @@ TEST(Castling, WhiteQueenSideOnly) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                    Contains(MakeMove("e1c1")),
-                    Not(Contains(MakeMove("e1g1")))
+                    Contains(MakeMove("e1c1#c")),
+                    Not(Contains(MakeMove("e1g1#c")))
                 ));
 }
 
@@ -463,8 +463,8 @@ TEST(Castling, Black) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                    Contains(MakeMove("e8g8")),
-                    Contains(MakeMove("e8c8"))
+                    Contains(MakeMove("e8g8#c")),
+                    Contains(MakeMove("e8c8#c"))
                 ));
 }
 
@@ -484,8 +484,8 @@ TEST(Castling, BlackKingSideOnly) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                    Contains(MakeMove("e8g8")),
-                    Not(Contains(MakeMove("e8c8")))
+                    Contains(MakeMove("e8g8#c")),
+                    Not(Contains(MakeMove("e8c8#c")))
                 ));
 }
 
@@ -505,8 +505,8 @@ TEST(Castling, BlackQueenSideOnly) {
             );
 
     EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                    Contains(MakeMove("e8c8")),
-                    Not(Contains(MakeMove("e8g8")))
+                    Contains(MakeMove("e8c8#c")),
+                    Not(Contains(MakeMove("e8g8#c")))
                 ));
 }
 
@@ -528,8 +528,8 @@ TEST(Castling, None) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                        Not(Contains(MakeMove("e1g1"))),
-                        Not(Contains(MakeMove("e1c1")))
+                        Not(Contains(MakeMove("e1g1#c"))),
+                        Not(Contains(MakeMove("e1c1#c")))
                     ));
     }
     //
@@ -549,8 +549,8 @@ TEST(Castling, None) {
                 );
 
         EXPECT_THAT(GenerateMoves<kQuiet>(position), AllOf(
-                        Not(Contains(MakeMove("e8g8"))),
-                        Not(Contains(MakeMove("e8c8")))
+                        Not(Contains(MakeMove("e8g8#c"))),
+                        Not(Contains(MakeMove("e8c8#c")))
                     ));
     }
 }

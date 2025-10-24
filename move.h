@@ -11,8 +11,15 @@ namespace chessengine {
 
 class Move {
 public:
-    explicit constexpr Move(Square from, Square to) :
-        data_(from + (to << 6)) {
+    // This scheme is forward-compatible with the scheme documented at
+    // https://www.chessprogramming.org/Encoding_Moves.
+    enum Flags : std::uint8_t {
+        kCastle = /*       */ 0b0010,
+        kPromotionFlag = /**/ 0b1000,
+    };
+
+    explicit constexpr Move(Square from, Square to, std::uint8_t flags = 0) :
+        data_(from + (to << 6) + (flags << 12)) {
     }
 
     constexpr Move(Square from, Square to, Piece promoted_piece):
@@ -40,6 +47,10 @@ public:
         return static_cast<Square>((data_ >> 6) & 0b111111);
     }
 
+    [[nodiscard]] constexpr bool IsCastling() const {
+        return GetFlags() == kCastle;
+    }
+
     [[nodiscard]] constexpr bool IsPromotion() const {
         return GetFlags() & kPromotionFlag;
     }
@@ -55,13 +66,6 @@ private:
     [[nodiscard]] constexpr std::uint8_t GetFlags() const {
         return data_ >> 12;
     }
-
-    // The two lower bits of this flag are reserved for the four piece types
-    // (knight, bishop, rook, and queen).
-    //
-    // This scheme is forward-compatible with the scheme documented at
-    // https://www.chessprogramming.org/Encoding_Moves.
-    constexpr static std::uint8_t kPromotionFlag = 0b1000;
 
     // Stores the move state:
     //
