@@ -51,6 +51,16 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "castling_test",
+    srcs = ["castling_test.cc"],
+    deps = [
+        ":castling",
+        ":testing",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "line",
     srcs = [],

@@ -38,10 +38,11 @@ public:
         kWhiteQueen = /*       */ 0b0010,
         kBlackKing = /*        */ 0b0100,
         kBlackQueen = /*       */ 0b1000,
+        kAllCastlingRights = /**/ 0b1111,
     };
 
-    CastlingRights() :
-        rights_(kNoCastlingRights) {
+    explicit CastlingRights(std::uint8_t rights = kNoCastlingRights) :
+        rights_(rights) {
     }
 
     template<Side Side>
@@ -77,7 +78,7 @@ public:
             masks[H1] = ~kWhiteKing;
 
             // Black masks:
-            masks[A1] = ~kBlackQueen;
+            masks[A8] = ~kBlackQueen;
             masks[E8] = ~(kBlackKing | kBlackQueen);
             masks[H8] = ~kBlackKing;
 
