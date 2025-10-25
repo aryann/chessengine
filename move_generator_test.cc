@@ -197,6 +197,35 @@ TEST(Pawns, Captures) {
                             })
                     ));
     }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . r . r . ."
+                "7: . . . . P . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kCapture>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "e7d8n",
+                            "e7d8b",
+                            "e7d8r",
+                            "e7d8q",
+                            "e7f8n",
+                            "e7f8b",
+                            "e7f8r",
+                            "e7f8q",
+                            })
+                    ));
+    }
 }
 
 TEST(Knights, QuietMoves) {

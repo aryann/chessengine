@@ -14,20 +14,16 @@ public:
     // This scheme is forward-compatible with the scheme documented at
     // https://www.chessprogramming.org/Encoding_Moves.
     enum Flags : std::uint8_t {
-        kQuietMove = /*             */ 0b0000,
+        kNone = /*                  */ 0b0000,
         kKingCastle = /*            */ 0b0010,
         kQueenCastle = /*           */ 0b0011,
         kKnightPromotion = /*       */ 0b1000,
         kBishopPromotion = /*       */ 0b1001,
         kRookPromotion = /*         */ 0b1010,
         kQueenPromotion = /*        */ 0b1011,
-        kKnightPromotionCapture = /**/ 0b1100,
-        kBishopPromotionCapture = /**/ 0b1101,
-        kRookPromotionCapture = /*  */ 0b1110,
-        kQueenPromotionCapture = /* */ 0b1111,
     };
 
-    explicit constexpr Move(Square from, Square to, Flags flags = kQuietMove) :
+    explicit constexpr Move(Square from, Square to, Flags flags = kNone) :
         data_(from + (to << 6) + (flags << 12)) {
     }
 

@@ -10,7 +10,7 @@
 namespace chessengine {
 namespace {
 
-void AddPawnPushes(Bitboard destinations, int offset, std::vector<Move> &moves) {
+void AddPawnMoves(Bitboard destinations, int offset, std::vector<Move> &moves) {
     while (destinations) {
         Square to = destinations.PopLeastSignificantBit();
         Square from = static_cast<Square>(to - offset);
@@ -30,35 +30,24 @@ void AddPawnPromotions(Bitboard promotions, int offset, std::vector<Move> &moves
     }
 }
 
-void AddPawnCaptures(Bitboard captures, int offset, const Position &position, std::vector<Move> &moves) {
-    while (captures) {
-        Square to = captures.PopLeastSignificantBit();
-        Square from = static_cast<Square>(to - offset);
-
-        moves.emplace_back(from, to);
-    }
-}
-
 template<Side Side, MoveType MoveType>
 void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
-    constexpr Direction forward = Side == kWhite ? kNorth : kSouth;
-    Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
-    Bitboard promotion_rank = Side == kWhite ? rank::k7 : rank::k2;
-    Bitboard empty_squares = ~position.GetPieces();
-
+    static constexpr Direction forward = Side == kWhite ? kNorth : kSouth;
+    static constexpr Bitboard promotion_rank = Side == kWhite ? rank::k8 : rank::k1;
     Bitboard pawns = position.GetPieces(position.SideToMove(), kPawn);
-    Bitboard unpromotable_pawns = pawns & ~promotion_rank;
-    Bitboard promotable_pawns = pawns & promotion_rank;
 
     if constexpr (MoveType == kQuiet) {
-        Bitboard single_moves = unpromotable_pawns.Shift<forward>() & empty_squares;
-        AddPawnPushes(single_moves, forward, moves);
+        Bitboard empty = ~position.GetPieces();
 
-        Bitboard double_moves = (single_moves & second_rank).Shift<forward>() & empty_squares;
-        AddPawnPushes(double_moves, forward * 2, moves);
+        // Single pawn pushes:
+        Bitboard single_moves = pawns.Shift<forward>() & empty;
+        AddPawnMoves(single_moves & ~promotion_rank, forward, moves);
+        AddPawnPromotions(single_moves & promotion_rank, forward, moves);
 
-        Bitboard prompted_pawns = promotable_pawns.Shift<forward>() & empty_squares;
-        AddPawnPromotions(prompted_pawns, forward, moves);
+        // Double pawn pushes:
+        Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
+        Bitboard double_moves = (single_moves & second_rank).Shift<forward>() & empty;
+        AddPawnMoves(double_moves, forward * 2, moves);
     }
 
     if constexpr (MoveType == kCapture) {
@@ -71,11 +60,14 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
         constexpr Direction left = Side == kWhite ? kNorthWest : kSouthEast;
         constexpr Direction right = Side == kWhite ? kNorthEast : kSouthWest;
 
-        Bitboard left_captures = unpromotable_pawns.Shift<left>() & enemies;
-        Bitboard right_captures = unpromotable_pawns.Shift<right>() & enemies;
+        Bitboard left_captures = pawns.Shift<left>() & enemies;
+        Bitboard right_captures = pawns.Shift<right>() & enemies;
 
-        AddPawnCaptures(left_captures, left, position, moves);
-        AddPawnCaptures(right_captures, right, position, moves);
+        AddPawnMoves(left_captures & ~promotion_rank, left, moves);
+        AddPawnMoves(right_captures & ~promotion_rank, right, moves);
+
+        AddPawnPromotions(left_captures & promotion_rank, left, moves);
+        AddPawnPromotions(right_captures & promotion_rank, right, moves);
     }
 }
 

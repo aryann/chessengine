@@ -20,7 +20,7 @@ std::optional<Move::Flags> ParsePromotionPiece(char c) {
     }
 }
 
-} // namespace
+} // namespaceq
 
 std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
     auto error = std::unexpected(std::format("Invalid UCI move: {}", input));
@@ -40,11 +40,12 @@ std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
     }
 
     if (input.front() != '#') {
-        std::optional<Move::Flags> piece = ParsePromotionPiece(input[0]);
-        if (!piece) {
+        std::optional<Flags> promotion_piece = ParsePromotionPiece(input[0]);
+        if (!promotion_piece) {
             return error;
         }
-        return Move(*from, *to, *piece);
+
+        return Move(*from, *to, *promotion_piece);
     }
 
     if (input == "#oo") {
