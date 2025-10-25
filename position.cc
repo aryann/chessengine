@@ -10,6 +10,32 @@
 
 namespace chessengine {
 
+namespace {
+
+// Returns a bitboard with the rook's from and to squares for castling if and
+// only if the move is a castling move. Otherwise, returns an empty bitboard.
+[[nodiscard]] constexpr Bitboard GetCastlingRookMask(const Move &move, Side side) {
+    if (move.IsKingSideCastling()) {
+        if (side == kWhite) {
+            return Bitboard(H1) | Bitboard(F1);
+        } else {
+            return Bitboard(H8) | Bitboard(F8);
+        }
+    }
+
+    if (move.IsQueenSideCastling()) {
+        if (side == kWhite) {
+            return Bitboard(A1) | Bitboard(D1);
+        } else {
+            return Bitboard(A8) | Bitboard(D8);
+        }
+    }
+
+    return kEmptyBoard;
+}
+
+} // namespace
+
 Piece Position::GetPiece(Square square) const {
     if (pieces_[kPawn] & square) {
         return kPawn;
@@ -280,13 +306,11 @@ UndoInfo Position::Do(const Move &move) {
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
-    if (move.IsKingSideCastling()) {
-
-    }
-
-    if (move.IsQueenSideCastling()) {
-
-    }
+    // Non-empty if and only if the move is a castling move.
+    Bitboard rook_mask = GetCastlingRookMask(move, side);
+    DCHECK(!rook_mask || move.IsKingSideCastling() || move.IsQueenSideCastling());
+    pieces_[kRook] ^= rook_mask;
+    sides_[side] ^= rook_mask;
 
     castling_rights_.InvalidateOnMove(move.from());
     castling_rights_.InvalidateOnMove(move.to());

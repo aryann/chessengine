@@ -163,7 +163,6 @@ TEST(Move, String) {
 
     EXPECT_THAT(ToString(Move(E1, G1, Move::Flags::kKingCastle)), Eq("e1g1#oo"));
     EXPECT_THAT(ToString(Move(E1, C1, Move::Flags::kQueenCastle)), Eq("e1c1#ooo"));
-
 }
 
 } // namespace

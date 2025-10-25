@@ -1012,5 +1012,140 @@ TEST(EnPassant, Capture) {
     EXPECT_THAT(position, EqualsPosition(initial));
 }
 
+TEST(Castling, WhiteKing) {
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: R . . . K . . R"
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        position.Do(MakeMove("e1g1#oo"));
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: R . . . . R K ."
+                        "   a b c d e f g h"
+                        //
+                        "   b kq - 1 1"
+
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: R . . . K . . R"
+                "   a b c d e f g h"
+                //
+                "   w KQkq - 0 1"
+                );
+
+        position.Do(MakeMove("e1c1#ooo"));
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . K R . . . R"
+                        "   a b c d e f g h"
+                        //
+                        "   b kq - 1 1"
+
+                    ));
+    }
+}
+
+
+TEST(Castling, BlackKing) {
+    //
+    {
+        Position position = MakePosition(
+                "8: r . . . k . . r"
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   b KQkq - 0 1"
+                );
+
+        position.Do(MakeMove("e8g8#oo"));
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: r . . . . r k ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                        //
+                        "   w KQ - 1 2"
+
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: r . . . k . . r"
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   b KQkq - 0 1"
+                );
+
+        position.Do(MakeMove("e8c8#ooo"));
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . k r . . . r"
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                        //
+                        "   w KQ - 1 2"
+
+                    ));
+    }
+}
+
 } // namespace
 } // namespace chessengine
