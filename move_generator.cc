@@ -145,8 +145,7 @@ Bitboard GetTargets(const Position &position) {
 }
 
 template<Side Side, MoveType MoveType>
-std::vector<Move> GenerateMoves(const Position &position) {
-    std::vector<Move> moves;
+void GenerateMoves(const Position &position, std::vector<Move> &moves) {
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
     // Generate moves for all non-king pieces. This logic is shared for two
@@ -183,19 +182,20 @@ std::vector<Move> GenerateMoves(const Position &position) {
     if constexpr (MoveType == kQuiet) {
         GenerateCastlingMoves<Side>(position, moves);
     }
-
-    return moves;
 }
 
 } // namespace
 
-template<MoveType MoveType>
+template<MoveType ... MoveType>
 std::vector<Move> GenerateMoves(const Position &position) {
+    std::vector<Move> moves;
     if (position.SideToMove() == kWhite) {
-        return GenerateMoves<kWhite, MoveType>(position);
+        (..., GenerateMoves<kWhite, MoveType>(position, moves));
     } else {
-        return GenerateMoves<kBlack, MoveType>(position);
+        (..., GenerateMoves<kBlack, MoveType>(position, moves));
     }
+
+    return moves;
 }
 
 // Explicitly instantiate the templates for `GenerateMoves()`.
@@ -206,6 +206,9 @@ std::vector<Move> GenerateMoves<kQuiet>(const Position &position);
 
 template
 std::vector<Move> GenerateMoves<kCapture>(const Position &position);
+
+template
+std::vector<Move> GenerateMoves<kQuiet, kCapture>(const Position &position);
 
 template
 std::vector<Move> GenerateMoves<kEvasion>(const Position &position);

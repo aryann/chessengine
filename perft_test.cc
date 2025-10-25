@@ -63,19 +63,8 @@ protected:
             return;
         }
 
-        std::vector<Move> quiet_moves = GenerateMoves<kQuiet>(position);
+        std::vector<Move> quiet_moves = GenerateMoves<kQuiet, kCapture>(position);
         for (const Move &move: quiet_moves) {
-            ScopedMove scoped_move(move, position);
-
-            if (!position.GetCheckers(side)) {
-                current_moves.push_back(move);
-                RunPerft(depth - 1, position, nodes, current_moves, all_moves);
-                current_moves.pop_back();
-            }
-        }
-
-        std::vector<Move> capture_moves = GenerateMoves<kCapture>(position);
-        for (const Move &move: capture_moves) {
             ScopedMove scoped_move(move, position);
 
             if (!position.GetCheckers(side)) {
@@ -141,7 +130,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 15, 220, 3'307},
+            .expected_node_counts = {1, 15, 221, 3'320},
             }
         ),
         GetTestName);
