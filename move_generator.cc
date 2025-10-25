@@ -71,7 +71,7 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     }
 }
 
-template<Side Side, MoveType MoveType, Piece Piece>
+template<Side Side, Piece Piece>
 void GenerateMoves(const Position &position, Bitboard targets, std::vector<Move> &moves) {
     Bitboard pieces = position.GetPieces(Side, Piece);
 
@@ -167,10 +167,10 @@ std::vector<Move> GenerateMoves(const Position &position) {
     //
     if (MoveType == kQuiet || MoveType == kCapture || position.GetCheckers(Side).GetCount() == 1) {
         GeneratePawnMoves<Side, MoveType>(position, moves);
-        GenerateMoves<Side, MoveType, kKnight>(position, targets, moves);
-        GenerateMoves<Side, MoveType, kBishop>(position, targets, moves);
-        GenerateMoves<Side, MoveType, kRook>(position, targets, moves);
-        GenerateMoves<Side, MoveType, kQueen>(position, targets, moves);
+        GenerateMoves<Side, kKnight>(position, targets, moves);
+        GenerateMoves<Side, kBishop>(position, targets, moves);
+        GenerateMoves<Side, kRook>(position, targets, moves);
+        GenerateMoves<Side, kQueen>(position, targets, moves);
     }
 
     if constexpr (MoveType == kEvasion) {
@@ -178,7 +178,7 @@ std::vector<Move> GenerateMoves(const Position &position) {
         // to any square that is not occupied by its own side.
         targets = ~position.GetPieces(Side);
     }
-    GenerateMoves<Side, MoveType, kKing>(position, targets, moves);
+    GenerateMoves<Side, kKing>(position, targets, moves);
 
     if constexpr (MoveType == kQuiet) {
         GenerateCastlingMoves<Side>(position, moves);
