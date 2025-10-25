@@ -14,7 +14,8 @@ public:
     // This scheme is forward-compatible with the scheme documented at
     // https://www.chessprogramming.org/Encoding_Moves.
     enum Flags : std::uint8_t {
-        kCastle = /*       */ 0b0010,
+        kKingCastle = /*   */ 0b0010,
+        kQueenCastle = /*  */ 0b0011,
         kPromotionFlag = /**/ 0b1000,
     };
 
@@ -47,8 +48,12 @@ public:
         return static_cast<Square>((data_ >> 6) & 0b111111);
     }
 
-    [[nodiscard]] constexpr bool IsCastling() const {
-        return GetFlags() == kCastle;
+    [[nodiscard]] constexpr bool IsKingSideCastling() const {
+        return GetFlags() == kKingCastle;
+    }
+
+    [[nodiscard]] constexpr bool IsQueenSideCastling() const {
+        return GetFlags() == kQueenCastle;
     }
 
     [[nodiscard]] constexpr bool IsPromotion() const {

@@ -117,8 +117,8 @@ void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
     if (position.GetCastlingRights().HasKingSide<Side>() &&
         CanCastle<Side>(position, GetKingSideCastlingPath<Side>())) {
         static constexpr Move kCastlingMoves[] = {
-                Move(E1, G1, Move::Flags::kCastle),
-                Move(E8, G8, Move::Flags::kCastle),
+                Move(E1, G1, Move::Flags::kKingCastle),
+                Move(E8, G8, Move::Flags::kKingCastle),
         };
         moves.push_back(kCastlingMoves[Side]);
     }
@@ -126,8 +126,8 @@ void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
     if (position.GetCastlingRights().HasQueenSide<Side>() &&
         CanCastle<Side>(position, GetQueenSideCastlingPath<Side>())) {
         static constexpr Move kCastlingMoves[] = {
-                Move(E1, C1, Move::Flags::kCastle),
-                Move(E8, C8, Move::Flags::kCastle),
+                Move(E1, C1, Move::Flags::kQueenCastle),
+                Move(E8, C8, Move::Flags::kQueenCastle),
         };
         moves.push_back(kCastlingMoves[Side]);
     }

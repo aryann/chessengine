@@ -47,8 +47,12 @@ std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
         return Move(*from, *to, *piece);
     }
 
-    if (input == "#c") {
-        return Move(*from, *to, kCastle);
+    if (input == "#oo") {
+        return Move(*from, *to, kKingCastle);
+    }
+
+    if (input == "#ooo") {
+        return Move(*from, *to, kQueenCastle);
     }
 
     return error;
@@ -61,9 +65,14 @@ std::ostream &operator<<(std::ostream &os, const Move &move) {
         os << kPieceChars[move.GetPromotedPiece() - kKnight];
     }
 
-    if (move.IsCastling()) {
-        os << "#c";
+    if (move.IsKingSideCastling()) {
+        os << "#oo";
     }
+
+    if (move.IsQueenSideCastling()) {
+        os << "#ooo";
+    }
+
     return os;
 }
 

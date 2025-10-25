@@ -280,6 +280,14 @@ UndoInfo Position::Do(const Move &move) {
     sides_[side].Clear(move.from());
     sides_[side].Set(move.to());
 
+    if (move.IsKingSideCastling()) {
+
+    }
+
+    if (move.IsQueenSideCastling()) {
+
+    }
+
     castling_rights_.InvalidateOnMove(move.from());
     castling_rights_.InvalidateOnMove(move.to());
 
