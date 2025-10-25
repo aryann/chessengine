@@ -24,7 +24,7 @@ TEST(Move, NonPromotion) {
 TEST(Move, Promotion) {
     //
     {
-        Move move(A7, A8, kKnight);
+        Move move(A7, A8, Move::Flags::kKnightPromotion);
 
         EXPECT_THAT(move.from(), Eq(A7));
         EXPECT_THAT(move.to(), Eq(A8));
@@ -33,7 +33,7 @@ TEST(Move, Promotion) {
     }
     //
     {
-        Move move(A7, A8, kBishop);
+        Move move(A7, A8, Move::Flags::kBishopPromotion);
 
         EXPECT_THAT(move.from(), Eq(A7));
         EXPECT_THAT(move.to(), Eq(A8));
@@ -42,7 +42,7 @@ TEST(Move, Promotion) {
     }
     //
     {
-        Move move(A7, A8, kRook);
+        Move move(A7, A8, Move::Flags::kRookPromotion);
 
         EXPECT_THAT(move.from(), Eq(A7));
         EXPECT_THAT(move.to(), Eq(A8));
@@ -51,7 +51,7 @@ TEST(Move, Promotion) {
     }
     //
     {
-        Move move(A7, A8, kQueen);
+        Move move(A7, A8, Move::Flags::kQueenPromotion);
 
         EXPECT_THAT(move.from(), Eq(A7));
         EXPECT_THAT(move.to(), Eq(A8));
@@ -62,8 +62,15 @@ TEST(Move, Promotion) {
 
 TEST(Move, Equality) {
     EXPECT_THAT(Move(A1, A2), Eq(Move(A1, A2)));
-    EXPECT_THAT(Move(A7, A8, kKnight), Eq(Move(A7, A8, kKnight)));
-    EXPECT_THAT(Move(A7, A8, kKnight), Not(Eq(Move(A7, A8, kBishop))));
+
+    EXPECT_THAT(
+            Move(A7, A8, Move::Flags::kKnightPromotion),
+            Eq(Move(A7, A8, Move::Flags::kKnightPromotion)));
+
+    EXPECT_THAT(
+            Move(A7, A8, Move::Flags::kKnightPromotion),
+            Not(Eq(Move(A7, A8, Move::Flags::kBishopPromotion))));
+
     EXPECT_THAT(Move(A1, A2), Not(Eq(Move(H1, H2))));
 
     EXPECT_THAT(Move(A1, A2), Not(Ne(Move(A1, A2))));
@@ -145,7 +152,6 @@ TEST(FromUCI, Invalid) {
     EXPECT_THAT(Move::FromUCI("e7e8k").error_or(""), Eq("Invalid UCI move: e7e8k"));
     EXPECT_THAT(Move::FromUCI("e7e8p").error_or(""), Eq("Invalid UCI move: e7e8p"));
     EXPECT_THAT(Move::FromUCI("e7e8#ccc").error_or(""), Eq("Invalid UCI move: e7e8#ccc"));
-
 }
 
 TEST(Move, String) {
@@ -156,10 +162,10 @@ TEST(Move, String) {
     };
 
     EXPECT_THAT(ToString(Move(E7, E5)), Eq("e7e5"));
-    EXPECT_THAT(ToString(Move(G2, G1, kKnight)), Eq("g2g1n"));
-    EXPECT_THAT(ToString(Move(G2, G1, kBishop)), Eq("g2g1b"));
-    EXPECT_THAT(ToString(Move(G2, G1, kRook)), Eq("g2g1r"));
-    EXPECT_THAT(ToString(Move(G2, G1, kQueen)), Eq("g2g1q"));
+    EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kKnightPromotion)), Eq("g2g1n"));
+    EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kBishopPromotion)), Eq("g2g1b"));
+    EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kRookPromotion)), Eq("g2g1r"));
+    EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kQueenPromotion)), Eq("g2g1q"));
 
     EXPECT_THAT(ToString(Move(E1, G1, Move::Flags::kKingCastle)), Eq("e1g1#oo"));
     EXPECT_THAT(ToString(Move(E1, C1, Move::Flags::kQueenCastle)), Eq("e1c1#ooo"));

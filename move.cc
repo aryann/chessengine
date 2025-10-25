@@ -5,16 +5,16 @@
 namespace chessengine {
 namespace {
 
-std::optional<Piece> ParsePromotionPiece(char c) {
+std::optional<Move::Flags> ParsePromotionPiece(char c) {
     switch (c) {
         case 'n':
-            return kKnight;
+            return Move::Flags::kKnightPromotion;
         case 'b':
-            return kBishop;
+            return Move::Flags::kBishopPromotion;
         case 'r':
-            return kRook;
+            return Move::Flags::kRookPromotion;
         case 'q':
-            return kQueen;
+            return Move::Flags::kQueenPromotion;
         default:
             return std::nullopt;
     }
@@ -40,7 +40,7 @@ std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
     }
 
     if (input.front() != '#') {
-        std::optional<Piece> piece = ParsePromotionPiece(input[0]);
+        std::optional<Move::Flags> piece = ParsePromotionPiece(input[0]);
         if (!piece) {
             return error;
         }

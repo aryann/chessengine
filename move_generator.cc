@@ -23,10 +23,10 @@ void AddPawnPromotions(Bitboard promotions, int offset, std::vector<Move> &moves
         Square to = promotions.PopLeastSignificantBit();
         Square from = static_cast<Square>(to - offset);
 
-        moves.emplace_back(from, to, kKnight);
-        moves.emplace_back(from, to, kBishop);
-        moves.emplace_back(from, to, kRook);
-        moves.emplace_back(from, to, kQueen);
+        moves.emplace_back(from, to, Move::Flags::kKnightPromotion);
+        moves.emplace_back(from, to, Move::Flags::kBishopPromotion);
+        moves.emplace_back(from, to, Move::Flags::kRookPromotion);
+        moves.emplace_back(from, to, Move::Flags::kQueenPromotion);
     }
 }
 

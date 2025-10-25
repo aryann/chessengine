@@ -14,28 +14,21 @@ public:
     // This scheme is forward-compatible with the scheme documented at
     // https://www.chessprogramming.org/Encoding_Moves.
     enum Flags : std::uint8_t {
-        kKingCastle = /*   */ 0b0010,
-        kQueenCastle = /*  */ 0b0011,
-        kPromotionFlag = /**/ 0b1000,
+        kQuietMove = /*             */ 0b0000,
+        kKingCastle = /*            */ 0b0010,
+        kQueenCastle = /*           */ 0b0011,
+        kKnightPromotion = /*       */ 0b1000,
+        kBishopPromotion = /*       */ 0b1001,
+        kRookPromotion = /*         */ 0b1010,
+        kQueenPromotion = /*        */ 0b1011,
+        kKnightPromotionCapture = /**/ 0b1100,
+        kBishopPromotionCapture = /**/ 0b1101,
+        kRookPromotionCapture = /*  */ 0b1110,
+        kQueenPromotionCapture = /* */ 0b1111,
     };
 
-    explicit constexpr Move(Square from, Square to, std::uint8_t flags = 0) :
+    explicit constexpr Move(Square from, Square to, Flags flags = kQuietMove) :
         data_(from + (to << 6) + (flags << 12)) {
-    }
-
-    constexpr Move(Square from, Square to, Piece promoted_piece):
-        Move(from, to) {
-        DCHECK(
-                promoted_piece == kKnight ||
-                promoted_piece == kBishop ||
-                promoted_piece == kRook ||
-                promoted_piece == kQueen);
-        DCHECK(kBishop - kKnight == 1);
-        DCHECK(kRook - kKnight == 2);
-        DCHECK(kQueen - kKnight == 3);
-
-        int flags = static_cast<int>(kPromotionFlag) | (promoted_piece - kKnight);
-        data_ += flags << 12;
     }
 
     static std::expected<Move, std::string> FromUCI(std::string_view input);
@@ -57,7 +50,7 @@ public:
     }
 
     [[nodiscard]] constexpr bool IsPromotion() const {
-        return GetFlags() & kPromotionFlag;
+        return GetFlags() & 0b1000;
     }
 
     [[nodiscard]] constexpr Piece GetPromotedPiece() const {
