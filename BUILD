@@ -102,6 +102,7 @@ cc_test(
     srcs = ["position_test.cc"],
     deps = [
         ":position",
+        ":scoped_move",
         ":testing",
         "@googletest//:gtest_main",
     ],
@@ -111,6 +112,16 @@ cc_binary(
     name = "position_main",
     srcs = ["position_main.cc"],
     deps = [
+        ":position",
+    ],
+)
+
+cc_library(
+    name = "scoped_move",
+    srcs = [],
+    hdrs = ["scoped_move.h"],
+    deps = [
+        ":move",
         ":position",
     ],
 )

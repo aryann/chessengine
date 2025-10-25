@@ -4,6 +4,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "scoped_move.h"
 #include "testing.h"
 
 namespace chessengine {
@@ -1010,6 +1011,135 @@ TEST(EnPassant, Capture) {
 
     position.Undo(move);
     EXPECT_THAT(position, EqualsPosition(initial));
+}
+
+TEST(QuietPromotion, White) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . P . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   w KQkq - 0 1");
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("d7d8q"), position);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . Q . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                        //
+                        "   b KQkq - 1 1"
+                    ));
+    }
+    EXPECT_THAT(position, EqualsPosition(
+                    "8: . . . . . . . ."
+                    "7: . . . P . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                    //
+                    "   w KQkq - 0 1"
+                ));
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("d7d8n"), position);
+        EXPECT_THAT(position.GetPiece(D8), Eq(kKnight));
+    }
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("d7d8b"), position);
+        EXPECT_THAT(position.GetPiece(D8), Eq(kBishop));
+    }
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("d7d8r"), position);
+        EXPECT_THAT(position.GetPiece(D8), Eq(kRook));
+    }
+}
+
+
+TEST(QuietPromotion, Black) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . p"
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   b KQkq - 0 1");
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("h2h1q"), position);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . q"
+                        "   a b c d e f g h"
+                        //
+                        "   w Qkq - 1 2"
+                    ));
+    }
+    EXPECT_THAT(position, EqualsPosition(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: . . . . . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . p"
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                    //
+                    "   b KQkq - 0 1"
+                ));
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("h2h1n"), position);
+        EXPECT_THAT(position.GetPiece(H1), Eq(kKnight));
+    }
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("h2h1b"), position);
+        EXPECT_THAT(position.GetPiece(H1), Eq(kBishop));
+    }
+
+    //
+    {
+        ScopedMove scoped_move(MakeMove("h2h1r"), position);
+        EXPECT_THAT(position.GetPiece(H1), Eq(kRook));
+    }
 }
 
 TEST(Castling, WhiteKing) {

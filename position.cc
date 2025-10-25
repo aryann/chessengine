@@ -282,7 +282,6 @@ UndoInfo Position::Do(const Move &move) {
         half_moves_ = 0;
     }
 
-
     Piece piece = GetPiece(move.from());
     DCHECK(piece != kEmptyPiece);
 
@@ -299,6 +298,11 @@ UndoInfo Position::Do(const Move &move) {
     Side side = GetSide(move.from());
     DCHECK(side != kEmptySide);
     sides_[side] ^= from_to;
+
+    if (move.IsPromotion()) {
+        pieces_[kPawn].Clear(move.to());
+        pieces_[move.GetPromotedPiece()].Set(move.to());
+    }
 
     // Non-empty if and only if the move is a castling move.
     Bitboard rook_mask = GetCastlingRookMask(move, side);
@@ -322,6 +326,11 @@ void Position::Undo(const UndoInfo &undo_info) {
     const Move &move = undo_info.move;
     en_passant_target_ = undo_info.en_passant_target;
     castling_rights_ = undo_info.castling_rights;
+
+    if (move.IsPromotion()) {
+        pieces_[move.GetPromotedPiece()].Clear(move.to());
+        pieces_[kPawn].Set(move.to());
+    }
 
     Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
 
