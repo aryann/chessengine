@@ -50,8 +50,7 @@ protected:
         Side side = position.SideToMove();
 
         if (position.GetCheckers(side)) {
-            std::vector<Move> evasive_moves = GenerateMoves<kEvasion>(position);
-            for (const Move &move: evasive_moves) {
+            for (const Move &move: GenerateMoves<kEvasion>(position)) {
                 ScopedMove scoped_move(move, position);
 
                 if (!position.GetCheckers(side)) {
@@ -63,8 +62,7 @@ protected:
             return;
         }
 
-        std::vector<Move> quiet_moves = GenerateMoves<kQuiet, kCapture>(position);
-        for (const Move &move: quiet_moves) {
+        for (const Move &move: GenerateMoves<kQuiet, kCapture>(position)) {
             ScopedMove scoped_move(move, position);
 
             if (!position.GetCheckers(side)) {
