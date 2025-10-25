@@ -282,11 +282,7 @@ UndoInfo Position::Do(const Move &move) {
         half_moves_ = 0;
     }
 
-    // TODO(aryann): Consider replacing this with:
-    //
-    //   Bitboard from_to = move.from() | move.to();
-    //   pieces_[piece] ^= from_to;
-    //
+
     Piece piece = GetPiece(move.from());
     DCHECK(piece != kEmptyPiece);
 
@@ -297,14 +293,12 @@ UndoInfo Position::Do(const Move &move) {
         half_moves_ = 0;
     }
 
-    pieces_[piece].Clear(move.from());
-    pieces_[piece].Set(move.to());
+    Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
+    pieces_[piece] ^= from_to;
 
     Side side = GetSide(move.from());
     DCHECK(side != kEmptySide);
-
-    sides_[side].Clear(move.from());
-    sides_[side].Set(move.to());
+    sides_[side] ^= from_to;
 
     // Non-empty if and only if the move is a castling move.
     Bitboard rook_mask = GetCastlingRookMask(move, side);
@@ -329,17 +323,16 @@ void Position::Undo(const UndoInfo &undo_info) {
     en_passant_target_ = undo_info.en_passant_target;
     castling_rights_ = undo_info.castling_rights;
 
+    Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
+
     Piece piece = GetPiece(move.to());
     DCHECK(piece != kEmptyPiece);
 
-    pieces_[piece].Clear(move.to());
-    pieces_[piece].Set(move.from());
+    pieces_[piece] ^= from_to;
 
     Side side = GetSide(move.to());
     DCHECK(side != kEmptySide);
-
-    sides_[side].Clear(move.to());
-    sides_[side].Set(move.from());
+    sides_[side] ^= from_to;
 
     if (en_passant_target_ && move.to() == *en_passant_target_ && piece == kPawn) {
         Square victim_square = MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
