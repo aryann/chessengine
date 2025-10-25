@@ -1029,7 +1029,7 @@ TEST(Castling, WhiteKing) {
                 "   w KQkq - 0 1"
                 );
 
-        position.Do(MakeMove("e1g1#oo"));
+        UndoInfo undo_info = position.Do(MakeMove("e1g1#oo"));
         EXPECT_THAT(position, EqualsPosition(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
@@ -1042,7 +1042,21 @@ TEST(Castling, WhiteKing) {
                         "   a b c d e f g h"
                         //
                         "   b kq - 1 1"
+                    ));
 
+        position.Undo(undo_info);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: R . . . K . . R"
+                        "   a b c d e f g h"
+                        //
+                        "   w KQkq - 0 1"
                     ));
     }
     //
@@ -1061,7 +1075,7 @@ TEST(Castling, WhiteKing) {
                 "   w KQkq - 0 1"
                 );
 
-        position.Do(MakeMove("e1c1#ooo"));
+        UndoInfo undo_info = position.Do(MakeMove("e1c1#ooo"));
         EXPECT_THAT(position, EqualsPosition(
                         "8: . . . . . . . ."
                         "7: . . . . . . . ."
@@ -1074,11 +1088,24 @@ TEST(Castling, WhiteKing) {
                         "   a b c d e f g h"
                         //
                         "   b kq - 1 1"
+                    ));
 
+        position.Undo(undo_info);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: R . . . K . . R"
+                        "   a b c d e f g h"
+                        //
+                        "   w KQkq - 0 1"
                     ));
     }
 }
-
 
 TEST(Castling, BlackKing) {
     //
@@ -1097,7 +1124,7 @@ TEST(Castling, BlackKing) {
                 "   b KQkq - 0 1"
                 );
 
-        position.Do(MakeMove("e8g8#oo"));
+        UndoInfo undo_info = position.Do(MakeMove("e8g8#oo"));
         EXPECT_THAT(position, EqualsPosition(
                         "8: r . . . . r k ."
                         "7: . . . . . . . ."
@@ -1110,7 +1137,21 @@ TEST(Castling, BlackKing) {
                         "   a b c d e f g h"
                         //
                         "   w KQ - 1 2"
+                    ));
 
+        position.Undo(undo_info);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: r . . . k . . r"
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                        //
+                        "   b KQkq - 0 1"
                     ));
     }
     //
@@ -1129,7 +1170,7 @@ TEST(Castling, BlackKing) {
                 "   b KQkq - 0 1"
                 );
 
-        position.Do(MakeMove("e8c8#ooo"));
+        UndoInfo undo_info = position.Do(MakeMove("e8c8#ooo"));
         EXPECT_THAT(position, EqualsPosition(
                         "8: . . k r . . . r"
                         "7: . . . . . . . ."
@@ -1143,6 +1184,21 @@ TEST(Castling, BlackKing) {
                         //
                         "   w KQ - 1 2"
 
+                    ));
+
+        position.Undo(undo_info);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: r . . . k . . r"
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                        //
+                        "   b KQkq - 0 1"
                     ));
     }
 }

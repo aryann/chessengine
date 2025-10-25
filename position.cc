@@ -346,6 +346,12 @@ void Position::Undo(const UndoInfo &undo_info) {
         sides_[~side].Set(move.to());
     }
 
+    // Non-empty if and only if the move is a castling move.
+    Bitboard rook_mask = GetCastlingRookMask(move, side);
+    DCHECK(!rook_mask || move.IsKingSideCastling() || move.IsQueenSideCastling());
+    pieces_[kRook] ^= rook_mask;
+    sides_[side] ^= rook_mask;
+
     if (side == kBlack) {
         --full_moves_;
     }
