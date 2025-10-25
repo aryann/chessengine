@@ -126,9 +126,7 @@ INSTANTIATE_TEST_SUITE_P(
             PerftTestCase{
             .name = "StartingPosition",
             .fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-            // TODO(aryann): This is wrong. Fix this once the move generator can
-            // correctly generate all moves.
-            .expected_node_counts = {1, 20, 400, 8'902, 197'265},
+            .expected_node_counts = {1, 20, 400, 8'902, 197'281},
             },
 
             // https://www.chessprogramming.org/Perft_Results#Position_2
@@ -148,7 +146,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 15, 217, 3'212},
+            .expected_node_counts = {1, 15, 220, 3'307},
             }
         ),
         GetTestName);

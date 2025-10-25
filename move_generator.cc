@@ -36,7 +36,7 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     static constexpr Bitboard promotion_rank = Side == kWhite ? rank::k8 : rank::k1;
     Bitboard pawns = position.GetPieces(position.SideToMove(), kPawn);
 
-    if constexpr (MoveType == kQuiet) {
+    if constexpr (MoveType == kQuiet || MoveType == kEvasion) {
         Bitboard empty = ~position.GetPieces();
 
         // Single pawn pushes:
@@ -50,7 +50,7 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
         AddPawnMoves(double_moves, forward * 2, moves);
     }
 
-    if constexpr (MoveType == kCapture) {
+    if constexpr (MoveType == kCapture || MoveType == kEvasion) {
         Bitboard enemies = position.GetPieces(~Side);
         std::optional<Square> en_passant_target = position.GetEnPassantTarget();
         if (en_passant_target) {
@@ -163,10 +163,7 @@ std::vector<Move> GenerateMoves(const Position &position) {
     //      When MoveType is kEvasion, `GetTargets()` returns a bitboard of
     //      *only* the squares between the checker and the king (excluding
     //      the king square itself). This causes the piece generators to find
-    //      all legal *blocking* moves.
-    //
-    //      If the checker is a knight, then no moves are generated because
-    //      there is no line between the knight and the king.
+    //      all legal moves where a friendly piece blocks the check.
     //
     if (MoveType == kQuiet || MoveType == kCapture || position.GetCheckers(Side).GetCount() == 1) {
         GeneratePawnMoves<Side, MoveType>(position, moves);
