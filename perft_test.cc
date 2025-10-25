@@ -6,6 +6,7 @@
 #include "absl/strings/str_join.h"
 #include "move.h"
 #include "move_generator.h"
+#include "scoped_move.h"
 #include "position.h"
 
 namespace chessengine {
@@ -51,43 +52,37 @@ protected:
         if (position.GetCheckers(side)) {
             std::vector<Move> evasive_moves = GenerateMoves<kEvasion>(position);
             for (const Move &move: evasive_moves) {
-                UndoInfo undo_info = position.Do(move);
+                ScopedMove scoped_move(move, position);
 
                 if (!position.GetCheckers(side)) {
                     current_moves.push_back(move);
                     RunPerft(depth - 1, position, nodes, current_moves, all_moves);
                     current_moves.pop_back();
                 }
-
-                position.Undo(undo_info);
             }
             return;
         }
 
         std::vector<Move> quiet_moves = GenerateMoves<kQuiet>(position);
         for (const Move &move: quiet_moves) {
-            UndoInfo undo_info = position.Do(move);
+            ScopedMove scoped_move(move, position);
 
             if (!position.GetCheckers(side)) {
                 current_moves.push_back(move);
                 RunPerft(depth - 1, position, nodes, current_moves, all_moves);
                 current_moves.pop_back();
             }
-
-            position.Undo(undo_info);
         }
 
         std::vector<Move> capture_moves = GenerateMoves<kCapture>(position);
         for (const Move &move: capture_moves) {
-            UndoInfo undo_info = position.Do(move);
+            ScopedMove scoped_move(move, position);
 
             if (!position.GetCheckers(side)) {
                 current_moves.push_back(move);
                 RunPerft(depth - 1, position, nodes, current_moves, all_moves);
                 current_moves.pop_back();
             }
-
-            position.Undo(undo_info);
         }
     }
 };
