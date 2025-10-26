@@ -23,16 +23,17 @@ void SetPositionCommand(std::string_view input, Position &position) {
 
 void RunPerftCommand(std::string_view args, Position &position) {
     int depth = std::stoi(std::string(args));
-    std::map<Move, std::size_t> results = RunPerft(depth, position);
 
-    std::size_t total = 0;
-    for (auto [move, count]: results) {
+    std::vector<std::size_t> depth_counts;
+    std::map<Move, std::size_t> final_move_counts;
+    RunPerft(depth, position, depth_counts, final_move_counts);
+
+    for (auto [move, count]: final_move_counts) {
         std::cout << move << ": " << count << '\n';
-        total += count;
     }
 
     std::println();
-    std::println("Nodes searched: {}", total);
+    std::println("Nodes searched: {}", depth_counts.back());
 }
 
 void RunLoop() {

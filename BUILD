@@ -173,6 +173,7 @@ cc_test(
     deps = [
         ":move",
         ":move_generator",
+        ":perft",
         ":position",
         ":scoped_move",
         "@abseil-cpp//absl/strings",

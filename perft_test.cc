@@ -1,3 +1,5 @@
+#include "perft.h"
+
 #include <ranges>
 
 #include <gmock/gmock.h>
@@ -31,47 +33,6 @@ void PrintTo(const PerftTestCase &test_case, std::ostream *os) {
 }
 
 class PerftTest : public testing::TestWithParam<PerftTestCase> {
-protected:
-    void RunPerft(std::size_t depth, Position &position, std::vector<int> &nodes,
-                  std::vector<Move> current_moves, std::vector<std::vector<Move> > &all_moves) {
-        // TODO(aryann): Find a better way to determine that the game is over.
-        bool has_both_kings = position.GetPieces(kKing).GetCount() == 2;
-        if (!has_both_kings) {
-            return;
-        }
-
-        ++nodes[nodes.size() - depth];
-
-        if (depth <= 1) {
-            all_moves.push_back(current_moves);
-            return;
-        }
-
-        Side side = position.SideToMove();
-
-        if (position.GetCheckers(side)) {
-            for (const Move &move: GenerateMoves<kEvasion>(position)) {
-                ScopedMove scoped_move(move, position);
-
-                if (!position.GetCheckers(side)) {
-                    current_moves.push_back(move);
-                    RunPerft(depth - 1, position, nodes, current_moves, all_moves);
-                    current_moves.pop_back();
-                }
-            }
-            return;
-        }
-
-        for (const Move &move: GenerateMoves<kQuiet, kCapture>(position)) {
-            ScopedMove scoped_move(move, position);
-
-            if (!position.GetCheckers(side)) {
-                current_moves.push_back(move);
-                RunPerft(depth - 1, position, nodes, current_moves, all_moves);
-                current_moves.pop_back();
-            }
-        }
-    }
 };
 
 std::string GetTestName(const testing::TestParamInfo<PerftTestCase> &info) {
@@ -80,24 +41,16 @@ std::string GetTestName(const testing::TestParamInfo<PerftTestCase> &info) {
 
 TEST_P(PerftTest, Run) {
     const auto &[_, fen, expected_node_count] = GetParam();
-    const std::size_t depth = expected_node_count.size();
+    const std::size_t depth = expected_node_count.size() - 1;
 
     std::expected<Position, std::string> position = Position::FromFen(fen);
     ASSERT_THAT(position.error_or(""), IsEmpty());
 
-    std::vector<Move> curr_moves;
-    std::vector<std::vector<Move> > all_moves;
-    std::vector<int> nodes(depth);
-    RunPerft(depth, position.value(), nodes, curr_moves, all_moves);
+    std::vector<std::size_t> depth_counts;
+    std::map<Move, std::size_t> final_move_counts;
+    RunPerft(depth, position.value(), depth_counts, final_move_counts);
 
-    // for (const auto &moves: all_moves) {
-    //     for (const auto &move: moves) {
-    //         std::cout << move << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    EXPECT_THAT(nodes, ElementsAreArray(expected_node_count));
+    EXPECT_THAT(depth_counts, ElementsAreArray(expected_node_count));
 }
 
 INSTANTIATE_TEST_SUITE_P(

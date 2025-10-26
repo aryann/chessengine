@@ -8,7 +8,10 @@
 
 namespace chessengine {
 
-std::map<Move, std::size_t> RunPerft(std::size_t depth, Position &position);
+void RunPerft(std::size_t depth,
+              Position &position,
+              std::vector<std::size_t> &depth_counts,
+              std::map<Move, std::size_t> &final_move_counts);
 
 } // namespace chessengine
 
