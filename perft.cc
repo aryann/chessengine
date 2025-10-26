@@ -18,12 +18,6 @@ void RunPerft(std::size_t depth,
               std::optional<Move> start_move,
               std::vector<std::size_t> &depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
-    // TODO(aryann): Find a better way to determine that the game is over.
-    bool has_both_kings = position.GetPieces(kKing).GetCount() == 2;
-    if (!has_both_kings) {
-        return;
-    }
-
     ++depth_counts[current_depth];
 
     if (depth == current_depth) {
