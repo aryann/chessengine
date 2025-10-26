@@ -85,21 +85,23 @@ Bitboard Position::GetPieces(Side side, Piece type) const {
     return sides_[side] & pieces_[type];
 }
 
-Bitboard Position::GetAttackers(Square to, Side by) const {
+Bitboard Position::GetAttackers(Square to, Side attacker_side) const {
     Bitboard occupied = GetPieces();
     Bitboard attackers;
 
-    attackers |= GetPawnAttacks(to, SideToMove()) & GetPieces(kPawn);
-    attackers |= GenerateAttacks<kKnight>(to, occupied) & GetPieces(kKnight);
-    attackers |= GenerateAttacks<kKing>(to, occupied) & GetPieces(kKing);
+    Side victim_side = ~attacker_side;
+
+    attackers |= GetPawnAttacks(to, victim_side) & GetPieces(attacker_side, kPawn);
+    attackers |= GenerateAttacks<kKnight>(to, occupied) & GetPieces(attacker_side, kKnight);
+    attackers |= GenerateAttacks<kKing>(to, occupied) & GetPieces(attacker_side, kKing);
 
     // Generates attacks from rooks, bishops, and queens:
     attackers |= GenerateAttacks<kRook>(to, occupied) &
-            (GetPieces(kRook) | GetPieces(kQueen));
+            (GetPieces(attacker_side, kRook) | GetPieces(attacker_side, kQueen));
     attackers |= GenerateAttacks<kBishop>(to, occupied) &
-            (GetPieces(kBishop) | GetPieces(kQueen));
+            (GetPieces(attacker_side, kBishop) | GetPieces(attacker_side, kQueen));
 
-    return attackers & GetPieces(by);
+    return attackers;
 }
 
 Square Position::GetKing(Side side) const {
@@ -111,8 +113,9 @@ Square Position::GetKing(Side side) const {
     return king.LeastSignificantBit();
 }
 
-Bitboard Position::GetCheckers(Side of) const {
-    return GetAttackers(GetKing(of), ~of);
+Bitboard Position::GetCheckers(Side king_side) const {
+    Side attacker_side = ~king_side;
+    return GetAttackers(GetKing(king_side), attacker_side);
 }
 
 namespace {

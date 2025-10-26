@@ -801,6 +801,33 @@ TEST(GetCheckers, SingleCheck) {
                         "   a b c d e f g h"
                     ));
     }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . p . . . . ."
+                "6: . K . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . . . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . . . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1");
+
+        EXPECT_THAT(position.GetCheckers(kWhite), EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . X . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ));
+    }
 }
 
 TEST(GetCheckers, DoubleCheck) {

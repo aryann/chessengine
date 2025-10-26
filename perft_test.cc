@@ -78,7 +78,7 @@ INSTANTIATE_TEST_SUITE_P(
 
             // TODO(aryann): This is wrong. Fix this once the move generator can
             // correctly generate all moves.
-            .expected_node_counts = {1, 15, 221, 3'320},
+            .expected_node_counts = {1, 14, 191, 2'808},
             }
         ),
         GetTestName);

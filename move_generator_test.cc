@@ -381,8 +381,72 @@ TEST(Bishops, Captures) {
                 ));
 }
 
+// N.B.: King quiet moves can place the king in check. The engine must undo
+// moves that place the king in check.
+TEST(King, QuietMoves) {
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . p . ."
+                "5: . . . . . . . ."
+                "4: . . . K . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . . . ."
+                "1: . n . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   w - - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "d4d5",
+                            "d4e4",
+                            "d4e5",
+                            "d4e3",
+                            "d4d3",
+                            "d4c3",
+                            "d4c4",
+                            "d4c5",
+                            })
+                    ));
+    }
+    //
+    {
+        Position position = MakePosition(
+                "8: . . . . . . . ."
+                "7: . . . . . . . ."
+                "6: . . . . . . . ."
+                "5: . . . . . . . ."
+                "4: . . . k . . . ."
+                "3: . . . . . . . ."
+                "2: . . . . . P . ."
+                "1: . N . . . . . ."
+                "   a b c d e f g h"
+                //
+                "   b - - 0 1"
+                );
+
+        EXPECT_THAT(GenerateMoves<kQuiet>(position), UnorderedElementsAreArray(
+                        MakeMoves({
+                            "d4d5",
+                            "d4e5",
+                            "d4e4",
+                            "d4e3",
+                            "d4d3",
+                            "d4c3",
+                            "d4c4",
+                            "d4c5",
+                            })
+                    ));
+    }
+}
+
+// N.B.: Evasions can still leave the king in check. The engine must undo
+// moves that place the king in check.
 TEST(King, Evasions) {
-    // N.B.: Evasions can still leave the king in check.
     {
         Position position = MakePosition(
                 "8: . . . . . . . ."
@@ -400,10 +464,10 @@ TEST(King, Evasions) {
 
         EXPECT_THAT(GenerateMoves<kEvasion>(position), UnorderedElementsAreArray(
                         MakeMoves({
+                            "d4d5",
                             "d4c5",
                             "d4c4",
                             "d4c3",
-                            "d4d5",
                             "d4d3",
                             "d4e5",
                             "d4e4",
