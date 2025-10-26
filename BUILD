@@ -61,6 +61,15 @@ cc_test(
     ],
 )
 
+cc_binary(
+    name = "chessengine",
+    srcs = ["chessengine.cc"],
+    deps = [
+        ":perft",
+        "@abseil-cpp//absl/strings",
+    ],
+)
+
 cc_library(
     name = "line",
     srcs = [],
@@ -143,6 +152,18 @@ cc_test(
     deps = [
         ":move",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "perft",
+    srcs = ["perft.cc"],
+    hdrs = ["perft.h"],
+    deps = [
+        ":move",
+        ":move_generator",
+        ":position",
+        ":scoped_move",
     ],
 )
 
