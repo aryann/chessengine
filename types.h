@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_TYPES_H_
 #define CHESS_ENGINE_TYPES_H_
 
+#include <format>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -103,6 +104,13 @@ enum class MoveType: std::uint8_t {
 using enum MoveType;
 
 } // namespace chessengine
+
+template<>
+struct std::formatter<chessengine::Square> : std::formatter<std::string> {
+    static auto format(chessengine::Square square, std::format_context &context) {
+        return std::format_to(context.out(), "{}", ToString(square));
+    }
+};
 
 #endif // CHESS_ENGINE_TYPES_H_
 

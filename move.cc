@@ -61,7 +61,7 @@ std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
 
 template<typename Out>
 Out Move::FormatTo(Out out) const {
-    out = std::format_to(out, "{}{}", ToString(from()), ToString(to()));
+    out = std::format_to(out, "{}{}", from(), to());
 
     if (IsPromotion()) {
         static char kPieceChars[] = {'n', 'b', 'r', 'q'};
