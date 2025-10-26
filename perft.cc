@@ -13,8 +13,9 @@ namespace chessengine {
 namespace {
 
 void RunPerft(std::size_t depth,
+              std::size_t current_depth,
               Position &position,
-              std::optional<Move> current_move,
+              std::optional<Move> start_move,
               std::vector<std::size_t> &depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
     // TODO(aryann): Find a better way to determine that the game is over.
@@ -23,17 +24,15 @@ void RunPerft(std::size_t depth,
         return;
     }
 
-    ++depth_counts[depth_counts.size() - depth - 1];
+    ++depth_counts[current_depth];
 
-    if (depth == 0) {
-        ++final_move_counts[*current_move];
+    if (depth == current_depth) {
+        ++final_move_counts[*start_move];
         return;
     }
 
-    Side side = position.SideToMove();
-
     std::vector<Move> moves;
-    if (position.GetCheckers(side)) {
+    if (position.GetCheckers(position.SideToMove())) {
         moves = GenerateMoves<kEvasion>(position);
     } else {
         moves = GenerateMoves<kQuiet, kCapture>(position);
@@ -42,9 +41,17 @@ void RunPerft(std::size_t depth,
     for (const Move &move: moves) {
         ScopedMove scoped_move(move, position);
 
-        if (!position.GetCheckers(side)) {
-            RunPerft(depth - 1, position, move, depth_counts, final_move_counts);
+        if (position.GetCheckers(~position.SideToMove())) {
+            continue;
         }
+
+        RunPerft(
+                depth,
+                current_depth + 1,
+                position,
+                start_move ? start_move : move,
+                depth_counts,
+                final_move_counts);
     }
 }
 
@@ -55,7 +62,7 @@ void RunPerft(std::size_t depth,
               std::vector<std::size_t> &depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
     depth_counts.resize(depth + 1, 0);
-    RunPerft(depth, position, std::nullopt, depth_counts, final_move_counts);
+    RunPerft(depth, 0, position, std::nullopt, depth_counts, final_move_counts);
 }
 
 } // namespace chessengine
