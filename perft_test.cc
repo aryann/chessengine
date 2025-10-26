@@ -68,10 +68,7 @@ INSTANTIATE_TEST_SUITE_P(
             PerftTestCase{
             .name = "Position2",
             .fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1",
-
-            // TODO(aryann): This is wrong. Fix this once the move generator can
-            // correctly generate all moves.
-            .expected_node_counts = {1, 48, 2'038},
+            .expected_node_counts = {1, 48, 2'039},
             },
 
             // https://www.chessprogramming.org/Perft_Results#Position_3
