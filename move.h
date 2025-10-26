@@ -2,6 +2,8 @@
 #define CHESS_ENGINE_MOVE_H_
 
 #include <expected>
+#include <format>
+#include <string>
 
 #include "castling.h"
 #include "absl/log/check.h"
@@ -57,7 +59,27 @@ public:
     constexpr auto operator<=>(const Move &other) const = default;
 
     template<typename Out>
-    Out FormatTo(Out out) const;
+    Out FormatTo(Out out, bool full) const {
+        out = std::format_to(out, "{}{}", from(), to());
+        if (!full) {
+            return out;
+        }
+
+        if (IsPromotion()) {
+            static char kPieceChars[] = {'n', 'b', 'r', 'q'};
+            out = std::format_to(out, "{}", kPieceChars[GetPromotedPiece() - kKnight]);
+        }
+
+        if (IsKingSideCastling()) {
+            out = std::format_to(out, "#oo");
+        }
+
+        if (IsQueenSideCastling()) {
+            out = std::format_to(out, "#ooo");
+        }
+
+        return out;
+    }
 
 private:
     [[nodiscard]] constexpr std::uint8_t GetFlags() const {
@@ -108,5 +130,34 @@ static_assert(alignof(UndoInfo) == 2,
               "Check for new members with larger alignment.");
 
 } // namespace chessengine
+
+template<>
+struct std::formatter<chessengine::Move> {
+public:
+    template<class ParseContext>
+    constexpr auto parse(ParseContext &ctx) {
+        auto it = ctx.begin();
+        if (it == ctx.end()) {
+            return it;
+        }
+
+        if (*it == 'f') {
+            full = true;
+            return ++it;
+        }
+
+        if (it != ctx.end() && *it != '}') {
+            throw std::format_error("Invalid format specifier for chessengine::Move: Expected {} or {:f}.");
+        }
+        return it;
+    }
+
+    auto format(const chessengine::Move &move, std::format_context &context) const {
+        return move.FormatTo(context.out(), full);
+    }
+
+private:
+    bool full = false;
+};
 
 #endif // CHESS_ENGINE_MOVE_H_

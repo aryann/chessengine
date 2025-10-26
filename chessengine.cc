@@ -29,7 +29,7 @@ void RunPerftCommand(std::string_view args, Position &position) {
     RunPerft(depth, position, depth_counts, final_move_counts);
 
     for (auto [move, count]: final_move_counts) {
-        std::cout << move << ": " << count << '\n';
+        std::println("{:f}: {}", move, count);
     }
 
     std::println();
