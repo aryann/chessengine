@@ -1077,7 +1077,6 @@ TEST(QuietPromotion, White) {
     }
 }
 
-
 TEST(QuietPromotion, Black) {
     Position position = MakePosition(
             "8: . . . . . . . ."

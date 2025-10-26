@@ -56,6 +56,9 @@ public:
 
     constexpr auto operator<=>(const Move &other) const = default;
 
+    template<typename Out>
+    Out FormatTo(Out out) const;
+
 private:
     [[nodiscard]] constexpr std::uint8_t GetFlags() const {
         return data_ >> 12;

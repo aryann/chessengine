@@ -59,21 +59,28 @@ std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
     return error;
 }
 
-std::ostream &operator<<(std::ostream &os, const Move &move) {
-    os << ToString(move.from()) << ToString(move.to());
-    if (move.IsPromotion()) {
+template<typename Out>
+Out Move::FormatTo(Out out) const {
+    out = std::format_to(out, "{}{}", ToString(from()), ToString(to()));
+
+    if (IsPromotion()) {
         static char kPieceChars[] = {'n', 'b', 'r', 'q'};
-        os << kPieceChars[move.GetPromotedPiece() - kKnight];
+        out = std::format_to(out, "{}", kPieceChars[GetPromotedPiece() - kKnight]);
     }
 
-    if (move.IsKingSideCastling()) {
-        os << "#oo";
+    if (IsKingSideCastling()) {
+        out = std::format_to(out, "#oo");
     }
 
-    if (move.IsQueenSideCastling()) {
-        os << "#ooo";
+    if (IsQueenSideCastling()) {
+        out = std::format_to(out, "#ooo");
     }
 
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &os, const Move &move) {
+    move.FormatTo(std::ostream_iterator<char>(os));
     return os;
 }
 
