@@ -170,12 +170,12 @@ cc_library(
 cc_test(
     name = "perft_test",
     srcs = ["perft_test.cc"],
+    shard_count = 8,
     deps = [
         ":move",
         ":move_generator",
         ":perft",
         ":position",
-        ":scoped_move",
         "@abseil-cpp//absl/strings",
         "@googletest//:gtest_main",
     ],
