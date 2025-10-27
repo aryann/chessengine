@@ -1041,7 +1041,7 @@ TEST(EnPassant, Capture) {
 }
 
 TEST(EnPassant, OtherPiecesCannotMoveToSquare) {
-    Position position = MakePosition(
+    static constexpr absl::string_view kInitialPosition =
             "8: . . . . . . . ."
             "7: . . p . . . . ."
             "6: . . . p . . . ."
@@ -1052,23 +1052,29 @@ TEST(EnPassant, OtherPiecesCannotMoveToSquare) {
             "1: . . . . . . . ."
             "   a b c d e f g h"
             //
-            "   b - g3 1 1"
-            );
+            "   b - g3 1 1";
 
-    position.Do(Move(H4, G3));
-    EXPECT_THAT(position, EqualsPosition(
-                    "8: . . . . . . . ."
-                    "7: . . p . . . . ."
-                    "6: . . . p . . . ."
-                    "5: K P . . . . . r"
-                    "4: . R . . . p P ."
-                    "3: . . . . . . k ."
-                    "2: . . . . P . . ."
-                    "1: . . . . . . . ."
-                    "   a b c d e f g h"
-                    //
-                    "   w - - 2 2"
-                ));
+    Position position = MakePosition(kInitialPosition);
+
+    //
+    {
+        ScopedMove move(Move(H4, G3), position);
+        EXPECT_THAT(position, EqualsPosition(
+                        "8: . . . . . . . ."
+                        "7: . . p . . . . ."
+                        "6: . . . p . . . ."
+                        "5: K P . . . . . r"
+                        "4: . R . . . p P ."
+                        "3: . . . . . . k ."
+                        "2: . . . . P . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                        //
+                        "   w - - 2 2"
+                    ));
+    }
+
+    EXPECT_THAT(position, EqualsPosition(kInitialPosition));
 }
 
 TEST(QuietPromotion, White) {
