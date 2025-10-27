@@ -4,4 +4,10 @@ set -o errexit
 set -o nounset
 
 fswatch -o ./*.cc ./*.h | \
-  xargs -n1 -I{} bazel test ... -c opt --test_output=streamed
+  xargs -n1 -I{} bazel test ... \
+    -c opt \
+    --test_output=streamed \
+    -- \
+    --gtest_color=yes \
+    --gtest_fail_if_no_test_linked \
+    --gtest_fail_if_no_test_selected
