@@ -1040,6 +1040,37 @@ TEST(EnPassant, Capture) {
     EXPECT_THAT(position, EqualsPosition(initial));
 }
 
+TEST(EnPassant, OtherPiecesCannotMoveToSquare) {
+    Position position = MakePosition(
+            "8: . . . . . . . ."
+            "7: . . p . . . . ."
+            "6: . . . p . . . ."
+            "5: K P . . . . . r"
+            "4: . R . . . p P k"
+            "3: . . . . . . . ."
+            "2: . . . . P . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   b - g3 1 1"
+            );
+
+    position.Do(Move(H4, G3));
+    EXPECT_THAT(position, EqualsPosition(
+                    "8: . . . . . . . ."
+                    "7: . . p . . . . ."
+                    "6: . . . p . . . ."
+                    "5: K P . . . . . r"
+                    "4: . R . . . p P ."
+                    "3: . . . . . . k ."
+                    "2: . . . . P . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                    //
+                    "   w - - 2 2"
+                ));
+}
+
 TEST(QuietPromotion, White) {
     Position position = MakePosition(
             "8: . . . . . . . ."

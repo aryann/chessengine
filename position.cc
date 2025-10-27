@@ -288,7 +288,7 @@ UndoInfo Position::Do(const Move &move) {
     Piece piece = GetPiece(move.from());
     DCHECK(piece != kEmptyPiece);
 
-    if (en_passant_target_ && move.to() == *en_passant_target_) {
+    if (en_passant_target_ && move.to() == *en_passant_target_ && piece == kPawn) {
         Square victim_square = MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
         pieces_[kPawn].Clear(victim_square);
         sides_[~side_to_move_].Clear(victim_square);
