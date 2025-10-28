@@ -4,9 +4,10 @@
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
 #include "command.h"
+#include "commands/display.h"
+#include "commands/perft.h"
 #include "commands/position.h"
 #include "move_generator.h"
-#include "perft.h"
 #include "position.h"
 
 namespace chessengine {

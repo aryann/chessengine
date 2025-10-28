@@ -17,54 +17,6 @@ public:
     [[nodiscard]] virtual std::expected<void, std::string> Run(std::vector<std::string_view> args) = 0;
 };
 
-class Display : public Command {
-public:
-    explicit Display(const Position &position):
-        position_(position) {
-    }
-
-    ~Display() override = default;
-
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override {
-        std::println("{}", position_);
-        return {};
-    }
-
-private:
-    const Position &position_;
-};
-
-class PerftCommand : public Command {
-public:
-    PerftCommand(const Position &position):
-        position_(position) {
-    }
-
-    ~PerftCommand() override = default;
-
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override {
-        int depth = 1;
-        if (!args.empty()) {
-            depth = std::stoi(std::string(args[0]));
-        }
-
-        std::vector<std::size_t> depth_counts;
-        std::map<Move, std::size_t> final_move_counts;
-        RunPerft(depth, position_, depth_counts, final_move_counts);
-
-        for (auto [move, count]: final_move_counts) {
-            std::println("{}: {}", move, count);
-        }
-
-        std::println();
-        std::println("Nodes searched: {}", depth_counts.back());
-        return {};
-    }
-
-private:
-    Position position_;
-};
-
 template<class... Ts>
 struct overloaded : Ts... {
     using Ts::operator()...;
