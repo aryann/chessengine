@@ -6,6 +6,7 @@ cc_binary(
         "//:move_generator",
         "//:perft",
         "//:position",
+        "//cli/commands:position",
         "@abseil-cpp//absl/strings",
     ],
 )
