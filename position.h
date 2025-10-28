@@ -22,6 +22,8 @@ public:
     // value is invalid.
     static std::expected<Position, std::string> FromFen(std::string_view fen);
 
+    static std::expected<Position, std::string> FromFen(const std::vector<std::string_view> &fen_parts);
+
     // Returns the piece at the given square.
     [[nodiscard]] Piece GetPiece(Square square) const;
 

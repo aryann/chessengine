@@ -183,7 +183,6 @@ std::expected<CastlingRights, std::string> SetCastlingRights(std::string_view in
         return std::unexpected(std::format("Invalid castling rights: {}", input));
     }
 
-
     if (input.contains("K")) {
         rights.Set(kWhiteKing);
     }
@@ -214,18 +213,17 @@ Position Position::Starting() {
     return result.value();
 }
 
-std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
-    std::vector<std::string_view> parts = absl::StrSplit(fen, absl::ByAsciiWhitespace());
-    if (parts.size() != 6) {
-        return std::unexpected(std::format("FEN string must have 6 parts; received: {}", parts.size()));
+std::expected<Position, std::string> Position::FromFen(const std::vector<std::string_view> &fen_parts) {
+    if (fen_parts.size() != 6) {
+        return std::unexpected(std::format("FEN string must have 6 parts; received: {}", fen_parts.size()));
     }
 
-    std::string_view board = parts[0];
-    std::string_view side_to_move = parts[1];
-    std::string_view castling_rights = parts[2];
-    std::string_view en_passant_target = parts[3];
-    std::string_view half_moves = parts[4];
-    std::string_view full_moves = parts[5];
+    std::string_view board = fen_parts[0];
+    std::string_view side_to_move = fen_parts[1];
+    std::string_view castling_rights = fen_parts[2];
+    std::string_view en_passant_target = fen_parts[3];
+    std::string_view half_moves = fen_parts[4];
+    std::string_view full_moves = fen_parts[5];
 
     Position position;
     if (auto result = ParseBoard(board, position.pieces_, position.sides_); !result.has_value()) {
@@ -262,6 +260,10 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
     position.full_moves_ = std::stoi(std::string(full_moves));
 
     return position;
+}
+
+std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
+    return Position::FromFen(absl::StrSplit(fen, absl::ByAsciiWhitespace()));
 }
 
 UndoInfo Position::Do(const Move &move) {
