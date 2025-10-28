@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string_view>
 
-#include "move_generator.h"
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
+#include "move_generator.h"
 #include "perft.h"
 #include "position.h"
 

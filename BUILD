@@ -61,15 +61,6 @@ cc_test(
     ],
 )
 
-cc_binary(
-    name = "chessengine",
-    srcs = ["chessengine.cc"],
-    deps = [
-        ":perft",
-        "@abseil-cpp//absl/strings",
-    ],
-)
-
 cc_library(
     name = "line",
     srcs = [],
@@ -95,6 +86,9 @@ cc_library(
     name = "position",
     srcs = ["position.cc"],
     hdrs = ["position.h"],
+    visibility = [
+        "//cli:__subpackages__",
+    ],
     deps = [
         ":attacks",
         ":bitboard",
@@ -159,6 +153,9 @@ cc_library(
     name = "perft",
     srcs = ["perft.cc"],
     hdrs = ["perft.h"],
+    visibility = [
+        "//cli:__subpackages__",
+    ],
     deps = [
         ":move",
         ":move_generator",
@@ -185,6 +182,9 @@ cc_library(
     name = "move_generator",
     srcs = ["move_generator.cc"],
     hdrs = ["move_generator.h"],
+    visibility = [
+        "//cli:__subpackages__",
+    ],
     deps = [
         ":attacks",
         ":line",
