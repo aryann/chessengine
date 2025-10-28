@@ -1,10 +1,11 @@
-#ifndef CHESS_ENGINE_CLI_COMMANDS_PERFT_H_
-#define CHESS_ENGINE_CLI_COMMANDS_PERFT_H_
+#ifndef CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_
+#define CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_
 
 #include <string>
 #include <string_view>
 #include <vector>
 
+#include "perft.h"
 #include "position.h"
 
 namespace chessengine {
@@ -42,4 +43,4 @@ private:
 
 } // namespace chessengine
 
-#endif // CHESS_ENGINE_CLI_COMMANDS_PERFT_H_
+#endif // CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_

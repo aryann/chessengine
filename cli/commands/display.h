@@ -8,6 +8,7 @@
 #include "position.h"
 
 namespace chessengine {
+class Position;
 
 class Display : public Command {
 public:

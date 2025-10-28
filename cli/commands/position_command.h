@@ -1,11 +1,10 @@
-#ifndef CHESS_ENGINE_CLI_COMMANDS_POSITION_H_
-#define CHESS_ENGINE_CLI_COMMANDS_POSITION_H_
+#ifndef CHESS_ENGINE_CLI_COMMANDS_POSITION_COMMAND_H_
+#define CHESS_ENGINE_CLI_COMMANDS_POSITION_COMMAND_H_
 
 #include <string>
 #include <string_view>
 #include <vector>
 
-#include "perft.h"
 #include "position.h"
 #include "cli/command.h"
 
@@ -52,4 +51,4 @@ private:
 
 } // namespace chessengine
 
-#endif // CHESS_ENGINE_CLI_COMMANDS_POSITION_H_
+#endif // CHESS_ENGINE_CLI_COMMANDS_POSITION_COMMAND_H_

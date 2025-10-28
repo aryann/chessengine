@@ -7,15 +7,15 @@ cc_binary(
         "//:perft",
         "//:position",
         "//cli/commands:display",
-        "//cli/commands:perft",
-        "//cli/commands:position",
+        "//cli/commands:perft_command",
+        "//cli/commands:position_command",
         "@abseil-cpp//absl/strings",
     ],
 )
 
 cc_library(
     name = "command",
-    srcs = [],
+    srcs = ["command.cc"],
     hdrs = ["command.h"],
     deps = [
         "//:perft",

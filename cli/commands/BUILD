@@ -13,9 +13,9 @@ cc_library(
 )
 
 cc_library(
-    name = "perft",
+    name = "perft_command",
     srcs = [],
-    hdrs = ["perft.h"],
+    hdrs = ["perft_command.h"],
     visibility = [
         "//cli:__subpackages__",
     ],
@@ -27,9 +27,9 @@ cc_library(
 )
 
 cc_library(
-    name = "position",
+    name = "position_command",
     srcs = [],
-    hdrs = ["position.h"],
+    hdrs = ["position_command.h"],
     visibility = [
         "//cli:__subpackages__",
     ],
