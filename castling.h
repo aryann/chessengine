@@ -24,9 +24,9 @@ constexpr Bitboard GetQueenSideCastlingPath() {
     static_assert(Side == kWhite || Side == kBlack);
 
     if constexpr (Side == kWhite) {
-        return Bitboard(C1) | Bitboard(D1);
+        return Bitboard(B1) | Bitboard(C1) | Bitboard(D1);
     } else {
-        return Bitboard(C8) | Bitboard(D8);
+        return Bitboard(B8) | Bitboard(C8) | Bitboard(D8);
     }
 }
 

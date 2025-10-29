@@ -20,7 +20,7 @@ std::optional<Move::Flags> ParsePromotionPiece(char c) {
     }
 }
 
-} // namespaceq
+} // namespace
 
 std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
     auto error = std::unexpected(std::format("Invalid UCI move: {}", input));

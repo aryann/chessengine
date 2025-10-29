@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+bazel test \
+    --copt=-O3 --copt=-DNDEBUG \
+    :perft_test \
+    --test_arg=--gtest_color=yes \
+    --test_arg=--gtest_fail_if_no_test_linked

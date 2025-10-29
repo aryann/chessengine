@@ -101,14 +101,14 @@ TEST(GetQueenSideCastlingPath, White) {
                     "4: . . . . . . . ."
                     "3: . . . . . . . ."
                     "2: . . . . . . . ."
-                    "1: . . X X . . . ."
+                    "1: . X X X . . . ."
                     "   a b c d e f g h"
                 ));
 }
 
 TEST(GetQueenSideCastlingPath, Black) {
     EXPECT_THAT(GetQueenSideCastlingPath<kBlack>(), EqualsBitboard(
-                    "8: . . X X . . . ."
+                    "8: . X X X . . . ."
                     "7: . . . . . . . ."
                     "6: . . . . . . . ."
                     "5: . . . . . . . ."
