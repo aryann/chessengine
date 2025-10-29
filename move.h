@@ -61,13 +61,14 @@ public:
     template<typename Out>
     Out FormatTo(Out out, bool full) const {
         out = std::format_to(out, "{}{}", from(), to());
-        if (!full) {
-            return out;
-        }
 
         if (IsPromotion()) {
             static char kPieceChars[] = {'n', 'b', 'r', 'q'};
             out = std::format_to(out, "{}", kPieceChars[GetPromotedPiece() - kKnight]);
+        }
+
+        if (!full) {
+            return out;
         }
 
         if (IsKingSideCastling()) {

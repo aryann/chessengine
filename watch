@@ -7,7 +7,5 @@ fswatch -o ./*.cc ./*.h | \
   xargs -n1 -I{} bazel test ... \
     -c opt \
     --test_output=streamed \
-    -- \
-    --gtest_color=yes \
-    --gtest_fail_if_no_test_linked \
-    --gtest_fail_if_no_test_selected
+    --test_arg=--gtest_color=yes \
+    --test_arg=--gtest_fail_if_no_test_linked

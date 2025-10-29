@@ -13,7 +13,7 @@ namespace chessengine {
 
 class PerftCommand : public Command {
 public:
-    explicit PerftCommand(const Position &position):
+    explicit PerftCommand(Position &position):
         position_(position) {
     }
 
@@ -39,7 +39,7 @@ public:
     }
 
 private:
-    Position position_;
+    Position &position_;
 };
 
 } // namespace chessengine

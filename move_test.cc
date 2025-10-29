@@ -161,6 +161,7 @@ TEST(Move, String) {
         return buf.str();
     };
 
+
     EXPECT_THAT(ToString(Move(E7, E5)), Eq("e7e5"));
     EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kKnightPromotion)), Eq("g2g1n"));
     EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kBishopPromotion)), Eq("g2g1b"));
@@ -169,6 +170,24 @@ TEST(Move, String) {
 
     EXPECT_THAT(ToString(Move(E1, G1, Move::Flags::kKingCastle)), Eq("e1g1#oo"));
     EXPECT_THAT(ToString(Move(E1, C1, Move::Flags::kQueenCastle)), Eq("e1c1#ooo"));
+
+    EXPECT_THAT(std::format("{}", Move(E7, E5)), Eq("e7e5"));
+    EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kKnightPromotion)), Eq("g2g1n"));
+    EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kBishopPromotion)), Eq("g2g1b"));
+    EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kRookPromotion)), Eq("g2g1r"));
+    EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kQueenPromotion)), Eq("g2g1q"));
+
+    EXPECT_THAT(std::format("{}", Move(E1, G1, Move::Flags::kKingCastle)), Eq("e1g1"));
+    EXPECT_THAT(std::format("{}", Move(E1, C1, Move::Flags::kQueenCastle)), Eq("e1c1"));
+
+    EXPECT_THAT(std::format("{:f}", Move(E7, E5)), Eq("e7e5"));
+    EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kKnightPromotion)), Eq("g2g1n"));
+    EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kBishopPromotion)), Eq("g2g1b"));
+    EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kRookPromotion)), Eq("g2g1r"));
+    EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kQueenPromotion)), Eq("g2g1q"));
+
+    EXPECT_THAT(std::format("{:f}", Move(E1, G1, Move::Flags::kKingCastle)), Eq("e1g1#oo"));
+    EXPECT_THAT(std::format("{:f}", Move(E1, C1, Move::Flags::kQueenCastle)), Eq("e1c1#ooo"));
 }
 
 } // namespace

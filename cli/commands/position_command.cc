@@ -55,7 +55,10 @@ std::expected<void, std::string> StartPos::Run(std::vector<std::string_view> arg
 }
 
 std::expected<void, std::string> FenPos::Run(std::vector<std::string_view> args) {
-    auto result = Position::FromFen(args);
+    auto result = Position::FromFen({
+            args.begin(),
+            args.begin() + std::min(static_cast<std::size_t>(6), args.size()),
+    });
     if (!result.has_value()) {
         return std::unexpected(result.error());
     }
