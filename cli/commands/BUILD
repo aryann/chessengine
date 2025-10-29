@@ -8,6 +8,7 @@ cc_library(
     deps = [
         "//:perft",
         "//:position",
+        "//cli:command",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -22,20 +23,23 @@ cc_library(
     deps = [
         "//:perft",
         "//:position",
+        "//cli:command",
         "@abseil-cpp//absl/strings",
     ],
 )
 
 cc_library(
     name = "position_command",
-    srcs = [],
+    srcs = ["position_command.cc"],
     hdrs = ["position_command.h"],
     visibility = [
         "//cli:__subpackages__",
     ],
     deps = [
+        "//:move",
         "//:perft",
         "//:position",
+        "//cli:command",
         "@abseil-cpp//absl/strings",
     ],
 )

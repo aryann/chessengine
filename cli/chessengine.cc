@@ -10,43 +10,7 @@
 #include "move_generator.h"
 #include "position.h"
 
-namespace chessengine {
-
-std::optional<Move> FindMove(std::string_view uci_move, const std::vector<Move> &moves) {
-    for (const Move &move: moves) {
-        if (std::format("{}", move) == uci_move) {
-            return move;
-        }
-    }
-    return std::nullopt;
-}
-
-void ApplyMoves(const std::vector<std::string_view> &uci_moves, Position &position) {
-    for (std::string_view uci_move: uci_moves) {
-        std::vector<Move> moves;
-        if (position.GetCheckers(position.SideToMove())) {
-            moves = GenerateMoves<kEvasion>(position);
-        } else {
-            moves = GenerateMoves<kQuiet, kCapture>(position);
-        }
-
-        std::optional<Move> move = FindMove(uci_move, moves);
-        if (!move) {
-            std::println(stderr, "Invalid move: {}", uci_move);
-            return;
-        }
-
-        position.Do(*move);
-        if (position.GetCheckers(~position.SideToMove())) {
-            std::println(stderr, "Move places side in check: {}", uci_move);
-            return;
-        }
-    }
-}
-
-} // namespace chessengine
-
-int main(int argc, char **argv) {
+[[noreturn]] int main(int argc, char **argv) {
     std::println("Welcome!");
     std::println();
 
@@ -87,7 +51,5 @@ int main(int argc, char **argv) {
             std::println(stderr, "{}", error.error());
         }
     }
-
-    return 0;
 }
 

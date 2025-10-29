@@ -26,7 +26,7 @@ CommandDispatcher &CommandDispatcher::Add(std::string arg, CommandDispatcher dis
 }
 
 [[nodiscard]] std::expected<void, std::string> CommandDispatcher::Run(std::vector<std::string_view> args) {
-    if (args.empty() || args[0] == "") {
+    if (args.empty() || args[0].empty()) {
         return {};
     }
 

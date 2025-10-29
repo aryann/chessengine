@@ -133,6 +133,9 @@ cc_library(
     name = "move",
     srcs = ["move.cc"],
     hdrs = ["move.h"],
+    visibility = [
+        "//cli:__subpackages__",
+    ],
     deps = [
         ":castling",
         ":types",

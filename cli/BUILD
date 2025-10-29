@@ -17,6 +17,9 @@ cc_library(
     name = "command",
     srcs = ["command.cc"],
     hdrs = ["command.h"],
+    visibility = [
+        "//cli/commands:__subpackages__",
+    ],
     deps = [
         "//:perft",
         "//:position",

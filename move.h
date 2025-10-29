@@ -132,7 +132,7 @@ static_assert(alignof(UndoInfo) == 2,
 } // namespace chessengine
 
 template<>
-struct std::formatter<chessengine::Move> {
+struct std::formatter<chessengine::Move> : std::formatter<std::string> {
 public:
     template<class ParseContext>
     constexpr auto parse(ParseContext &ctx) {

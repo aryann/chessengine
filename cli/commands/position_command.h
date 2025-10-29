@@ -5,8 +5,8 @@
 #include <string_view>
 #include <vector>
 
-#include "position.h"
 #include "cli/command.h"
+#include "position.h"
 
 namespace chessengine {
 
@@ -18,10 +18,7 @@ public:
 
     ~StartPos() override = default;
 
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override {
-        position_ = Position::Starting();
-        return {};
-    }
+    std::expected<void, std::string> Run(std::vector<std::string_view> args) override;
 
 private:
     Position &position_;
@@ -35,15 +32,7 @@ public:
 
     ~FenPos() override = default;
 
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override {
-        auto result = Position::FromFen(args);
-        if (result.has_value()) {
-            position_ = result.value();
-            return {};
-        }
-
-        return std::unexpected(result.error());
-    }
+    std::expected<void, std::string> Run(std::vector<std::string_view> args) override;
 
 private:
     Position &position_;

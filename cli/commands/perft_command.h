@@ -5,6 +5,7 @@
 #include <string_view>
 #include <vector>
 
+#include "cli/command.h"
 #include "perft.h"
 #include "position.h"
 
