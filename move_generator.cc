@@ -136,9 +136,35 @@ Bitboard GetTargets(const Position &position) {
     }
 
     if constexpr (MoveType == kEvasion) {
-        Square from = position.GetCheckers(Side).LeastSignificantBit();
+        Bitboard checkers = position.GetCheckers(Side);
+        Square from = checkers.LeastSignificantBit();
         Square to = position.GetKing(Side);
-        return GetLine(from, to);
+
+        DCHECK(checkers.GetCount() == 1);
+
+        // If the former Bitboard is zero, then the checker is a knight.
+        DCHECK(GetLine(from, to) || position.GetPiece(from) == kKnight);
+
+        return GetLine(from, to) | checkers;
+    }
+
+    return {};
+}
+
+template<Side Side, MoveType MoveType>
+Bitboard GetKingTargets(const Position &position) {
+    if constexpr (MoveType == kQuiet) {
+        return ~position.GetPieces();
+    }
+
+    if constexpr (MoveType == kCapture) {
+        return position.GetPieces(~Side);
+    }
+
+    if constexpr (MoveType == kEvasion) {
+        // If the move type is an evasion, then the king should be allowed to move
+        // to any square that is not occupied by its own side.
+        return ~position.GetPieces(Side);
     }
 
     return {};
@@ -146,7 +172,6 @@ Bitboard GetTargets(const Position &position) {
 
 template<Side Side, MoveType MoveType>
 void GenerateMoves(const Position &position, std::vector<Move> &moves) {
-    Bitboard targets = GetTargets<Side, MoveType>(position);
 
     // Generate moves for all non-king pieces. This logic is shared for two
     // main scenarios:
@@ -160,11 +185,18 @@ void GenerateMoves(const Position &position, std::vector<Move> &moves) {
     //      double check, only the king can move, so this is skipped.
     //
     //      When MoveType is kEvasion, `GetTargets()` returns a bitboard of
-    //      *only* the squares between the checker and the king (excluding
-    //      the king square itself). This causes the piece generators to find
-    //      all legal moves where a friendly piece blocks the check.
+    //      all squares that can resolve the check:
+    //
+    //        * The square of the checking piece (for capture). This square
+    //          may be occupied by a knight.
+    //        * For sliding checkers (Q, R, B), the squares *between* the
+    //          checker and the king (for blocking).
+    //
+    //    The piece generators then find all moves to these target squares.
     //
     if (MoveType == kQuiet || MoveType == kCapture || position.GetCheckers(Side).GetCount() == 1) {
+        Bitboard targets = GetTargets<Side, MoveType>(position);
+
         GeneratePawnMoves<Side, MoveType>(position, moves);
         GenerateMoves<Side, kKnight>(position, targets, moves);
         GenerateMoves<Side, kBishop>(position, targets, moves);
@@ -172,12 +204,8 @@ void GenerateMoves(const Position &position, std::vector<Move> &moves) {
         GenerateMoves<Side, kQueen>(position, targets, moves);
     }
 
-    if constexpr (MoveType == kEvasion) {
-        // If the move type is an evasion, then the king should be allowed to move
-        // to any square that is not occupied by its own side.
-        targets = ~position.GetPieces(Side);
-    }
-    GenerateMoves<Side, kKing>(position, targets, moves);
+
+    GenerateMoves<Side, kKing>(position, GetKingTargets<Side, MoveType>(position), moves);
 
     if constexpr (MoveType == kQuiet) {
         GenerateCastlingMoves<Side>(position, moves);

@@ -33,6 +33,7 @@ std::expected<void, std::string> ApplyMoves(const std::vector<std::string_view> 
             moves = GenerateMoves<kQuiet, kCapture>(position);
         }
 
+
         std::optional<Move> move = FindMove(uci_moves[i], moves);
         if (!move) {
             return std::unexpected(std::format("Illegal move: {}", uci_moves[i]));

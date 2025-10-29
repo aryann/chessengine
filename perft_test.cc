@@ -33,7 +33,8 @@ const std::vector<PerftTestCase> kTestCases = {
                         400,
                         8'902,
                         197'281,
-                        // 4'865'609,
+                        4'865'609,
+                        119'060'324,
                 },
         },
 
@@ -60,7 +61,7 @@ const std::vector<PerftTestCase> kTestCases = {
                         43'238,
                         674'624,
                         11'030'083,
-                        // 178'633'661,
+                        178'633'661,
                         // 3'009'794'393,
                 },
         },
@@ -74,7 +75,8 @@ const std::vector<PerftTestCase> kTestCases = {
                         6,
                         264,
                         9'467,
-                        //422'333,
+                        422'333,
+                        15'833'292,
                 },
         },
 
@@ -87,6 +89,8 @@ const std::vector<PerftTestCase> kTestCases = {
                         1,
                         44,
                         1'486,
+                        62'379,
+                        2'103'487,
                 },
         },
 

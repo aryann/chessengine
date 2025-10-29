@@ -824,5 +824,23 @@ TEST(Castling, BlackQueenSideB8AttackedIsLegal) {
                 ));
 }
 
+TEST(Evasion, CheckResolvedViaKnightCapture) {
+    Position position = MakePosition(
+            "8: . . . k . . . ."
+            "7: . . . . . N . ."
+            "6: . . . . . . b ."
+            "5: . . . . . . . ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            //
+            "   b - - 0 2"
+            );
+
+    EXPECT_THAT(GenerateMoves<kEvasion>(position), Contains(MakeMove("g6f7")));
+}
+
 } // namespace
 } // namespace chessengine
