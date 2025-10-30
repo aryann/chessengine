@@ -56,6 +56,21 @@ public:
         }
     }
 
+    [[nodiscard]] constexpr std::uint64_t Extract(std::uint64_t mask) const {
+        std::uint64_t input = data_;
+        std::uint64_t result = 0;
+        while (mask != 0) {
+            if ((mask & 1) == 1) {
+                result <<= 1;
+                result |= (input & 1);
+            }
+            mask >>= 1;
+            input >>= 1;
+        }
+
+        return result;
+    }
+
     constexpr bool operator==(const Bitboard &other) const = default;
 
     constexpr Bitboard operator+(const Bitboard &other) const {

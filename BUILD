@@ -7,8 +7,15 @@ cc_library(
     hdrs = ["attacks.h"],
     deps = [
         ":bitboard",
+        "@abseil-cpp//absl/log",
         "@abseil-cpp//absl/log:check",
     ],
+)
+
+cc_binary(
+    name = "attacks_main",
+    srcs = ["attacks_main.cc"],
+    deps = [":attacks"],
 )
 
 cc_test(

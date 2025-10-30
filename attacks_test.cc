@@ -1080,5 +1080,116 @@ TEST(MakePowerSet, RookMask) {
                     }));
 }
 
+
+TEST(GenerateRookAttacksFast, Center_NoBlockers) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateRookAttacksFast(D5, blockers), EqualsBitboard(
+                    "8: . . . X . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: X X X . X X X X"
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . X . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacksFast, Center_AdjacentBlockers) {
+    Bitboard blockers(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . X . . . ."
+            "5: . . X . X . . ."
+            "4: . . . X . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateRookAttacksFast(D5, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . X . . . ."
+                    "5: . . X . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . . . . . . ."
+                    "2: . . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacksFast, Center_MultipleBlockersOnRay) {
+    Bitboard blockers(
+            "8: . . . . . . . ."
+            "7: . . . X . . . ."
+            "6: . . . . . . . ."
+            "5: . X . . X . X ."
+            "4: . . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . X . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateRookAttacksFast(D5, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: . X X . X . . ."
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacksFast, CornerA1_NoBlockers) {
+    Bitboard blockers;
+
+    EXPECT_THAT(GenerateRookAttacksFast(A1, blockers), EqualsBitboard(
+                    "8: X . . . . . . ."
+                    "7: X . . . . . . ."
+                    "6: X . . . . . . ."
+                    "5: X . . . . . . ."
+                    "4: X . . . . . . ."
+                    "3: X . . . . . . ."
+                    "2: X . . . . . . ."
+                    "1: . X X X X X X X"
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(GenerateRookAttacksFast, CornerA1_WithBlockers) {
+    Bitboard blockers(
+            "8: . . . . . . . ."
+            "7: . . . . . . . ."
+            "6: . . . . . . . ."
+            "5: . . . . . . . ."
+            "4: X . . . . . . ."
+            "3: . . . . . . . ."
+            "2: . . . . . . . ."
+            "1: . . . X . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(GenerateRookAttacksFast(A1, blockers), EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . . . . . ."
+                    "6: . . . . . . . ."
+                    "5: . . . . . . . ."
+                    "4: X . . . . . . ."
+                    "3: X . . . . . . ."
+                    "2: X . . . . . . ."
+                    "1: . X X X . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
 } // namespace
 } // namespace chessengine
