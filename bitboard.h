@@ -58,6 +58,14 @@ public:
 
     constexpr bool operator==(const Bitboard &other) const = default;
 
+    constexpr Bitboard operator+(const Bitboard &other) const {
+        return Bitboard(data_ - other.data_);
+    }
+
+    constexpr Bitboard operator-(const Bitboard &other) const {
+        return Bitboard(data_ - other.data_);
+    }
+
     constexpr Bitboard operator&(const Bitboard &other) const {
         return Bitboard(data_ & other.data_);
     }

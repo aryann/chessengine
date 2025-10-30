@@ -188,21 +188,14 @@ struct SlidingAttacks {
 };
 
 constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
-    std::vector<Square> squares;
-    while (mask) {
-        squares.push_back(mask.PopLeastSignificantBit());
-    }
-
-    int cardinality = 1 << squares.size();
+    // https://www.chessprogramming.org/Traversing_Subsets_of_a_Set
+    std::size_t cardinality = 1ULL << mask.GetCount();
     std::vector<Bitboard> subsets(cardinality);
+
+    Bitboard sub_mask;
     for (int i = 0; i < cardinality; ++i) {
-        int curr = i;
-        for (const Square &square: squares) {
-            if (curr & 1) {
-                subsets[i].Set(square);
-            }
-            curr = curr >> 1;
-        }
+        subsets[i] = sub_mask;
+        sub_mask = (sub_mask - mask & mask);
     }
 
     return subsets;
