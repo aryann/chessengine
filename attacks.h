@@ -197,13 +197,11 @@ constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
     std::vector<Bitboard> subsets(cardinality);
     for (int i = 0; i < cardinality; ++i) {
         int curr = i;
-        int square = 0;
-        while (curr != 0) {
+        for (const Square &square: squares) {
             if (curr & 1) {
-                subsets[i].Set(squares[square]);
+                subsets[i].Set(square);
             }
             curr = curr >> 1;
-            ++square;
         }
     }
 
