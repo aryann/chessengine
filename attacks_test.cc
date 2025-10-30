@@ -8,6 +8,8 @@ namespace chessengine {
 namespace {
 
 using testing::Eq;
+using testing::SizeIs;
+using testing::IsSupersetOf;
 
 TEST(MakeRay, North_CenterBoardRay) {
     EXPECT_THAT(MakeRay<kNorth>(E4), EqualsBitboard(
@@ -952,6 +954,130 @@ TEST(GenerateQueenAttacks, Surrounded) {
                     "1: . . . . . . . ."
                     "   a b c d e f g h"
                 ));
+}
+
+TEST(Magic, RelevancyMasks) {
+    EXPECT_THAT(kSlidingAttacks.rook_magic_squares[A8].mask, EqualsBitboard(
+                    "8: . X X X X X X ."
+                    "7: X . . . . . . ."
+                    "6: X . . . . . . ."
+                    "5: X . . . . . . ."
+                    "4: X . . . . . . ."
+                    "3: X . . . . . . ."
+                    "2: X . . . . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+
+    EXPECT_THAT(kSlidingAttacks.rook_magic_squares[D5].mask, EqualsBitboard(
+                    "8: . . . . . . . ."
+                    "7: . . . X . . . ."
+                    "6: . . . X . . . ."
+                    "5: . X X . X X X ."
+                    "4: . . . X . . . ."
+                    "3: . . . X . . . ."
+                    "2: . . . X . . . ."
+                    "1: . . . . . . . ."
+                    "   a b c d e f g h"
+                ));
+}
+
+TEST(MakePowerSet, RookMask) {
+    Bitboard mask(
+            "8: . . . . . . . ."
+            "7: . . . X . . . ."
+            "6: . . . X . . . ."
+            "5: . X X . X X X ."
+            "4: . . . X . . . ."
+            "3: . . . X . . . ."
+            "2: . . . X . . . ."
+            "1: . . . . . . . ."
+            "   a b c d e f g h"
+            );
+
+    EXPECT_THAT(mask.GetCount(), Eq(10));
+
+    std::vector<Bitboard> power_set = MakePowerSet(mask);
+    EXPECT_THAT(power_set, SizeIs(1 << 10));
+    EXPECT_THAT(power_set, IsSupersetOf({
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . X . . . ."
+                        "5: . X X . X X X ."
+                        "4: . . . X . . . ."
+                        "3: . . . X . . . ."
+                        "2: . . . X . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . X . . . ."
+                        "6: . . . . . . . ."
+                        "5: . X X . X X X ."
+                        "4: . . . X . . . ."
+                        "3: . . . X . . . ."
+                        "2: . . . X . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . . . . . ."
+                        "6: . . . . . . . ."
+                        "5: . X X . X X X ."
+                        "4: . . . X . . . ."
+                        "3: . . . X . . . ."
+                        "2: . . . X . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . X . . . ."
+                        "6: . . . X . . . ."
+                        "5: . . . . X X X ."
+                        "4: . . . X . . . ."
+                        "3: . . . X . . . ."
+                        "2: . . . X . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . X . . . ."
+                        "6: . . . X . . . ."
+                        "5: . . . . . . . ."
+                        "4: . . . . . . . ."
+                        "3: . . . . . . . ."
+                        "2: . . . . . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    EqualsBitboard(
+                        "8: . . . . . . . ."
+                        "7: . . . X . . . ."
+                        "6: . . . X . . . ."
+                        "5: . X X . X X X ."
+                        "4: . . . X . . . ."
+                        "3: . . . X . . . ."
+                        "2: . . . X . . . ."
+                        "1: . . . . . . . ."
+                        "   a b c d e f g h"
+                    ),
+                    }));
 }
 
 } // namespace

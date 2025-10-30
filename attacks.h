@@ -187,11 +187,40 @@ struct SlidingAttacks {
     std::array<Magic, kNumSquares> rook_magic_squares;
 };
 
+constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
+    std::vector<Square> squares;
+    while (mask) {
+        squares.push_back(mask.PopLeastSignificantBit());
+    }
+
+    int cardinality = 1 << squares.size();
+    std::vector<Bitboard> subsets(cardinality);
+    for (int i = 0; i < cardinality; ++i) {
+        int curr = i;
+        int square = 0;
+        while (curr != 0) {
+            if (curr & 1) {
+                subsets[i].Set(squares[square]);
+            }
+            curr = curr >> 1;
+            ++square;
+        }
+    }
+
+    return subsets;
+}
+
 consteval SlidingAttacks MakeSlidingAttacks() {
     SlidingAttacks attacks;
     for (int square = A8; square < kNumSquares; ++square) {
-        Bitboard mask = MakeRays<kNorth, kEast, kSouth, kWest>(static_cast<Square>(square));
-        attacks.rook_magic_squares[square].mask = mask;
+        Square start = static_cast<Square>(square);
+
+        Bitboard bishop_mask = MakeRays<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(start);
+        attacks.bishop_magic_squares[square].mask = bishop_mask;
+
+        Bitboard rook_mask = MakeRays<kNorth, kEast, kSouth, kWest>(start);
+        attacks.rook_magic_squares[square].mask = rook_mask;
+
     }
     return attacks;
 }
