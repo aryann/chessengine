@@ -146,35 +146,6 @@ constexpr Bitboard GenerateRookAttacks(Square square, Bitboard occupied) {
     return GenerateSlidingAttacks<kNorth, kEast, kSouth, kWest>(square, occupied);
 }
 
-template<Piece Piece>
-constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
-    static_assert(Piece != kPawn);
-
-    if constexpr (Piece == kKnight) {
-        static std::array<Bitboard, kNumSquares> kKnightAttacks = GenerateKnightAttacks();
-        return kKnightAttacks[square];
-    }
-
-    if constexpr (Piece == kKing) {
-        static std::array<Bitboard, kNumSquares> kKingAttacks = GenerateKingAttacks();
-        return kKingAttacks[square];
-    }
-
-    if constexpr (Piece == kBishop) {
-        return GenerateBishopAttacks(square, occupied);
-    }
-
-    if constexpr (Piece == kRook) {
-        return GenerateRookAttacks(square, occupied);
-    }
-
-    if constexpr (Piece == kQueen) {
-        return GenerateBishopAttacks(square, occupied) | GenerateRookAttacks(square, occupied);
-    }
-
-    return kEmptyBoard;
-}
-
 constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
     // https://www.chessprogramming.org/Traversing_Subsets_of_a_Set
     const std::size_t cardinality = 1ULL << mask.GetCount();
@@ -199,15 +170,28 @@ struct Magic {
 };
 
 struct SlidingAttacks {
-    std::array<Bitboard, 1> bishop_attack_tables;
+    // The following diagram shows the number of relevancy squares for bishop attacks:
+    //
+    //   8: 6 5 5 5 5 5 5 6
+    //   7: 5 5 5 5 5 5 5 5
+    //   6: 5 5 7 7 7 7 5 5
+    //   5: 5 5 7 9 9 7 5 5
+    //   4: 5 5 7 9 9 7 5 5
+    //   3: 5 5 7 7 7 7 5 5
+    //   2: 5 5 5 5 5 5 5 5
+    //   1: 6 5 5 5 5 5 5 6
+    //      a b c d e f g h
+    //
+    // For simplicity, the bishop attack table allocates kNumSquares * 2^9.
+    std::array<Bitboard, kNumSquares * (1 << 9)> bishop_attacks;
     std::array<Magic, kNumSquares> bishop_magic_squares;
 
-    std::array<Bitboard, (1 << 12) * kNumSquares> rook_attacks;
+    std::array<Bitboard, kNumSquares * (1 << 12)> rook_attacks;
     std::array<Magic, kNumSquares> rook_magic_squares;
 };
 
 template<Direction ... Directions>
-constexpr void MakeSlidingAttacks(Square from, Bitboard &attack_table1, Magic &magic_struct) {
+constexpr void MakeSlidingAttacks(Square from, Bitboard *attack_table, Magic &magic_struct) {
     Bitboard mask = MakeRays<Directions...>(from);
     std::vector<Bitboard> occupancies = MakePowerSet(mask);
 
@@ -238,9 +222,8 @@ constexpr void MakeSlidingAttacks(Square from, Bitboard &attack_table1, Magic &m
         }
 
         if (found) {
-            LOG(INFO) << "Found rook magic for " << ToString(from) << " after " << attempts << " attempt(s).";
+            //LOG(INFO) << "Found rook magic for " << ToString(from) << " after " << attempts << " attempt(s).";
 
-            Bitboard *attack_table = &attack_table1 + (1 << 12) * from;
             for (int i = 0; i < placements.size(); ++i) {
                 attack_table[i] = placements[i];
             }
@@ -262,9 +245,14 @@ constexpr SlidingAttacks MakeSlidingAttacks() {
     for (int square = A8; square < kNumSquares; ++square) {
         Square from = static_cast<Square>(square);
 
+        MakeSlidingAttacks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(
+                from,
+                sliding_attacks.bishop_attacks.begin() + (1 << 9) * from,
+                sliding_attacks.bishop_magic_squares[square]);
+
         MakeSlidingAttacks<kNorth, kEast, kSouth, kWest>(
                 from,
-                *sliding_attacks.rook_attacks.begin(),
+                sliding_attacks.rook_attacks.begin() + (1 << 12) * from,
                 sliding_attacks.rook_magic_squares[square]);
     }
     return sliding_attacks;
@@ -272,11 +260,49 @@ constexpr SlidingAttacks MakeSlidingAttacks() {
 
 const auto kSlidingAttacks = MakeSlidingAttacks();
 
-constexpr Bitboard GenerateRookAttacksFast(Square square, Bitboard occupied) {
-    const Magic &magic = kSlidingAttacks.rook_magic_squares[square];
+constexpr Bitboard GenerateBishopAttacksFast(Square square, Bitboard occupied) {
+    const Magic &magic = kSlidingAttacks.bishop_magic_squares[square];
+    occupied &= magic.mask;
     std::uint64_t index = (magic.magic * occupied.Data()) >> magic.shift;
     return magic.attack_table[index];
 }
+
+constexpr Bitboard GenerateRookAttacksFast(Square square, Bitboard occupied) {
+    const Magic &magic = kSlidingAttacks.rook_magic_squares[square];
+    occupied &= magic.mask;
+    std::uint64_t index = (magic.magic * occupied.Data()) >> magic.shift;
+    return magic.attack_table[index];
+}
+
+template<Piece Piece>
+constexpr Bitboard GenerateAttacks(Square square, Bitboard occupied) {
+    static_assert(Piece != kPawn);
+
+    if constexpr (Piece == kKnight) {
+        static std::array<Bitboard, kNumSquares> kKnightAttacks = GenerateKnightAttacks();
+        return kKnightAttacks[square];
+    }
+
+    if constexpr (Piece == kKing) {
+        static std::array<Bitboard, kNumSquares> kKingAttacks = GenerateKingAttacks();
+        return kKingAttacks[square];
+    }
+
+    if constexpr (Piece == kBishop) {
+        return GenerateBishopAttacksFast(square, occupied);
+    }
+
+    if constexpr (Piece == kRook) {
+        return GenerateRookAttacksFast(square, occupied);
+    }
+
+    if constexpr (Piece == kQueen) {
+        return GenerateBishopAttacksFast(square, occupied) | GenerateRookAttacksFast(square, occupied);
+    }
+
+    return kEmptyBoard;
+}
+
 
 } // namespace chessengine
 
