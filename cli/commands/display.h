@@ -12,22 +12,21 @@ namespace chessengine {
 class Position;
 
 class Display : public Command {
-public:
-    explicit Display(const Position &position):
-        position_(position) {
-    }
+ public:
+  explicit Display(const Position &position) : position_(position) {}
 
-    ~Display() override = default;
+  ~Display() override = default;
 
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override {
-        std::println("{}", position_);
-        return {};
-    }
+  std::expected<void, std::string> Run(
+      std::vector<std::string_view> args) override {
+    std::println("{}", position_);
+    return {};
+  }
 
-private:
-    const Position &position_;
+ private:
+  const Position &position_;
 };
 
-} // namespace chessengine
+}  // namespace chessengine
 
-#endif // CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_
+#endif  // CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_

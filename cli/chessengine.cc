@@ -11,45 +11,43 @@
 #include "position.h"
 
 [[noreturn]] int main(int argc, char **argv) {
-    std::println("Welcome!");
-    std::println();
+  std::println("Welcome!");
+  std::println();
 
-    using ::chessengine::CommandDispatcher;
-    using ::chessengine::Command;
-    using ::chessengine::Display;
-    using ::chessengine::StartPos;
-    using ::chessengine::FenPos;
-    using ::chessengine::PerftCommand;
-    using ::chessengine::Position;
+  using ::chessengine::Command;
+  using ::chessengine::CommandDispatcher;
+  using ::chessengine::Display;
+  using ::chessengine::FenPos;
+  using ::chessengine::PerftCommand;
+  using ::chessengine::Position;
+  using ::chessengine::StartPos;
 
-    Position position = Position::Starting();
+  Position position = Position::Starting();
 
-    CommandDispatcher dispatcher;
+  CommandDispatcher dispatcher;
 
-    CommandDispatcher position_commands;
-    position_commands.Add("fen", std::make_unique<FenPos>(position));
-    position_commands.Add("startpos", std::make_unique<StartPos>(position));
+  CommandDispatcher position_commands;
+  position_commands.Add("fen", std::make_unique<FenPos>(position));
+  position_commands.Add("startpos", std::make_unique<StartPos>(position));
 
-    dispatcher.Add(
-            "position", std::move(position_commands));
+  dispatcher.Add("position", std::move(position_commands));
 
-    CommandDispatcher go_commands;
-    go_commands.Add("perft", std::make_unique<PerftCommand>(position));
+  CommandDispatcher go_commands;
+  go_commands.Add("perft", std::make_unique<PerftCommand>(position));
 
-    dispatcher.Add("go", std::move(go_commands));
+  dispatcher.Add("go", std::move(go_commands));
 
-    dispatcher.Add("d", std::make_unique<Display>(position));
+  dispatcher.Add("d", std::make_unique<Display>(position));
 
-    std::string command;
-    while (true) {
-        std::getline(std::cin, command);
-        std::vector<std::string_view> parts = absl::StrSplit(
-                command, absl::ByAsciiWhitespace(), absl::SkipWhitespace());
+  std::string command;
+  while (true) {
+    std::getline(std::cin, command);
+    std::vector<std::string_view> parts = absl::StrSplit(
+        command, absl::ByAsciiWhitespace(), absl::SkipWhitespace());
 
-        auto error = dispatcher.Run(parts);
-        if (!error.has_value()) {
-            std::println(stderr, "{}", error.error());
-        }
+    auto error = dispatcher.Run(parts);
+    if (!error.has_value()) {
+      std::println(stderr, "{}", error.error());
     }
+  }
 }
-

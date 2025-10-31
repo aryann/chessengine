@@ -29,142 +29,124 @@ namespace chessengine {
 // This layout matches the typical visual representation of a board, improving
 // code readability and debuggability.
 class Bitboard {
-public:
-    constexpr explicit Bitboard(std::uint64_t data) :
-        data_(data) {
+ public:
+  constexpr explicit Bitboard(std::uint64_t data) : data_(data) {}
+
+  constexpr Bitboard() : data_(0ULL) {}
+
+  constexpr explicit Bitboard(Square square) : data_(1ULL << square) {}
+
+  explicit constexpr Bitboard(std::string_view input) : data_(0ULL) {
+    int square = 0;
+    for (const char curr : input) {
+      if (curr != '.' && curr != 'X') {
+        continue;
+      }
+      if (curr == 'X') {
+        Set(static_cast<Square>(square));
+      }
+      ++square;
     }
+  }
 
-    constexpr Bitboard() :
-        data_(0ULL) {
-    }
+  constexpr bool operator==(const Bitboard &other) const = default;
 
-    constexpr explicit Bitboard(Square square):
-        data_(1ULL << square) {
-    }
+  constexpr Bitboard operator+(const Bitboard &other) const {
+    return Bitboard(data_ - other.data_);
+  }
 
-    explicit constexpr Bitboard(std::string_view input):
-        data_(0ULL) {
-        int square = 0;
-        for (const char curr: input) {
-            if (curr != '.' && curr != 'X') {
-                continue;
-            }
-            if (curr == 'X') {
-                Set(static_cast<Square>(square));
-            }
-            ++square;
-        }
-    }
+  constexpr Bitboard operator-(const Bitboard &other) const {
+    return Bitboard(data_ - other.data_);
+  }
 
-    constexpr bool operator==(const Bitboard &other) const = default;
+  constexpr Bitboard operator&(const Bitboard &other) const {
+    return Bitboard(data_ & other.data_);
+  }
 
-    constexpr Bitboard operator+(const Bitboard &other) const {
-        return Bitboard(data_ - other.data_);
-    }
+  constexpr Bitboard operator&(Square square) const {
+    return Bitboard(data_ & (1ULL << square));
+  }
 
-    constexpr Bitboard operator-(const Bitboard &other) const {
-        return Bitboard(data_ - other.data_);
-    }
+  constexpr Bitboard operator|(const Bitboard &other) const {
+    return Bitboard(data_ | other.data_);
+  }
 
-    constexpr Bitboard operator&(const Bitboard &other) const {
-        return Bitboard(data_ & other.data_);
-    }
+  constexpr Bitboard operator^(const Bitboard &other) const {
+    return Bitboard(data_ ^ other.data_);
+  }
 
-    constexpr Bitboard operator&(Square square) const {
-        return Bitboard(data_ & (1ULL << square));
-    }
+  constexpr Bitboard operator~() const { return Bitboard(~data_); }
 
-    constexpr Bitboard operator|(const Bitboard &other) const {
-        return Bitboard(data_ | other.data_);
-    }
+  constexpr Bitboard &operator&=(const Bitboard &other) {
+    data_ &= other.data_;
+    return *this;
+  }
 
-    constexpr Bitboard operator^(const Bitboard &other) const {
-        return Bitboard(data_ ^ other.data_);
-    }
+  constexpr Bitboard &operator|=(const Bitboard &other) {
+    data_ |= other.data_;
+    return *this;
+  }
 
-    constexpr Bitboard operator~() const {
-        return Bitboard(~data_);
-    }
+  constexpr Bitboard &operator^=(const Bitboard &other) {
+    data_ ^= other.data_;
+    return *this;
+  }
 
-    constexpr Bitboard &operator&=(const Bitboard &other) {
-        data_ &= other.data_;
-        return *this;
-    }
+  constexpr Bitboard operator<<(int bits) const {
+    return Bitboard(data_ << bits);
+  }
 
-    constexpr Bitboard &operator|=(const Bitboard &other) {
-        data_ |= other.data_;
-        return *this;
-    }
+  constexpr Bitboard operator>>(int bits) const {
+    return Bitboard(data_ >> bits);
+  }
 
-    constexpr Bitboard &operator^=(const Bitboard &other) {
-        data_ ^= other.data_;
-        return *this;
-    }
+  constexpr Bitboard operator<<=(int bits) {
+    data_ <<= bits;
+    return *this;
+  }
 
-    constexpr Bitboard operator<<(int bits) const {
-        return Bitboard(data_ << bits);
-    }
+  constexpr Bitboard operator>>=(int bits) {
+    data_ >>= bits;
+    return *this;
+  }
 
-    constexpr Bitboard operator>>(int bits) const {
-        return Bitboard(data_ >> bits);
-    }
+  constexpr explicit operator bool() const { return data_ != 0; }
 
-    constexpr Bitboard operator<<=(int bits) {
-        data_ <<= bits;
-        return *this;
-    }
+  constexpr bool Get(Square square) { return bool(data_ & 1ULL << square); }
 
-    constexpr Bitboard operator>>=(int bits) {
-        data_ >>= bits;
-        return *this;
-    }
+  constexpr void Set(Square square) { data_ |= 1ULL << square; }
 
-    constexpr explicit operator bool() const {
-        return data_ != 0;
-    }
+  constexpr void Clear(Square square) { data_ &= ~(1ULL << square); }
 
-    constexpr bool Get(Square square) {
-        return bool(data_ & 1ULL << square);
-    }
+  // Gets the square of the least significant bit (LSB).
+  //
+  // Precondition: The Bitboard must not be empty.
+  [[nodiscard]] constexpr Square LeastSignificantBit() const {
+    DCHECK(data_ != 0ULL);
+    ;
+    return static_cast<Square>(std::countr_zero(data_));
+  }
 
-    constexpr void Set(Square square) {
-        data_ |= 1ULL << square;
-    }
+  // Finds the least significant bit (LSB), clears it from the board,
+  // and returns its corresponding square.
+  //
+  // Precondition: The Bitboard must not be empty.
+  constexpr Square PopLeastSignificantBit() {
+    Square square = LeastSignificantBit();
+    data_ &= data_ - 1;
+    return square;
+  }
 
-    constexpr void Clear(Square square) {
-        data_ &= ~(1ULL << square);
-    }
+  // Returns the number of set bits (aka, population count).
+  [[nodiscard]] constexpr int GetCount() const { return std::popcount(data_); }
 
-    // Gets the square of the least significant bit (LSB).
-    //
-    // Precondition: The Bitboard must not be empty.
-    [[nodiscard]] constexpr Square LeastSignificantBit() const {
-        DCHECK(data_ != 0ULL);;
-        return static_cast<Square>(std::countr_zero(data_));
-    }
+  template <Direction D>
+  [[nodiscard]] constexpr Bitboard Shift() const;
 
-    // Finds the least significant bit (LSB), clears it from the board,
-    // and returns its corresponding square.
-    //
-    // Precondition: The Bitboard must not be empty.
-    constexpr Square PopLeastSignificantBit() {
-        Square square = LeastSignificantBit();
-        data_ &= data_ - 1;
-        return square;
-    }
+  [[nodiscard]] constexpr auto Data() const { return data_; }
 
-    // Returns the number of set bits (aka, population count).
-    [[nodiscard]] constexpr int GetCount() const {
-        return std::popcount(data_);
-    }
-
-    template<Direction D>
-    [[nodiscard]] constexpr Bitboard Shift() const;
-
-    [[nodiscard]] constexpr auto Data() const { return data_; }
-
-private:
-    std::uint64_t data_;
+ private:
+  std::uint64_t data_;
 };
 
 namespace rank {
@@ -181,7 +163,7 @@ constexpr Bitboard k3 = k4 << 8;
 constexpr Bitboard k2 = k3 << 8;
 constexpr Bitboard k1 = k2 << 8;
 
-} // namespace rank
+}  // namespace rank
 
 namespace file {
 
@@ -194,80 +176,80 @@ constexpr Bitboard kF = kE << 1;
 constexpr Bitboard kG = kF << 1;
 constexpr Bitboard kH = kG << 1;
 
-} // namespace file
+}  // namespace file
 
 constexpr Bitboard kEmptyBoard;
 constexpr Bitboard kEdges = file::kA | file::kH | rank::k1 | rank::k8;
 
-template<Direction D>
+template <Direction D>
 constexpr Bitboard Bitboard::Shift() const {
-    if constexpr (D == kNorth) {
-        return *this >> 8;
-    }
+  if constexpr (D == kNorth) {
+    return *this >> 8;
+  }
 
-    if constexpr (D == kNorthEast) {
-        return *this >> 7 & ~file::kA;
-    }
+  if constexpr (D == kNorthEast) {
+    return *this >> 7 & ~file::kA;
+  }
 
-    if constexpr (D == kEast) {
-        return *this << 1 & ~file::kA;
-    }
+  if constexpr (D == kEast) {
+    return *this << 1 & ~file::kA;
+  }
 
-    if constexpr (D == kSouthEast) {
-        return *this << 9 & ~file::kA;
-    }
-    if constexpr (D == kSouth) {
-        return *this << 8;
-    }
+  if constexpr (D == kSouthEast) {
+    return *this << 9 & ~file::kA;
+  }
+  if constexpr (D == kSouth) {
+    return *this << 8;
+  }
 
-    if constexpr (D == kSouthWest) {
-        return *this << 7 & ~file::kH;
-    }
+  if constexpr (D == kSouthWest) {
+    return *this << 7 & ~file::kH;
+  }
 
-    if constexpr (D == kWest) {
-        return *this >> 1 & ~file::kH;
-    }
+  if constexpr (D == kWest) {
+    return *this >> 1 & ~file::kH;
+  }
 
-    if constexpr (D == kNorthWest) {
-        return *this >> 9 & ~file::kH;
-    }
+  if constexpr (D == kNorthWest) {
+    return *this >> 9 & ~file::kH;
+  }
 
-    return kEmptyBoard;
+  return kEmptyBoard;
 }
 
-} // namespace chessengine
+}  // namespace chessengine
 
 // A std::formatter specialization for printing a Bitboard.
 //
 // See https://en.cppreference.com/w/cpp/utility/format/formatter.html for
 // more details.
-template<>
+template <>
 struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
-    static auto format(chessengine::Bitboard bitboard, std::format_context &context) {
-        auto out = context.out();
+  static auto format(chessengine::Bitboard bitboard,
+                     std::format_context &context) {
+    auto out = context.out();
 
-        for (int row = 0; row < 8; ++row) {
-            out = std::format_to(out, "{}:", 8 - row);
-            for (int col = 0; col < 8; ++col) {
-                auto square = static_cast<chessengine::Square>(row * 8 + col);
-                if (bitboard.Get(square)) {
-                    out = std::format_to(out, " X");
-                } else {
-                    out = std::format_to(out, " .");
-                }
-            }
-            out = std::format_to(out, "\n");
+    for (int row = 0; row < 8; ++row) {
+      out = std::format_to(out, "{}:", 8 - row);
+      for (int col = 0; col < 8; ++col) {
+        auto square = static_cast<chessengine::Square>(row * 8 + col);
+        if (bitboard.Get(square)) {
+          out = std::format_to(out, " X");
+        } else {
+          out = std::format_to(out, " .");
         }
-
-        out = std::format_to(out, "  ");
-        for (int col = 0; col < 8; ++col) {
-            out = std::format_to(out, " {:c}", 'a' + col);
-        }
-        out = std::format_to(out, "\n");
-
-        return out;
+      }
+      out = std::format_to(out, "\n");
     }
+
+    out = std::format_to(out, "  ");
+    for (int col = 0; col < 8; ++col) {
+      out = std::format_to(out, " {:c}", 'a' + col);
+    }
+    out = std::format_to(out, "\n");
+
+    return out;
+  }
 };
 
-#endif // CHESS_ENGINE_BITBOARD_H_
-
+#endif  // CHESS_ENGINE_BITBOARD_H_

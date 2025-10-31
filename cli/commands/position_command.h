@@ -11,33 +11,31 @@
 namespace chessengine {
 
 class StartPos : public Command {
-public:
-    explicit StartPos(Position &position):
-        position_(position) {
-    }
+ public:
+  explicit StartPos(Position &position) : position_(position) {}
 
-    ~StartPos() override = default;
+  ~StartPos() override = default;
 
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override;
+  std::expected<void, std::string> Run(
+      std::vector<std::string_view> args) override;
 
-private:
-    Position &position_;
+ private:
+  Position &position_;
 };
 
 class FenPos : public Command {
-public:
-    explicit FenPos(Position &position):
-        position_(position) {
-    }
+ public:
+  explicit FenPos(Position &position) : position_(position) {}
 
-    ~FenPos() override = default;
+  ~FenPos() override = default;
 
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override;
+  std::expected<void, std::string> Run(
+      std::vector<std::string_view> args) override;
 
-private:
-    Position &position_;
+ private:
+  Position &position_;
 };
 
-} // namespace chessengine
+}  // namespace chessengine
 
-#endif // CHESS_ENGINE_CLI_COMMANDS_POSITION_COMMAND_H_
+#endif  // CHESS_ENGINE_CLI_COMMANDS_POSITION_COMMAND_H_

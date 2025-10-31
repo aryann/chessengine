@@ -12,36 +12,35 @@
 namespace chessengine {
 
 class PerftCommand : public Command {
-public:
-    explicit PerftCommand(Position &position):
-        position_(position) {
+ public:
+  explicit PerftCommand(Position &position) : position_(position) {}
+
+  ~PerftCommand() override = default;
+
+  std::expected<void, std::string> Run(
+      std::vector<std::string_view> args) override {
+    int depth = 1;
+    if (!args.empty()) {
+      depth = std::stoi(std::string(args[0]));
     }
 
-    ~PerftCommand() override = default;
+    std::vector<std::size_t> depth_counts;
+    std::map<Move, std::size_t> final_move_counts;
+    RunPerft(depth, position_, depth_counts, final_move_counts);
 
-    std::expected<void, std::string> Run(std::vector<std::string_view> args) override {
-        int depth = 1;
-        if (!args.empty()) {
-            depth = std::stoi(std::string(args[0]));
-        }
-
-        std::vector<std::size_t> depth_counts;
-        std::map<Move, std::size_t> final_move_counts;
-        RunPerft(depth, position_, depth_counts, final_move_counts);
-
-        for (auto [move, count]: final_move_counts) {
-            std::println("{}: {}", move, count);
-        }
-
-        std::println();
-        std::println("Nodes searched: {}", depth_counts.back());
-        return {};
+    for (auto [move, count] : final_move_counts) {
+      std::println("{}: {}", move, count);
     }
 
-private:
-    Position &position_;
+    std::println();
+    std::println("Nodes searched: {}", depth_counts.back());
+    return {};
+  }
+
+ private:
+  Position &position_;
 };
 
-} // namespace chessengine
+}  // namespace chessengine
 
-#endif // CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_
+#endif  // CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_

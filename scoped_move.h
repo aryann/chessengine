@@ -1,8 +1,8 @@
 #ifndef CHESS_ENGINE_SCOPED_MOVE_H_
 #define CHESS_ENGINE_SCOPED_MOVE_H_
 
-#include "position.h"
 #include "move.h"
+#include "position.h"
 
 namespace chessengine {
 
@@ -12,28 +12,25 @@ namespace chessengine {
 // goes out of scope, its destructor automatically calls `position.Undo(move)`
 // to restore the previous state.
 class ScopedMove {
-public:
-    ScopedMove(const Move &move, Position &position):
-        position_(position), undo_info_(position.Do(move)) {
-    }
+ public:
+  ScopedMove(const Move &move, Position &position)
+      : position_(position), undo_info_(position.Do(move)) {}
 
-    ~ScopedMove() {
-        position_.Undo(undo_info_);
-    }
+  ~ScopedMove() { position_.Undo(undo_info_); }
 
-    ScopedMove(const ScopedMove &) = delete;
+  ScopedMove(const ScopedMove &) = delete;
 
-    ScopedMove &operator=(const ScopedMove &) = delete;
+  ScopedMove &operator=(const ScopedMove &) = delete;
 
-    ScopedMove(ScopedMove &&) = delete;
+  ScopedMove(ScopedMove &&) = delete;
 
-    ScopedMove &operator=(ScopedMove &&) = delete;
+  ScopedMove &operator=(ScopedMove &&) = delete;
 
-private:
-    Position &position_;
-    UndoInfo undo_info_;
+ private:
+  Position &position_;
+  UndoInfo undo_info_;
 };
 
-} // namespace chessengine
+}  // namespace chessengine
 
-#endif // CHESS_ENGINE_SCOPED_MOVE_H_
+#endif  // CHESS_ENGINE_SCOPED_MOVE_H_

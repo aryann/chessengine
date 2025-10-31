@@ -9,9 +9,9 @@
 
 namespace chessengine {
 
-template<MoveType ... MoveType>
+template <MoveType... MoveType>
 std::vector<Move> GenerateMoves(const Position &position);
 
-} // namespace chessengine
+}  // namespace chessengine
 
-#endif // CHESS_ENGINE_MOVE_GENERATOR_H_
+#endif  // CHESS_ENGINE_MOVE_GENERATOR_H_

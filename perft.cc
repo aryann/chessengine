@@ -12,51 +12,43 @@ namespace chessengine {
 
 namespace {
 
-void RunPerft(std::size_t depth,
-              std::size_t current_depth,
-              Position &position,
+void RunPerft(std::size_t depth, std::size_t current_depth, Position &position,
               std::optional<Move> start_move,
               std::vector<std::size_t> &depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
-    ++depth_counts[current_depth];
+  ++depth_counts[current_depth];
 
-    if (depth == current_depth) {
-        ++final_move_counts[*start_move];
-        return;
+  if (depth == current_depth) {
+    ++final_move_counts[*start_move];
+    return;
+  }
+
+  std::vector<Move> moves;
+  if (position.GetCheckers(position.SideToMove())) {
+    moves = GenerateMoves<kEvasion>(position);
+  } else {
+    moves = GenerateMoves<kQuiet, kCapture>(position);
+  }
+
+  for (const Move &move : moves) {
+    ScopedMove scoped_move(move, position);
+
+    if (position.GetCheckers(~position.SideToMove())) {
+      continue;
     }
 
-    std::vector<Move> moves;
-    if (position.GetCheckers(position.SideToMove())) {
-        moves = GenerateMoves<kEvasion>(position);
-    } else {
-        moves = GenerateMoves<kQuiet, kCapture>(position);
-    }
-
-    for (const Move &move: moves) {
-        ScopedMove scoped_move(move, position);
-
-        if (position.GetCheckers(~position.SideToMove())) {
-            continue;
-        }
-
-        RunPerft(
-                depth,
-                current_depth + 1,
-                position,
-                start_move ? start_move : move,
-                depth_counts,
-                final_move_counts);
-    }
+    RunPerft(depth, current_depth + 1, position, start_move ? start_move : move,
+             depth_counts, final_move_counts);
+  }
 }
 
-} // namespace
+}  // namespace
 
-void RunPerft(std::size_t depth,
-              Position &position,
+void RunPerft(std::size_t depth, Position &position,
               std::vector<std::size_t> &depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
-    depth_counts.resize(depth + 1, 0);
-    RunPerft(depth, 0, position, std::nullopt, depth_counts, final_move_counts);
+  depth_counts.resize(depth + 1, 0);
+  RunPerft(depth, 0, position, std::nullopt, depth_counts, final_move_counts);
 }
 
-} // namespace chessengine
+}  // namespace chessengine
