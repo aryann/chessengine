@@ -261,16 +261,16 @@ constexpr SlidingAttackTables GenerateSlidingAttackTables() {
 
 const auto kSlidingAttackTables = GenerateSlidingAttackTables();
 
-[[nodiscard]] constexpr Bitboard GenerateBishopAttacksFast(Square square,
-                                                           Bitboard occupied) {
+[[nodiscard]] constexpr Bitboard GenerateBishopAttacks(Square square,
+                                                       Bitboard occupied) {
   const MagicEntry &magic = kSlidingAttackTables.bishop_magic_squares[square];
   occupied &= magic.mask;
   std::uint64_t index = (magic.magic * occupied.Data()) >> magic.shift;
   return magic.attack_table[index];
 }
 
-[[nodiscard]] constexpr Bitboard GenerateRookAttacksFast(Square square,
-                                                         Bitboard occupied) {
+[[nodiscard]] constexpr Bitboard GenerateRookAttacks(Square square,
+                                                     Bitboard occupied) {
   const MagicEntry &magic = kSlidingAttackTables.rook_magic_squares[square];
   occupied &= magic.mask;
   std::uint64_t index = (magic.magic * occupied.Data()) >> magic.shift;
@@ -295,16 +295,16 @@ template <Piece Piece>
   }
 
   if constexpr (Piece == kBishop) {
-    return GenerateBishopAttacksFast(square, occupied);
+    return GenerateBishopAttacks(square, occupied);
   }
 
   if constexpr (Piece == kRook) {
-    return GenerateRookAttacksFast(square, occupied);
+    return GenerateRookAttacks(square, occupied);
   }
 
   if constexpr (Piece == kQueen) {
-    return GenerateBishopAttacksFast(square, occupied) |
-           GenerateRookAttacksFast(square, occupied);
+    return GenerateBishopAttacks(square, occupied) |
+           GenerateRookAttacks(square, occupied);
   }
 
   return kEmptyBoard;
