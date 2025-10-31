@@ -3,9 +3,18 @@
 set -o errexit
 set -o nounset
 
-fswatch -o ./*.cc ./*.h BUILD | \
-  xargs -n1 -I{} bazel test ... \
-    -c opt \
-    --test_output=streamed \
-    --test_arg=--gtest_color=yes \
-    --test_arg=--gtest_fail_if_no_test_linked
+{
+  # Send data to the pipe immediately, which causes xargs to
+  # immediately trigger the first run.
+  echo 1
+
+  # Start fswatch, which feeds all future file change events
+  # into the same pipe.
+  fswatch -o ./*.cc ./*.h BUILD
+
+} | \
+xargs -n1 -I{} bazel test ... \
+  -c opt \
+  --test_output=streamed \
+  --test_arg=--gtest_color=yes \
+  --test_arg=--gtest_fail_if_no_test_linked
