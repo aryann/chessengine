@@ -1,6 +1,7 @@
 #include "perft.h"
 
 #include <map>
+#include <thread>
 #include <vector>
 
 #include "absl/log/log.h"
@@ -47,20 +48,34 @@ void RunPerft(std::size_t depth, Position &position,
   }
 
   std::vector<Move> initial_moves = GenerateMoves(position);
+
   std::vector<std::vector<std::size_t>> all_depth_counts(
       initial_moves.size(), std::vector<std::size_t>(depth + 1, 0));
+  std::vector<std::size_t> all_move_counts(initial_moves.size(), 0);
+
+  std::vector<std::thread> threads;
 
   for (int i = 0; i < initial_moves.size(); ++i) {
-    Move move = initial_moves[i];
-    Position new_position = position;
-    new_position.Do(move);
-    if (new_position.GetCheckers(~new_position.SideToMove())) {
-      continue;
-    }
+    threads.emplace_back([&, i]() {
+      Move move = initial_moves[i];
 
-    std::vector<std::size_t> depth_counts(depth + 1, 0);
-    final_move_counts[move] =
-        RunPerft(depth, 1, new_position, move, all_depth_counts[i]);
+      Position new_position = position;
+      new_position.Do(move);
+      if (new_position.GetCheckers(~new_position.SideToMove())) {
+        return;
+      }
+
+      all_move_counts[i] =
+          RunPerft(depth, 1, new_position, move, all_depth_counts[i]);
+    });
+  }
+
+  for (std::thread &thread : threads) {
+    thread.join();
+  }
+
+  for (int i = 0; i < initial_moves.size(); ++i) {
+    final_move_counts[initial_moves[i]] = all_move_counts[i];
   }
 
   final_depth_counts.resize(depth + 1, 0);
