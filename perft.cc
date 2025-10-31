@@ -23,12 +23,7 @@ void RunPerft(std::size_t depth, std::size_t current_depth, Position &position,
     return;
   }
 
-  std::vector<Move> moves;
-  if (position.GetCheckers(position.SideToMove())) {
-    moves = GenerateMoves<kEvasion>(position);
-  } else {
-    moves = GenerateMoves<kQuiet, kCapture>(position);
-  }
+  std::vector<Move> moves = GenerateMoves(position);
 
   for (const Move &move : moves) {
     ScopedMove scoped_move(move, position);
@@ -48,6 +43,7 @@ void RunPerft(std::size_t depth, Position &position,
               std::vector<std::size_t> &depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
   depth_counts.resize(depth + 1, 0);
+
   RunPerft(depth, 0, position, std::nullopt, depth_counts, final_move_counts);
 }
 

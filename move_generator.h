@@ -12,6 +12,8 @@ namespace chessengine {
 template <MoveType... MoveType>
 std::vector<Move> GenerateMoves(const Position &position);
 
+std::vector<Move> GenerateMoves(const Position &position);
+
 }  // namespace chessengine
 
 #endif  // CHESS_ENGINE_MOVE_GENERATOR_H_

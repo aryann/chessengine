@@ -252,4 +252,12 @@ template std::vector<Move> GenerateMoves<kQuiet, kCapture>(
 
 template std::vector<Move> GenerateMoves<kEvasion>(const Position &position);
 
+std::vector<Move> GenerateMoves(const Position &position) {
+  if (position.GetCheckers(position.SideToMove())) {
+    return GenerateMoves<kEvasion>(position);
+  } else {
+    return GenerateMoves<kQuiet, kCapture>(position);
+  }
+}
+
 }  // namespace chessengine
