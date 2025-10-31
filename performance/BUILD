@@ -1,6 +1,6 @@
 cc_binary(
-    name = "attacks_perf_test",
-    srcs = ["attacks_perf_test.cc"],
+    name = "attacks_benchmark",
+    srcs = ["attacks_benchmark.cc"],
     deps = [
         "//:attacks",
         "@google_benchmark//:benchmark",
