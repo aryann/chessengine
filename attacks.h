@@ -172,6 +172,9 @@ struct SlidingAttackTables {
   // for every square.
   static constexpr int kRookTableSizePerSquare = (1 << 12);
 
+  // TODO(aryann): Consider tightly packing all attacks. Only 107,648 slots are
+  // required. The current scheme sets aside 294,912 slots, which is 2.7 times
+  // more space than is necessary.
   static constexpr int kAttackTableSize =
       (kBishopTableSizePerSquare + kRookTableSizePerSquare) * kNumSquares;
   std::array<Bitboard, kAttackTableSize> attacks;
