@@ -3,7 +3,7 @@
 set -o errexit
 set -o nounset
 
-fswatch -o ./*.cc ./*.h | \
+fswatch -o ./*.cc ./*.h BUILD | \
   xargs -n1 -I{} bazel test ... \
     -c opt \
     --test_output=streamed \

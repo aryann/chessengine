@@ -97,20 +97,6 @@ constexpr Bitboard MakeRay(Square from) {
   return result & ~edge;
 }
 
-template <Direction... Directions>
-constexpr Bitboard MakeRays(Square from) {
-  return (MakeRay<Directions>(from) | ...);
-}
-
-template <Direction... Directions>
-consteval std::array<Bitboard, kNumSquares> MakeRelevancyMasks() {
-  std::array<Bitboard, kNumSquares> result;
-  for (int square = A8; square < kNumSquares; ++square) {
-    result[square] = (MakeRays<Directions>(static_cast<Square>(square)) | ...);
-  }
-  return result;
-}
-
 template <Direction Direction>
 constexpr Bitboard GenerateRayAttacks(Square from, Bitboard occupied) {
   Bitboard attacks;
@@ -128,23 +114,6 @@ constexpr Bitboard GenerateRayAttacks(Square from, Bitboard occupied) {
 template <Direction... Directions>
 constexpr Bitboard GenerateSlidingAttacks(Square from, Bitboard occupied) {
   return (GenerateRayAttacks<Directions>(from, occupied) | ...);
-}
-
-constexpr Bitboard GenerateBishopAttacks(Square square, Bitboard occupied) {
-  static constexpr std::array<Bitboard, kNumSquares> kBishopRelevancyMasks =
-      MakeRelevancyMasks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>();
-
-  occupied &= kBishopRelevancyMasks[square];
-  return GenerateSlidingAttacks<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(
-      square, occupied);
-}
-
-constexpr Bitboard GenerateRookAttacks(Square square, Bitboard occupied) {
-  static constexpr std::array<Bitboard, kNumSquares> kRookRelevancyMasks =
-      MakeRelevancyMasks<kNorth, kEast, kSouth, kWest>();
-
-  occupied &= kRookRelevancyMasks[square];
-  return GenerateSlidingAttacks<kNorth, kEast, kSouth, kWest>(square, occupied);
 }
 
 constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
@@ -209,14 +178,14 @@ struct SlidingAttackTables {
 template <Direction... Directions>
 constexpr void FindMagicForSquare(Square from, Bitboard *attack_table,
                                   MagicEntry &magic_struct) {
-  Bitboard mask = MakeRays<Directions...>(from);
+  Bitboard mask = (MakeRay<Directions>(from) | ...);
   std::vector<Bitboard> occupancies = MakePowerSet(mask);
   std::uint8_t shift = 64 - mask.GetCount();
 
   std::vector<Bitboard> attacks;
   attacks.reserve(occupancies.size());
-  for (Bitboard occupancy : occupancies) {
-    attacks.push_back(GenerateSlidingAttacks<Directions...>(from, occupancy));
+  for (Bitboard occupied : occupancies) {
+    attacks.push_back(GenerateSlidingAttacks<Directions...>(from, occupied));
   }
 
   static std::mt19937 kEngine(std::random_device{}());

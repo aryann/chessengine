@@ -5,6 +5,9 @@ cc_library(
     name = "attacks",
     srcs = [],
     hdrs = ["attacks.h"],
+    visibility = [
+        "//performance:__subpackages__",
+    ],
     deps = [
         ":bitboard",
         "@abseil-cpp//absl/log",
