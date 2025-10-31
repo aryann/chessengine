@@ -957,7 +957,7 @@ TEST(GenerateQueenAttacks, Surrounded) {
 }
 
 TEST(Magic, RelevancyMasks) {
-    EXPECT_THAT(kSlidingAttacks.rook_magic_squares[A8].mask, EqualsBitboard(
+    EXPECT_THAT(kSlidingAttackTables.rook_magic_squares[A8].mask, EqualsBitboard(
                     "8: . X X X X X X ."
                     "7: X . . . . . . ."
                     "6: X . . . . . . ."
@@ -969,7 +969,7 @@ TEST(Magic, RelevancyMasks) {
                     "   a b c d e f g h"
                 ));
 
-    EXPECT_THAT(kSlidingAttacks.rook_magic_squares[D5].mask, EqualsBitboard(
+    EXPECT_THAT(kSlidingAttackTables.rook_magic_squares[D5].mask, EqualsBitboard(
                     "8: . . . . . . . ."
                     "7: . . . X . . . ."
                     "6: . . . X . . . ."
