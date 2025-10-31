@@ -144,8 +144,9 @@ struct MagicEntry {
 };
 
 struct SlidingAttackTables {
-  // The following diagram shows the number of relevancy squares for bishop
-  // attacks:
+  // The following diagram shows the number of relevancy bits (i.e., squares
+  // on the relevant attack rays, excluding edges) for a bishop *on* each
+  // square:
   //
   //   8: 6 5 5 5 5 5 5 6
   //   7: 5 5 5 5 5 5 5 5
@@ -157,21 +158,25 @@ struct SlidingAttackTables {
   //   1: 6 5 5 5 5 5 5 6
   //      a b c d e f g h
   //
-  // For simplicity, the bishop attack table allocates kNumSquares * 2^9.
-  static constexpr int kBishopMaxRelevancyBits = 9;
-  static constexpr int kBishopTableSize =
-      kNumSquares * (1 << kBishopMaxRelevancyBits);
-  std::array<Bitboard, kBishopTableSize> bishop_attacks;
+  // The worst-case is 9 bits (in the center). For simplicity, we allocate
+  // a table of size 2^9 for every square.
+  static constexpr int kBishopTableSizePerSquare = (1 << 9);
+
+  // The number of relevancy bits for a rook also varies:
+  //
+  //   * 12 bits for corners (a1, h1, a8, h8)
+  //   * 11 bits for other edge squares
+  //   * 10 bits for all other squares
+  //
+  // The worst-case is 12 bits. For simplicity, we allocate a table of size 2^12
+  // for every square.
+  static constexpr int kRookTableSizePerSquare = (1 << 12);
+
+  static constexpr int kAttackTableSize =
+      (kBishopTableSizePerSquare + kRookTableSizePerSquare) * kNumSquares;
+  std::array<Bitboard, kAttackTableSize> attacks;
 
   std::array<MagicEntry, kNumSquares> bishop_magic_squares;
-
-  // Unlike the bishop attack table, the number of relevancy squares for a rook
-  // is the same for every square.
-  static constexpr int kRookMaxRelevancyBits = 12;
-  static constexpr int kRookTableSizeBits =
-      kNumSquares * (1 << kRookMaxRelevancyBits);
-  std::array<Bitboard, kRookTableSizeBits> rook_attacks;
-
   std::array<MagicEntry, kNumSquares> rook_magic_squares;
 };
 
@@ -230,8 +235,10 @@ constexpr void FindMagicForSquare(Square from, Bitboard *attack_table,
 
 constexpr SlidingAttackTables GenerateSlidingAttackTables() {
   SlidingAttackTables sliding_attacks;
-  Bitboard *bishop_attack_table = sliding_attacks.bishop_attacks.begin();
-  Bitboard *rook_attack_table = sliding_attacks.rook_attacks.begin();
+  Bitboard *bishop_attack_table = sliding_attacks.attacks.begin();
+  Bitboard *rook_attack_table =
+      sliding_attacks.attacks.begin() +
+      SlidingAttackTables::kBishopTableSizePerSquare * kNumSquares;
 
   for (int square = A8; square < kNumSquares; ++square) {
     Square from = static_cast<Square>(square);
