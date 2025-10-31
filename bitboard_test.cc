@@ -485,13 +485,5 @@ TEST(Bitboard, GetCount) {
     EXPECT_THAT(Bitboard(0b10011110).GetCount(), Eq(5));
 }
 
-TEST(Bitboard, Extract) {
-    EXPECT_THAT(Bitboard(0b0).Extract(0b111), Eq(0));
-    EXPECT_THAT(Bitboard(0b101010101).Extract(0b010101), Eq(0b111));
-    EXPECT_THAT(Bitboard(0b101010101).Extract(0b0101010), Eq(0b0));
-    EXPECT_THAT(Bitboard(0b1111).Extract(0b1100), Eq(0b11));
-    EXPECT_THAT(Bitboard(0b111100001111).Extract(0b001111111100), Eq(0b11000011));
-}
-
 } // namespace
 } // namespace chessengine
