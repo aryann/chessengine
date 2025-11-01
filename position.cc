@@ -314,18 +314,17 @@ bool Position::IsLegal(const Move &move) const {
       GetPieces() & ~Bitboard(move.from()) | Bitboard(move.to());
   Bitboard enemies = GetPieces(attacker_side) & ~Bitboard(move.to());
 
-  // TODO(aryann): Add an en passant bit to the Move class.
+  // // TODO(aryann): Add an en passant bit to the Move class.
   if (en_passant_target_ && move.to() == *en_passant_target_ &&
       GetPiece(move.from()) == kPawn) {
     Square victim_square =
         MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
-
-    occupied &= ~Bitboard(victim_square);
+   occupied &= ~Bitboard(victim_square);
     enemies &= ~Bitboard(victim_square);
 
     // TODO(aryann): There is an opportunity here for a minor performance
-    // boost: We only need to check attacks by sliding pieces when the capture
-    // is an en passant capture.
+    // boost: We only need to check attacks by sliding pieces when the
+    // capture is an en passant capture.
   }
 
   Square our_king = GetKing(side_to_move_);

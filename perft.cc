@@ -28,9 +28,6 @@ std::size_t RunPerft(std::size_t depth, std::size_t current_depth,
   for (const Move &move : moves) {
     ScopedMove scoped_move(move, position);
 
-    if (position.GetCheckers(~position.SideToMove())) {
-      continue;
-    }
     final_move_count +=
         RunPerft(depth, current_depth + 1, position, start_move, depth_counts);
   }
@@ -61,9 +58,6 @@ void RunPerft(std::size_t depth, Position &position,
 
       Position new_position = position;
       new_position.Do(move);
-      if (new_position.GetCheckers(~new_position.SideToMove())) {
-        return;
-      }
 
       all_move_counts[i] =
           RunPerft(depth, 1, new_position, move, all_depth_counts[i]);
