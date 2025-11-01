@@ -6,7 +6,7 @@ cc_library(
     srcs = [],
     hdrs = ["attacks.h"],
     visibility = [
-        "//performance:__subpackages__",
+        "//benchmarks:__subpackages__",
     ],
     deps = [
         ":bitboard",
