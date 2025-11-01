@@ -91,51 +91,31 @@ void GenerateMoves(const Position &position, Bitboard targets,
   }
 }
 
-[[nodiscard]] bool IsImpeded(const Position &position, Bitboard path) {
+[[nodiscard]] constexpr bool IsImpeded(const Position &position,
+                                       Bitboard path) {
   return static_cast<bool>(position.GetPieces() & path);
-}
-
-template <Side Side>
-[[nodiscard]] bool IsAttacked(const Position &position, Bitboard path) {
-  while (path) {
-    Square square = path.PopLeastSignificantBit();
-    if (position.GetAttackers(square, ~Side)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 template <Side Side>
 void GenerateCastlingMoves(const Position &position, std::vector<Move> &moves) {
   static_assert(Side == kWhite || Side == kBlack);
 
-  if (position.GetCastlingRights().HasKingSide<Side>()) {
-    Bitboard rook_path = GetKingSideCastlingPath<Side>();
-    if (!IsImpeded(position, rook_path) &&
-        !IsAttacked<Side>(position, rook_path)) {
-      static constexpr Move kCastlingMoves[] = {
-          Move(E1, G1, Move::Flags::kKingCastle),
-          Move(E8, G8, Move::Flags::kKingCastle),
-      };
-      moves.push_back(kCastlingMoves[Side]);
-    }
+  if (position.GetCastlingRights().HasKingSide<Side>() &&
+      !IsImpeded(position, GetKingSideCastlingPath<Side>())) {
+    static constexpr Move kCastlingMoves[] = {
+        Move(E1, G1, Move::Flags::kKingCastle),
+        Move(E8, G8, Move::Flags::kKingCastle),
+    };
+    moves.push_back(kCastlingMoves[Side]);
   }
 
-  if (position.GetCastlingRights().HasQueenSide<Side>()) {
-    Bitboard rook_path = GetQueenSideCastlingPath<Side>();
-
-    Bitboard king_path = rook_path;
-    king_path.PopLeastSignificantBit();
-
-    if (!IsImpeded(position, rook_path) &&
-        !IsAttacked<Side>(position, king_path)) {
-      static constexpr Move kCastlingMoves[] = {
-          Move(E1, C1, Move::Flags::kQueenCastle),
-          Move(E8, C8, Move::Flags::kQueenCastle),
-      };
-      moves.push_back(kCastlingMoves[Side]);
-    }
+  if (position.GetCastlingRights().HasQueenSide<Side>() &&
+      !IsImpeded(position, GetQueenSideCastlingPath<Side>())) {
+    static constexpr Move kCastlingMoves[] = {
+        Move(E1, C1, Move::Flags::kQueenCastle),
+        Move(E8, C8, Move::Flags::kQueenCastle),
+    };
+    moves.push_back(kCastlingMoves[Side]);
   }
 }
 
@@ -186,6 +166,8 @@ Bitboard GetKingTargets(const Position &position) {
 
 template <Side Side, MoveType MoveType>
 void GenerateMoves(const Position &position, std::vector<Move> &moves) {
+  std::vector<Move> pseudo_moves;
+
   // Generate moves for all non-king pieces. This logic is shared for two
   // main scenarios:
   //
@@ -211,18 +193,24 @@ void GenerateMoves(const Position &position, std::vector<Move> &moves) {
       position.GetCheckers(Side).GetCount() == 1) {
     Bitboard targets = GetTargets<Side, MoveType>(position);
 
-    GeneratePawnMoves<Side, MoveType>(position, moves);
-    GenerateMoves<Side, kKnight>(position, targets, moves);
-    GenerateMoves<Side, kBishop>(position, targets, moves);
-    GenerateMoves<Side, kRook>(position, targets, moves);
-    GenerateMoves<Side, kQueen>(position, targets, moves);
+    GeneratePawnMoves<Side, MoveType>(position, pseudo_moves);
+    GenerateMoves<Side, kKnight>(position, targets, pseudo_moves);
+    GenerateMoves<Side, kBishop>(position, targets, pseudo_moves);
+    GenerateMoves<Side, kRook>(position, targets, pseudo_moves);
+    GenerateMoves<Side, kQueen>(position, targets, pseudo_moves);
   }
 
   GenerateMoves<Side, kKing>(position, GetKingTargets<Side, MoveType>(position),
-                             moves);
+                             pseudo_moves);
 
   if constexpr (MoveType == kQuiet) {
-    GenerateCastlingMoves<Side>(position, moves);
+    GenerateCastlingMoves<Side>(position, pseudo_moves);
+  }
+
+  for (const Move &move : pseudo_moves) {
+    if (position.IsLegal(move)) {
+      moves.push_back(move);
+    }
   }
 }
 

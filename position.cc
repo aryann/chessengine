@@ -6,6 +6,7 @@
 #include "attacks.h"
 #include "bitboard.h"
 #include "castling.h"
+#include "line.h"
 
 namespace chessengine {
 
@@ -275,6 +276,21 @@ std::expected<Position, std::string> Position::FromFen(
 
 std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
   return Position::FromFen(absl::StrSplit(fen, absl::ByAsciiWhitespace()));
+}
+
+bool Position::IsLegal(const Move &move) const {
+  if (move.IsKingSideCastling() || move.IsQueenSideCastling()) {
+    Bitboard king_path = GetLine(move.from(), move.to()) | Bitboard(move.to());
+
+    while (king_path) {
+      Square square = king_path.PopLeastSignificantBit();
+      if (GetAttackers(square, ~side_to_move_)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 UndoInfo Position::Do(const Move &move) {
