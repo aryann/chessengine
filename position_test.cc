@@ -1414,6 +1414,20 @@ TEST(IsLegal, EnPassant) {
       //
       "   w - c6 4 3");
 
+  // Bitboard occupied = position.GetPieces() & ~Bitboard(B5) | Bitboard(C6);
+  // occupied &= ~Bitboard(C5);
+  // EXPECT_THAT(occupied, EqualsBitboard("8: . . . . . . . ."
+  //                                      "7: . . . . . . . ."
+  //                                      "6: . . . . . . . ."
+  //                                      "5: . . . . . . . ."
+  //                                      "4: . . . . . . . ."
+  //                                      "3: . . . . . . . ."
+  //                                      "2: . . . . . . . ."
+  //                                      "1: . . . . . . . ."
+  //                                      "   a b c d e f g h"));
+  // //
+  // // Bitboard enemies = position.GetPieces(kBlack) & ~Bitboard(F1);
+
   EXPECT_THAT(position.IsLegal(Move(B5, C6)), IsTrue());
 }
 
