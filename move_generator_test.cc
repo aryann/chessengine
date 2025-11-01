@@ -808,5 +808,62 @@ TEST(Evasion, CheckResolvedViaKnightCapture) {
   EXPECT_THAT(GenerateMoves<kEvasion>(position), Contains(MakeMove("g6f7")));
 }
 
+TEST(Evasion, CheckResolvedViaBishopCapture) {
+  Position position = MakePosition(
+      "8: . . . . k . . ."
+      "7: . . . . . B . ."
+      "6: . . . . . . b ."
+      "5: . . . . . . . ."
+      "4: . . . . . . . ."
+      "3: . . . . . . . ."
+      "2: . . . . . . . ."
+      "1: . . . . . . . ."
+      "   a b c d e f g h"
+      //
+      "   b - - 0 2");
+
+  EXPECT_THAT(GenerateMoves<kEvasion>(position), Contains(MakeMove("g6f7")));
+}
+
+TEST(Evasion, CheckResolvedViaRookCapture) {
+  Position position = MakePosition(
+      "8: . . . . . . . ."
+      "7: . . . . . . . ."
+      "6: . . . . . . . ."
+      "5: . . . . . . . ."
+      "4: . . . r . . . Q"
+      "3: . . . . . . . ."
+      "2: . . . . . . . ."
+      "1: . . . K . . . ."
+      "   a b c d e f g h"
+      //
+      "   w - - 0 1");
+
+  EXPECT_THAT(GenerateMoves<kEvasion>(position), Contains(MakeMove("h4d4")));
+}
+
+TEST(Evasion, CaptureNotAllowedIfItExposesKingToAnotherCheck) {
+  Position position = MakePosition(
+      "8: . . . . . . . ."
+      "7: . . . . . . . ."
+      "6: . . . . . . . ."
+      "5: . . . . . . . ."
+      "4: . . . . . . . ."
+      "3: . b . . . . . ."
+      "2: . . R . . n . ."
+      "1: . . . K . . . ."
+      "   a b c d e f g h"
+      //
+      "   w - - 0 1");
+
+  EXPECT_THAT(GenerateMoves<kEvasion>(position),
+              UnorderedElementsAreArray(MakeMoves({
+                  "d1c1",
+                  "d1e1",
+                  "d1d2",
+                  "d1e2",
+              })));
+}
+
 }  // namespace
 }  // namespace chessengine

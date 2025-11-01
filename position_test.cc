@@ -1315,5 +1315,107 @@ TEST(Castling, BlackKing) {
   }
 }
 
+TEST(IsLegal, BishopCapturesKnight) {
+  Position position = MakePosition(
+      "8: r n b q . k . r"
+      "7: p p . P . p p p"
+      "6: . . p . . . . ."
+      "5: . . . . . . . ."
+      "4: . . B . . . . b"
+      "3: . . . . B . . ."
+      "2: P P P . N n P P"
+      "1: R N . Q K . . R"
+      "   a b c d e f g h"
+      //
+      "   w KQ - 3 9");
+
+  // Bitboard occupied = position.GetPieces();
+  // occupied ^= Bitboard(E3) | Bitboard(F2);
+  //
+  // EXPECT_THAT(occupied, EqualsBitboard("8: . . . . . . . ."
+  //                                      "7: . . . . . . . ."
+  //                                      "6: . . . . . . . ."
+  //                                      "5: . . . . . . . ."
+  //                                      "4: . . . . . . . ."
+  //                                      "3: . . . . . . . ."
+  //                                      "2: . . . . . . . ."
+  //                                      "1: . . . . . . . ."
+  //                                      "   a b c d e f g h"));
+  //
+  // Bitboard enemies = position.GetPieces(kBlack) & ~Bitboard(F1);
+  //
+  // EXPECT_THAT(position.GetAttackers(E1, kBlack, occupied) & enemies,
+  //             EqualsBitboard("8: . . . . . . . ."
+  //                            "7: . . . . . . . ."
+  //                            "6: . . . . . . . ."
+  //                            "5: . . . . . . . ."
+  //                            "4: . . . . . . . ."
+  //                            "3: . . . . . . . ."
+  //                            "2: . . . . . . . ."
+  //                            "1: . . . . . . . ."
+  //                            "   a b c d e f g h"));
+
+  EXPECT_THAT(position.IsLegal(Move(E3, F2)), IsTrue());
+}
+
+TEST(IsLegal, Regression2) {
+  Position position = MakePosition(
+      "8: r . . . k . . r"
+      "7: P p p p . p p p"
+      "6: . b . . . n b N"
+      "5: n P . . . . . ."
+      "4: B B P . P . . ."
+      "3: q . . . . N . ."
+      "2: P p . P . . P P"
+      "1: R . . Q . R K ."
+      "   a b c d e f g h"
+      //
+      "   w kq - 0 1");
+
+  // Bitboard occupied = position.GetPieces() & ~Bitboard(C4);
+  //
+  // EXPECT_THAT(occupied, EqualsBitboard("8: . . . . . . . ."
+  //                                      "7: . . . . . . . ."
+  //                                      "6: . . . . . . . ."
+  //                                      "5: . . . . . . . ."
+  //                                      "4: . . . . . . . ."
+  //                                      "3: . . . . . . . ."
+  //                                      "2: . . . . . . . ."
+  //                                      "1: . . . . . . . ."
+  //                                      "   a b c d e f g h"));
+  // //
+  // Bitboard enemies = position.GetPieces(kBlack) & ~Bitboard(F1);
+  //
+  // EXPECT_THAT(position.GetAttackers(E1, kBlack, occupied) & enemies,
+  //             EqualsBitboard("8: . . . . . . . ."
+  //                            "7: . . . . . . . ."
+  //                            "6: . . . . . . . ."
+  //                            "5: . . . . . . . ."
+  //                            "4: . . . . . . . ."
+  //                            "3: . . . . . . . ."
+  //                            "2: . . . . . . . ."
+  //                            "1: . . . . . . . ."
+  //                            "   a b c d e f g h"));
+
+  EXPECT_THAT(position.IsLegal(Move(C4, C5)), IsTrue());
+}
+
+TEST(IsLegal, EnPassant) {
+  Position position = MakePosition(
+      "8: . . . . . . . ."
+      "7: . . . . . . . ."
+      "6: . . . . . . . ."
+      "5: . P p p . . . r"
+      "4: R K . . . p . k"
+      "3: . . . . . . . ."
+      "2: . . . . P . P ."
+      "1: . . . . . . . ."
+      "   a b c d e f g h"
+      //
+      "   w - c6 4 3");
+
+  EXPECT_THAT(position.IsLegal(Move(B5, C6)), IsTrue());
+}
+
 }  // namespace
 }  // namespace chessengine

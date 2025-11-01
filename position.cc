@@ -283,26 +283,39 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
 }
 
 bool Position::IsLegal(const Move &move) const {
+  Side attacker_side = ~side_to_move_;
+
   if (move.IsKingSideCastling() || move.IsQueenSideCastling()) {
     Bitboard king_path = GetLine(move.from(), move.to()) | Bitboard(move.to());
 
     while (king_path) {
       Square square = king_path.PopLeastSignificantBit();
-      if (GetAttackers(square, ~side_to_move_)) {
+      if (GetAttackers(square, attacker_side)) {
         return false;
       }
     }
+
+    return true;
   }
 
   if (GetPiece(move.from()) == kKing) {
     Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
     Bitboard occupied = GetPieces() ^ from_to;
-    if (GetAttackers(move.to(), ~side_to_move_, occupied)) {
-      return false;
-    }
+    return !GetAttackers(move.to(), attacker_side, occupied);
   }
 
-  return true;
+  // TODO(aryann): Delete this block. This exists because some unit tests
+  // lack a king, which causes GetKing() to segfault.
+  if (!GetPieces(side_to_move_, kKing)) {
+    return true;
+  }
+
+  Bitboard occupied =
+      GetPieces() & ~Bitboard(move.from()) | Bitboard(move.to());
+
+  Square our_king = GetKing(side_to_move_);
+  Bitboard enemies = GetPieces(attacker_side) & ~Bitboard(move.to());
+  return !(GetAttackers(our_king, attacker_side, occupied) & enemies);
 }
 
 UndoInfo Position::Do(const Move &move) {
