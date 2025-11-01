@@ -80,6 +80,9 @@ class Position {
         half_moves_(0),
         full_moves_(1) {}
 
+  [[nodiscard]] Bitboard GetAttackers(Square to, Side by,
+                                      Bitboard occupied) const;
+
   std::array<Bitboard, kNumPieces> pieces_;
   std::array<Bitboard, kNumSides> sides_;
 
