@@ -80,9 +80,10 @@ Bitboard Position::GetPieces(Side side, Piece type) const {
   return sides_[side] & pieces_[type];
 }
 
-Bitboard Position::GetAttackers(Square to, Side attacker_side,
-                                Bitboard occupied) const {
+Bitboard Position::GetAttackers(Square to, Side attacker_side) const {
+  Bitboard occupied = GetPieces();
   Bitboard attackers;
+
   Side victim_side = ~attacker_side;
 
   attackers |=
@@ -101,11 +102,6 @@ Bitboard Position::GetAttackers(Square to, Side attacker_side,
       (GetPieces(attacker_side, kBishop) | GetPieces(attacker_side, kQueen));
 
   return attackers;
-}
-
-Bitboard Position::GetAttackers(Square to, Side attacker_side) const {
-  Bitboard occupied = GetPieces();
-  return GetAttackers(to, attacker_side, occupied);
 }
 
 Square Position::GetKing(Side side) const {
@@ -291,14 +287,6 @@ bool Position::IsLegal(const Move &move) const {
       if (GetAttackers(square, ~side_to_move_)) {
         return false;
       }
-    }
-  }
-
-  if (GetPiece(move.from()) == kKing) {
-    Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
-    Bitboard occupied = GetPieces() ^ from_to;
-    if (GetAttackers(move.to(), ~side_to_move_, occupied)) {
-      return false;
     }
   }
 
