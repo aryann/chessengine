@@ -6,3 +6,15 @@ cc_binary(
         "@google_benchmark//:benchmark",
     ],
 )
+
+cc_binary(
+    name = "moves_benchmark",
+    srcs = ["moves_benchmark.cc"],
+    deps = [
+        "//:move_generator",
+        "//:position",
+        "//:scoped_move",
+        "//:types",
+        "@google_benchmark//:benchmark",
+    ],
+)

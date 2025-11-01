@@ -91,6 +91,7 @@ cc_library(
     srcs = ["position.cc"],
     hdrs = ["position.h"],
     visibility = [
+        "//benchmarks:__subpackages__",
         "//cli:__subpackages__",
     ],
     deps = [
@@ -128,6 +129,9 @@ cc_library(
     name = "scoped_move",
     srcs = [],
     hdrs = ["scoped_move.h"],
+    visibility = [
+        "//benchmarks:__subpackages__",
+    ],
     deps = [
         ":move",
         ":position",
@@ -192,6 +196,7 @@ cc_library(
     srcs = ["move_generator.cc"],
     hdrs = ["move_generator.h"],
     visibility = [
+        "//benchmarks:__subpackages__",
         "//cli:__subpackages__",
     ],
     deps = [
@@ -242,6 +247,9 @@ cc_library(
     name = "types",
     srcs = ["types.cc"],
     hdrs = ["types.h"],
+    visibility = [
+        "//benchmarks:__subpackages__",
+    ],
     deps = [
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings:str_format",
