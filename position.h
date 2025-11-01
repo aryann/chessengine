@@ -67,8 +67,6 @@ class Position {
 
   bool operator==(const Position &other) const = default;
 
-  [[nodiscard]] bool IsLegal(const Move &move) const;
-
   UndoInfo Do(const Move &move);
 
   void Undo(const UndoInfo &undo_info);

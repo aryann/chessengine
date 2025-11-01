@@ -98,7 +98,6 @@ cc_library(
         ":attacks",
         ":bitboard",
         ":castling",
-        ":line",
         ":move",
         ":types",
         "@abseil-cpp//absl/log:check",
