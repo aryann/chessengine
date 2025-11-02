@@ -53,7 +53,7 @@ std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
   }
 
   if (input == "#ep") {
-    return Move(*from, *to, kDoublePawnPush);
+    return Move(*from, *to, kEnPassantCapture);
   }
 
   if (input == "#oo") {

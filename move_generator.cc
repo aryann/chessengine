@@ -57,14 +57,10 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
   }
 
   if constexpr (MoveType == kCapture || MoveType == kEvasion) {
-    Bitboard enemies = position.GetPieces(~Side);
-    std::optional<Square> en_passant_target = position.GetEnPassantTarget();
-    if (en_passant_target) {
-      enemies.Set(*en_passant_target);
-    }
-
     constexpr Direction left = Side == kWhite ? kNorthWest : kSouthEast;
     constexpr Direction right = Side == kWhite ? kNorthEast : kSouthWest;
+
+    Bitboard enemies = position.GetPieces(~Side);
 
     Bitboard left_captures = pawns.Shift<left>() & enemies;
     Bitboard right_captures = pawns.Shift<right>() & enemies;
@@ -73,6 +69,15 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
                  moves);
     AddPawnMoves(right_captures & ~promotion_rank, right, Move::Flags::kNone,
                  moves);
+
+    std::optional<Square> en_passant_target = position.GetEnPassantTarget();
+    if (en_passant_target) {
+      auto target = Bitboard(*en_passant_target);
+      AddPawnMoves(pawns.Shift<left>() & target, left,
+                   Move::Flags::kEnPassantCapture, moves);
+      AddPawnMoves(pawns.Shift<right>() & target, right,
+                   Move::Flags::kEnPassantCapture, moves);
+    }
 
     AddPawnPromotions(left_captures & promotion_rank, left, moves);
     AddPawnPromotions(right_captures & promotion_rank, right, moves);

@@ -231,7 +231,30 @@ TEST(Pawns, EnPassant) {
                 })));
     EXPECT_THAT(GenerateMoves<kCapture>(position),
                 UnorderedElementsAreArray(MakeMoves({
-                    "f5e6",
+                    "f5e6#ep",
+                })));
+  }
+  {
+    Position position = MakePosition(
+        "8: . . . . . . . ."
+        "7: . . . . . . . ."
+        "6: . . . . . . . ."
+        "5: . . . P p . . ."
+        "4: . . . . . . . ."
+        "3: . . . . . . . ."
+        "2: . . . . . . . ."
+        "1: . . . . . . . ."
+        "   a b c d e f g h"
+        //
+        "   w - e6 0 1");
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "d5d6",
+                })));
+    EXPECT_THAT(GenerateMoves<kCapture>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "d5e6#ep",
                 })));
   }
 
@@ -255,7 +278,31 @@ TEST(Pawns, EnPassant) {
                 })));
     EXPECT_THAT(GenerateMoves<kCapture>(position),
                 UnorderedElementsAreArray(MakeMoves({
-                    "b4a3",
+                    "b4a3#ep",
+                })));
+  }
+
+  {
+    Position position = MakePosition(
+        "8: . . . . . . . ."
+        "7: . . . . . . . ."
+        "6: . . . . . . . ."
+        "5: . . . . . . . ."
+        "4: . . . . . . p P"
+        "3: . . . . . . . ."
+        "2: . . . . . . . ."
+        "1: . . . . . . . ."
+        "   a b c d e f g h"
+        //
+        "   b - h3 1 1");
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "g4g3",
+                })));
+    EXPECT_THAT(GenerateMoves<kCapture>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "g4h3#ep",
                 })));
   }
 }
