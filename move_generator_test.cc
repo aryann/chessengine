@@ -95,7 +95,6 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
 }
 
 TEST(Pawns, QuietPromotions) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -118,7 +117,6 @@ TEST(Pawns, QuietPromotions) {
                     "e7e8q",
                 })));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -144,7 +142,6 @@ TEST(Pawns, QuietPromotions) {
 }
 
 TEST(Pawns, Captures) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -165,7 +162,6 @@ TEST(Pawns, Captures) {
                     "e3f4",
                 })));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -186,7 +182,6 @@ TEST(Pawns, Captures) {
                     "d5e4",
                 })));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . r . r . ."
@@ -215,8 +210,57 @@ TEST(Pawns, Captures) {
   }
 }
 
+TEST(Pawns, EnPassant) {
+  {
+    Position position = MakePosition(
+        "8: . . . . . . . ."
+        "7: . . . . . . . ."
+        "6: . . . . . . . ."
+        "5: . . . . p P . ."
+        "4: . . . . . . . ."
+        "3: . . . . . . . ."
+        "2: . . . . . . . ."
+        "1: . . . . . . . ."
+        "   a b c d e f g h"
+        //
+        "   w - e6 0 1");
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "f5f6",
+                })));
+    EXPECT_THAT(GenerateMoves<kCapture>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "f5e6",
+                })));
+  }
+
+  {
+    Position position = MakePosition(
+        "8: . . . . . . . ."
+        "7: . . . . . . . ."
+        "6: . . . . . . . ."
+        "5: . . . . . . . ."
+        "4: P p . . . . . ."
+        "3: . . . . . . . ."
+        "2: . . . . . . . ."
+        "1: . . . . . . . ."
+        "   a b c d e f g h"
+        //
+        "   b - a3 1 1");
+
+    EXPECT_THAT(GenerateMoves<kQuiet>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "b4b3",
+                })));
+    EXPECT_THAT(GenerateMoves<kCapture>(position),
+                UnorderedElementsAreArray(MakeMoves({
+                    "b4a3",
+                })));
+  }
+}
+
 TEST(Knights, QuietMoves) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -243,7 +287,6 @@ TEST(Knights, QuietMoves) {
                     "e3f1",
                 })));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -269,7 +312,6 @@ TEST(Knights, QuietMoves) {
 }
 
 TEST(Knights, Captures) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -286,7 +328,6 @@ TEST(Knights, Captures) {
 
     EXPECT_THAT(GenerateMoves<kCapture>(position), IsEmpty());
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -360,7 +401,6 @@ TEST(Bishops, Captures) {
 // N.B.: King quiet moves can place the king in check. The engine must undo
 // moves that place the king in check.
 TEST(King, QuietMoves) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -387,7 +427,6 @@ TEST(King, QuietMoves) {
                     "d4c5",
                 })));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -467,7 +506,6 @@ TEST(Castling, WhiteCastling) {
 }
 
 TEST(Castling, WhiteKingSideOnly) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . k . . r"
@@ -486,7 +524,6 @@ TEST(Castling, WhiteKingSideOnly) {
                 AllOf(Contains(MakeMove("e1g1#oo")),
                       Not(Contains(MakeMove("e1c1#ooo")))));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . k . . r"
@@ -508,7 +545,6 @@ TEST(Castling, WhiteKingSideOnly) {
 }
 
 TEST(Castling, WhiteQueenSideOnly) {
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . ."
@@ -527,7 +563,6 @@ TEST(Castling, WhiteQueenSideOnly) {
                 AllOf(Contains(MakeMove("e1c1#ooo")),
                       Not(Contains(MakeMove("e1g1#oo")))));
   }
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . ."
@@ -546,7 +581,6 @@ TEST(Castling, WhiteQueenSideOnly) {
                 AllOf(Contains(MakeMove("e1c1#ooo")),
                       Not(Contains(MakeMove("e1g1#oo")))));
   }
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . ."
@@ -565,7 +599,6 @@ TEST(Castling, WhiteQueenSideOnly) {
                 AllOf(Contains(MakeMove("e1c1#ooo")),
                       Not(Contains(MakeMove("e1g1#oo")))));
   }
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . ."
@@ -644,7 +677,6 @@ TEST(Castling, BlackQueenSideOnly) {
 }
 
 TEST(Castling, NoCastlingRights) {
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -663,7 +695,7 @@ TEST(Castling, NoCastlingRights) {
                 AllOf(Not(Contains(MakeMove("e1g1#oo"))),
                       Not(Contains(MakeMove("e1c1#ooo")))));
   }
-  //
+
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -685,7 +717,6 @@ TEST(Castling, NoCastlingRights) {
 }
 
 TEST(Castling, WhiteKingSidePassesThroughCheck) {
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -704,7 +735,7 @@ TEST(Castling, WhiteKingSidePassesThroughCheck) {
                 AllOf(Not(Contains(MakeMove("e1g1#oo"))),
                       Contains(MakeMove("e1c1#ooo"))));
   }
-  //
+
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -726,7 +757,6 @@ TEST(Castling, WhiteKingSidePassesThroughCheck) {
 }
 
 TEST(Castling, WhiteQueenSidePassesThroughCheck) {
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -745,7 +775,7 @@ TEST(Castling, WhiteQueenSidePassesThroughCheck) {
                 AllOf(Contains(MakeMove("e1g1#oo")),
                       Not(Contains(MakeMove("e1c1#ooo")))));
   }
-  //
+
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
