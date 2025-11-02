@@ -51,7 +51,6 @@ TEST(FEN, Starting) {
 }
 
 TEST(FEN, CastlingRights) {
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
@@ -60,7 +59,6 @@ TEST(FEN, CastlingRights) {
     auto castling_rights = position.value().GetCastlingRights();
     EXPECT_THAT(std::format("{}", castling_rights), Eq("-"));
   }
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -69,7 +67,6 @@ TEST(FEN, CastlingRights) {
     auto castling_rights = position.value().GetCastlingRights();
     EXPECT_THAT(std::format("{}", castling_rights), Eq("KQkq"));
   }
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w kq - 0 1");
@@ -78,7 +75,6 @@ TEST(FEN, CastlingRights) {
     auto castling_rights = position.value().GetCastlingRights();
     EXPECT_THAT(std::format("{}", castling_rights), Eq("kq"));
   }
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1");
@@ -87,7 +83,6 @@ TEST(FEN, CastlingRights) {
     auto castling_rights = position.value().GetCastlingRights();
     EXPECT_THAT(std::format("{}", castling_rights), Eq("Kk"));
   }
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w INVALID - 0 1");
@@ -98,7 +93,6 @@ TEST(FEN, CastlingRights) {
 }
 
 TEST(FEN, HalfMoves) {
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 30 1");
@@ -106,7 +100,6 @@ TEST(FEN, HalfMoves) {
     ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
     EXPECT_THAT(position.value().GetHalfMoves(), Eq(30));
   }
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - INVALID 1");
@@ -117,7 +110,6 @@ TEST(FEN, HalfMoves) {
 }
 
 TEST(FEN, FullMoves) {
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 50");
@@ -125,7 +117,6 @@ TEST(FEN, FullMoves) {
     ASSERT_THAT(position.has_value(), IsTrue()) << position.error();
     EXPECT_THAT(position.value().GetFullMoves(), Eq(50));
   }
-  //
   {
     std::expected<Position, std::string> position = Position::FromFen(
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 INVALID");
@@ -413,7 +404,6 @@ TEST(GetAttackers, Pawn) {
 }
 
 TEST(GetAttackers, Rook) {
-  //
   {
     Position position = MakePosition(
         "8: . . . r . . . ."
@@ -439,7 +429,6 @@ TEST(GetAttackers, Rook) {
                                "1: . . X . . X . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . r . . . ."
@@ -572,7 +561,6 @@ TEST(GetAttackers, King) {
 }
 
 TEST(GetCheckers, NoCheck) {
-  //
   {
     Position position = MakePosition(
         "8: r n b q k b n r"
@@ -598,7 +586,6 @@ TEST(GetCheckers, NoCheck) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -627,7 +614,6 @@ TEST(GetCheckers, NoCheck) {
 }
 
 TEST(GetCheckers, SingleCheck) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . q . . ."
@@ -653,7 +639,6 @@ TEST(GetCheckers, SingleCheck) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . k ."
@@ -679,7 +664,6 @@ TEST(GetCheckers, SingleCheck) {
                                "1: . . . . . . X ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -705,7 +689,6 @@ TEST(GetCheckers, SingleCheck) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . k . . ."
@@ -731,7 +714,6 @@ TEST(GetCheckers, SingleCheck) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -757,7 +739,6 @@ TEST(GetCheckers, SingleCheck) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -786,7 +767,6 @@ TEST(GetCheckers, SingleCheck) {
 }
 
 TEST(GetCheckers, DoubleCheck) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -812,7 +792,6 @@ TEST(GetCheckers, DoubleCheck) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . k . . ."
@@ -838,7 +817,6 @@ TEST(GetCheckers, DoubleCheck) {
                                "1: . . . . X . . ."
                                "   a b c d e f g h"));
   }
-  //
   {
     Position position = MakePosition(
         "8: r . b q k . . r"
@@ -867,7 +845,6 @@ TEST(GetCheckers, DoubleCheck) {
 }
 
 TEST(GetCheckers, Pawns) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -893,8 +870,6 @@ TEST(GetCheckers, Pawns) {
                                "1: . . . . . . . ."
                                "   a b c d e f g h"));
   }
-  //
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -988,7 +963,7 @@ TEST(EnPassant, Capture) {
   EXPECT_THAT(position, EqualsPosition(initial));
 }
 
-TEST(EnPassant, OtherPiecesCannotMoveToSquare) {
+TEST(EnPassant, OtherPiecesCanMoveToEnPassantTarget) {
   static constexpr absl::string_view kInitialPosition =
       "8: . . . . . . . ."
       "7: . . p . . . . ."
@@ -1004,9 +979,8 @@ TEST(EnPassant, OtherPiecesCannotMoveToSquare) {
 
   Position position = MakePosition(kInitialPosition);
 
-  //
   {
-    ScopedMove move(Move(H4, G3, Move::Flags::kEnPassantCapture), position);
+    ScopedMove move(Move(H4, G3), position);
     EXPECT_THAT(position, EqualsPosition("8: . . . . . . . ."
                                          "7: . . p . . . . ."
                                          "6: . . . p . . . ."
@@ -1037,7 +1011,6 @@ TEST(QuietPromotion, White) {
       //
       "   w KQkq - 0 1");
 
-  //
   {
     ScopedMove scoped_move(MakeMove("d7d8q"), position);
     EXPECT_THAT(position, EqualsPosition("8: . . . Q . . . ."
@@ -1064,19 +1037,16 @@ TEST(QuietPromotion, White) {
                                        //
                                        "   w KQkq - 0 1"));
 
-  //
   {
     ScopedMove scoped_move(MakeMove("d7d8n"), position);
     EXPECT_THAT(position.GetPiece(D8), Eq(kKnight));
   }
 
-  //
   {
     ScopedMove scoped_move(MakeMove("d7d8b"), position);
     EXPECT_THAT(position.GetPiece(D8), Eq(kBishop));
   }
 
-  //
   {
     ScopedMove scoped_move(MakeMove("d7d8r"), position);
     EXPECT_THAT(position.GetPiece(D8), Eq(kRook));
@@ -1097,7 +1067,6 @@ TEST(QuietPromotion, Black) {
       //
       "   b KQkq - 0 1");
 
-  //
   {
     ScopedMove scoped_move(MakeMove("h2h1q"), position);
     EXPECT_THAT(position, EqualsPosition("8: . . . . . . . ."
@@ -1124,19 +1093,16 @@ TEST(QuietPromotion, Black) {
                                        //
                                        "   b KQkq - 0 1"));
 
-  //
   {
     ScopedMove scoped_move(MakeMove("h2h1n"), position);
     EXPECT_THAT(position.GetPiece(H1), Eq(kKnight));
   }
 
-  //
   {
     ScopedMove scoped_move(MakeMove("h2h1b"), position);
     EXPECT_THAT(position.GetPiece(H1), Eq(kBishop));
   }
 
-  //
   {
     ScopedMove scoped_move(MakeMove("h2h1r"), position);
     EXPECT_THAT(position.GetPiece(H1), Eq(kRook));
@@ -1144,7 +1110,6 @@ TEST(QuietPromotion, Black) {
 }
 
 TEST(Castling, WhiteKing) {
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -1185,7 +1150,6 @@ TEST(Castling, WhiteKing) {
                                          //
                                          "   w KQkq - 0 1"));
   }
-  //
   {
     Position position = MakePosition(
         "8: . . . . . . . ."
@@ -1229,7 +1193,6 @@ TEST(Castling, WhiteKing) {
 }
 
 TEST(Castling, BlackKing) {
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
@@ -1270,7 +1233,6 @@ TEST(Castling, BlackKing) {
                                          //
                                          "   b KQkq - 0 1"));
   }
-  //
   {
     Position position = MakePosition(
         "8: r . . . k . . r"
