@@ -301,12 +301,9 @@ UndoInfo Position::Do(const Move &move) {
   Piece piece = GetPiece(move.from());
   DCHECK(piece != kEmptyPiece);
 
-  if (en_passant_target_ && move.to() == *en_passant_target_ &&
-      piece == kPawn) {
-    Square victim_square =
-        MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
-    pieces_[kPawn].Clear(victim_square);
-    sides_[~side_to_move_].Clear(victim_square);
+  if (move.IsEnPassantCapture()) {
+    pieces_[kPawn].Clear(move.GetEnPassantVictim());
+    sides_[~side_to_move_].Clear(move.GetEnPassantVictim());
     half_moves_ = 0;
   }
 
@@ -365,12 +362,9 @@ void Position::Undo(const UndoInfo &undo_info) {
   DCHECK(side != kEmptySide);
   sides_[side] ^= from_to;
 
-  if (en_passant_target_ && move.to() == *en_passant_target_ &&
-      piece == kPawn) {
-    Square victim_square =
-        MakeSquare(GetRank(move.from()), GetFile(*en_passant_target_));
-    pieces_[kPawn].Set(victim_square);
-    sides_[~side].Set(victim_square);
+  if (move.IsEnPassantCapture()) {
+    pieces_[kPawn].Set(move.GetEnPassantVictim());
+    sides_[~side].Set(move.GetEnPassantVictim());
   }
 
   if (undo_info.captured_piece != kEmptyPiece) {

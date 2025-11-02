@@ -971,7 +971,7 @@ TEST(EnPassant, Capture) {
 
   Position position = MakePosition(initial);
 
-  UndoInfo move = position.Do(MakeMove("e5d6"));
+  UndoInfo move = position.Do(MakeMove("e5d6#ep"));
   EXPECT_THAT(position, EqualsPosition("8: . . . . . . . ."
                                        "7: . . . . . . . ."
                                        "6: . . . P . . . ."
@@ -1006,7 +1006,7 @@ TEST(EnPassant, OtherPiecesCannotMoveToSquare) {
 
   //
   {
-    ScopedMove move(Move(H4, G3), position);
+    ScopedMove move(Move(H4, G3, Move::Flags::kEnPassantCapture), position);
     EXPECT_THAT(position, EqualsPosition("8: . . . . . . . ."
                                          "7: . . p . . . . ."
                                          "6: . . . p . . . ."
