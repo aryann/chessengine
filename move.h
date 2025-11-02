@@ -20,6 +20,7 @@ class Move {
     kDoublePawnPush = /*        */ 0b0001,
     kKingCastle = /*            */ 0b0010,
     kQueenCastle = /*           */ 0b0011,
+    kEnPassantCapture = /*      */ 0b0101,
     kKnightPromotion = /*       */ 0b1000,
     kBishopPromotion = /*       */ 0b1001,
     kRookPromotion = /*         */ 0b1010,
@@ -48,6 +49,15 @@ class Move {
 
     int diff = from() < to() ? 8 : -8;
     return static_cast<Square>(from() + diff);
+  }
+
+  [[nodiscard]] constexpr bool IsEnPassantCapture() const {
+    return GetFlags() == kEnPassantCapture;
+  }
+
+  [[nodiscard]] constexpr Square GetEnPassantVictim() const {
+    DCHECK(IsDoublePawnPush());
+    return MakeSquare(GetRank(from()), GetFile(to()));
   }
 
   [[nodiscard]] constexpr bool IsKingSideCastling() const {
@@ -85,6 +95,10 @@ class Move {
 
     if (IsDoublePawnPush()) {
       out = std::format_to(out, "#dpp");
+    }
+
+    if (IsEnPassantCapture()) {
+      out = std::format_to(out, "#ep");
     }
 
     if (IsKingSideCastling()) {

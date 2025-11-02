@@ -21,7 +21,7 @@ TEST(Move, NonPromotion) {
   EXPECT_THAT(move.IsPromotion(), IsFalse());
 }
 
-TEST(Move, EnPassantTarget) {
+TEST(Move, DoublePawnPush) {
   {
     Move move(D2, D4, Move::Flags::kDoublePawnPush);
     ASSERT_THAT(move.IsDoublePawnPush(), IsTrue());
@@ -32,6 +32,20 @@ TEST(Move, EnPassantTarget) {
     Move move(A7, A5, Move::Flags::kDoublePawnPush);
     ASSERT_THAT(move.IsDoublePawnPush(), IsTrue());
     EXPECT_THAT(move.GetEnPassantTarget(), Eq(A6));
+  }
+}
+
+TEST(Move, EnPassantCapture) {
+  {
+    Move move(F4, E3, Move::Flags::kEnPassantCapture);
+    ASSERT_THAT(move.IsEnPassantCapture(), IsTrue());
+    EXPECT_THAT(move.GetEnPassantVictim(), Eq(E4));
+  }
+
+  {
+    Move move(B5, A6, Move::Flags::kEnPassantCapture);
+    ASSERT_THAT(move.IsEnPassantCapture(), IsTrue());
+    EXPECT_THAT(move.GetEnPassantVictim(), Eq(A5));
   }
 }
 
@@ -197,6 +211,8 @@ TEST(Move, String) {
   EXPECT_THAT(ToString(Move(E7, E5)), Eq("e7e5"));
   EXPECT_THAT(ToString(Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
+  EXPECT_THAT(ToString(Move(B5, A6, Move::Flags::kEnPassantCapture)),
+              Eq("b5a6#ep"));
   EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kBishopPromotion)),
@@ -212,6 +228,8 @@ TEST(Move, String) {
   EXPECT_THAT(std::format("{}", Move(E7, E5)), Eq("e7e5"));
   EXPECT_THAT(std::format("{}", Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4"));
+  EXPECT_THAT(std::format("{}", Move(B5, A6, Move::Flags::kEnPassantCapture)),
+              Eq("b5a6"));
   EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kBishopPromotion)),
@@ -229,6 +247,8 @@ TEST(Move, String) {
   EXPECT_THAT(std::format("{:f}", Move(E7, E5)), Eq("e7e5"));
   EXPECT_THAT(std::format("{:f}", Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
+  EXPECT_THAT(std::format("{:f}", Move(B5, A6, Move::Flags::kEnPassantCapture)),
+              Eq("b5a6#ep"));
   EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kBishopPromotion)),
