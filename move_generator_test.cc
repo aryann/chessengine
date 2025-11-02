@@ -22,9 +22,26 @@ TEST(GenerateMoves, QuietMoves_StartingPosition) {
 
   EXPECT_THAT(GenerateMoves<kQuiet>(position),
               UnorderedElementsAreArray(MakeMoves({
-                  "a2a3", "a2a4", "b1a3", "b1c3", "b2b3", "b2b4", "c2c3",
-                  "c2c4", "d2d3", "d2d4", "e2e3", "e2e4", "f2f3", "f2f4",
-                  "g1f3", "g1h3", "g2g3", "g2g4", "h2h3", "h2h4",
+                  "a2a3",      //
+                  "a2a4#dpp",  //
+                  "b1a3",      //
+                  "b1c3",      //
+                  "b2b3",      //
+                  "b2b4#dpp",  //
+                  "c2c3",      //
+                  "c2c4#dpp",  //
+                  "d2d3",      //
+                  "d2d4#dpp",  //
+                  "e2e3",      //
+                  "e2e4#dpp",  //
+                  "f2f3",      //
+                  "f2f4#dpp",  //
+                  "g1f3",      //
+                  "g1h3",      //
+                  "g2g3",      //
+                  "g2g4#dpp",  //
+                  "h2h3",      //
+                  "h2h4#dpp",  //
               })));
 }
 
@@ -42,14 +59,39 @@ TEST(GenerateMoves, QuietMoves_StartingPosition2) {
       //
       "   w KQkq c6 0 2");
 
-  EXPECT_THAT(
-      GenerateMoves<kQuiet>(position),
-      UnorderedElementsAreArray(MakeMoves({
-          "a2a3", "a2a4", "b1a3", "b1c3", "b2b3", "b2b4", "c2c3", "c2c4",
-          "d1e2", "d1f3", "d1g4", "d1h5", "d2d3", "d2d4", "e1e2", "e4e5",
-          "f1a6", "f1b5", "f1c4", "f1d3", "f1e2", "f2f3", "f2f4", "g1e2",
-          "g1f3", "g1h3", "g2g3", "g2g4", "h2h3", "h2h4",
-      })));
+  EXPECT_THAT(GenerateMoves<kQuiet>(position),
+              UnorderedElementsAreArray(MakeMoves({
+                  "a2a3",      //
+                  "a2a4#dpp",  //
+                  "b1a3",      //
+                  "b1c3",      //
+                  "b2b3",      //
+                  "b2b4#dpp",  //
+                  "c2c3",      //
+                  "c2c4#dpp",  //
+                  "d1e2",      //
+                  "d1f3",      //
+                  "d1g4",      //
+                  "d1h5",      //
+                  "d2d3",      //
+                  "d2d4#dpp",  //
+                  "e1e2",      //
+                  "e4e5",      //
+                  "f1a6",      //
+                  "f1b5",      //
+                  "f1c4",      //
+                  "f1d3",      //
+                  "f1e2",      //
+                  "f2f3",      //
+                  "f2f4#dpp",  //
+                  "g1e2",      //
+                  "g1f3",      //
+                  "g1h3",      //
+                  "g2g3",      //
+                  "g2g4#dpp",  //
+                  "h2h3",      //
+                  "h2h4#dpp",  //
+              })));
 }
 
 TEST(Pawns, QuietPromotions) {

@@ -10,11 +10,12 @@
 namespace chessengine {
 namespace {
 
-void AddPawnMoves(Bitboard destinations, int offset, std::vector<Move> &moves) {
+void AddPawnMoves(Bitboard destinations, int offset, Move::Flags flag,
+                  std::vector<Move> &moves) {
   while (destinations) {
     Square to = destinations.PopLeastSignificantBit();
     Square from = static_cast<Square>(to - offset);
-    moves.emplace_back(from, to);
+    moves.emplace_back(from, to, flag);
   }
 }
 
@@ -43,14 +44,16 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
 
     // Single pawn pushes:
     Bitboard single_moves = pawns.Shift<forward>() & empty;
-    AddPawnMoves(single_moves & ~promotion_rank, forward, moves);
+    AddPawnMoves(single_moves & ~promotion_rank, forward, Move::Flags::kNone,
+                 moves);
     AddPawnPromotions(single_moves & promotion_rank, forward, moves);
 
     // Double pawn pushes:
     Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
     Bitboard double_moves =
         (single_moves & second_rank).Shift<forward>() & empty;
-    AddPawnMoves(double_moves, forward * 2, moves);
+    AddPawnMoves(double_moves, forward * 2, Move::Flags::kDoublePawnPush,
+                 moves);
   }
 
   if constexpr (MoveType == kCapture || MoveType == kEvasion) {
@@ -66,8 +69,10 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     Bitboard left_captures = pawns.Shift<left>() & enemies;
     Bitboard right_captures = pawns.Shift<right>() & enemies;
 
-    AddPawnMoves(left_captures & ~promotion_rank, left, moves);
-    AddPawnMoves(right_captures & ~promotion_rank, right, moves);
+    AddPawnMoves(left_captures & ~promotion_rank, left, Move::Flags::kNone,
+                 moves);
+    AddPawnMoves(right_captures & ~promotion_rank, right, Move::Flags::kNone,
+                 moves);
 
     AddPawnPromotions(left_captures & promotion_rank, left, moves);
     AddPawnPromotions(right_captures & promotion_rank, right, moves);

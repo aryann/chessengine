@@ -17,7 +17,7 @@ class Move {
   // https://www.chessprogramming.org/Encoding_Moves.
   enum Flags : std::uint8_t {
     kNone = /*                  */ 0b0000,
-    kEnpassant = /*             */ 0b0001,
+    kDoublePawnPush = /*        */ 0b0001,
     kKingCastle = /*            */ 0b0010,
     kQueenCastle = /*           */ 0b0011,
     kKnightPromotion = /*       */ 0b1000,
@@ -39,12 +39,12 @@ class Move {
     return static_cast<Square>((data_ >> 6) & 0b111111);
   }
 
-  [[nodiscard]] constexpr bool IsEnPassant() const {
-    return GetFlags() == kEnpassant;
+  [[nodiscard]] constexpr bool IsDoublePawnPush() const {
+    return GetFlags() == kDoublePawnPush;
   }
 
-  [[nodiscard]] constexpr Square EnPassantTarget() const {
-    DCHECK(IsEnPassant());
+  [[nodiscard]] constexpr Square GetEnPassantTarget() const {
+    DCHECK(IsDoublePawnPush());
 
     int diff = from() < to() ? 8 : -8;
     return static_cast<Square>(from() + diff);
@@ -83,8 +83,8 @@ class Move {
       return out;
     }
 
-    if (IsEnPassant()) {
-      out = std::format_to(out, "#ep");
+    if (IsDoublePawnPush()) {
+      out = std::format_to(out, "#dpp");
     }
 
     if (IsKingSideCastling()) {
