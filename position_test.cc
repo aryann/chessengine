@@ -216,7 +216,7 @@ TEST(Position, DoAndUndo) {
   UndoInfo move_one = position.Do(Move(B1, C3));
   EXPECT_THAT(position, EqualsPosition(position_one));
 
-  UndoInfo move_two = position.Do(Move(D7, D5));
+  UndoInfo move_two = position.Do(Move(D7, D5, Move::Flags::kDoublePawnPush));
   EXPECT_THAT(position, EqualsPosition(position_two));
 
   UndoInfo move_three = position.Do(Move(C3, D5));
@@ -933,7 +933,7 @@ TEST(EnPassant, White) {
   position.Do(MakeMove("d7d6"));
   EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
 
-  position.Do(MakeMove("a2a4"));
+  position.Do(MakeMove("a2a4#dpp"));
   EXPECT_THAT(position.GetEnPassantTarget(), Eq(A3));
 
   position.Do(MakeMove("a7a6"));
@@ -948,7 +948,7 @@ TEST(EnPassant, Black) {
   position.Do(MakeMove("d2d3"));
   EXPECT_THAT(position.GetEnPassantTarget(), Eq(std::nullopt));
 
-  position.Do(MakeMove("d7d5"));
+  position.Do(MakeMove("d7d5#dpp"));
   EXPECT_THAT(position.GetEnPassantTarget(), Eq(D6));
 
   position.Do(MakeMove("a2a3"));

@@ -335,7 +335,11 @@ UndoInfo Position::Do(const Move &move) {
     ++full_moves_;
   }
   side_to_move_ = ~side_to_move_;
-  en_passant_target_ = GetEnPassantTargetFromMove(piece, move);
+  if (move.IsDoublePawnPush()) {
+    en_passant_target_ = move.GetEnPassantTarget();
+  } else {
+    en_passant_target_ = std::nullopt;
+  }
 
   return undo_info;
 }

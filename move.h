@@ -113,22 +113,6 @@ class Move {
 
 std::ostream &operator<<(std::ostream &os, const Move &move);
 
-constexpr std::optional<Square> GetEnPassantTargetFromMove(Piece piece,
-                                                           const Move &move) {
-  if (piece != kPawn) {
-    return std::nullopt;
-  }
-
-  int diff = move.to() - move.from();
-  if (diff == 16) {
-    return static_cast<Square>(move.from() + 8);
-  }
-  if (diff == -16) {
-    return static_cast<Square>(move.from() - 8);
-  }
-  return std::nullopt;
-}
-
 struct UndoInfo {
   Move move;
   std::optional<Square> en_passant_target;
