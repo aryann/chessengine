@@ -56,7 +56,7 @@ class Move {
   }
 
   [[nodiscard]] constexpr Square GetEnPassantVictim() const {
-    DCHECK(IsDoublePawnPush());
+    DCHECK(IsEnPassantCapture());
     return MakeSquare(GetRank(from()), GetFile(to()));
   }
 
