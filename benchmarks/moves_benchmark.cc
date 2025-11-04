@@ -35,6 +35,11 @@ void BM_MakeMoves(benchmark::State& state, Args&&... args) {
   }
 }
 
+BENCHMARK_CAPTURE(  //
+    BM_MakeMoves, Starting,
+    R"(rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1)")
+    ->DenseRange(/* start = */ 1, /* limit = */ 6, /* step = */ 1);
+
 BENCHMARK_CAPTURE(
     BM_MakeMoves, Position2,
     R"(r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1)")
