@@ -2,8 +2,8 @@
 
 #include <format>
 
-#include "move.h"
-#include "move_generator.h"
+#include "engine/move.h"
+#include "engine/move_generator.h"
 
 namespace chessengine {
 namespace {

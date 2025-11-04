@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "cli/command.h"
-#include "position.h"
+#include "engine/position.h"
 
 namespace chessengine {
 class Position;

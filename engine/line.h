@@ -2,7 +2,7 @@
 #define CHESS_ENGINE_LINE_H_
 
 #include "bitboard.h"
-#include "types.h"
+#include "engine/types.h"
 
 namespace chessengine {
 

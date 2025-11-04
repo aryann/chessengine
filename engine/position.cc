@@ -5,7 +5,7 @@
 #include "absl/strings/str_split.h"
 #include "attacks.h"
 #include "bitboard.h"
-#include "castling.h"
+#include "engine/castling.h"
 
 namespace chessengine {
 

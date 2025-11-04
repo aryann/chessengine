@@ -2,7 +2,7 @@ cc_binary(
     name = "attacks_benchmark",
     srcs = ["attacks_benchmark.cc"],
     deps = [
-        "//:attacks",
+        "//engine:attacks",
         "@google_benchmark//:benchmark",
     ],
 )
@@ -11,10 +11,10 @@ cc_binary(
     name = "moves_benchmark",
     srcs = ["moves_benchmark.cc"],
     deps = [
-        "//:move_generator",
-        "//:position",
-        "//:scoped_move",
-        "//:types",
+        "//engine:move_generator",
+        "//engine:position",
+        "//engine:scoped_move",
+        "//engine:types",
         "@google_benchmark//:benchmark",
     ],
 )

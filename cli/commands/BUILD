@@ -6,9 +6,9 @@ cc_library(
         "//cli:__subpackages__",
     ],
     deps = [
-        "//:perft",
-        "//:position",
         "//cli:command",
+        "//engine:perft",
+        "//engine:position",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -21,9 +21,9 @@ cc_library(
         "//cli:__subpackages__",
     ],
     deps = [
-        "//:perft",
-        "//:position",
         "//cli:command",
+        "//engine:perft",
+        "//engine:position",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -36,10 +36,10 @@ cc_library(
         "//cli:__subpackages__",
     ],
     deps = [
-        "//:move",
-        "//:perft",
-        "//:position",
         "//cli:command",
+        "//engine:move",
+        "//engine:perft",
+        "//engine:position",
         "@abseil-cpp//absl/strings",
     ],
 )

@@ -1,11 +1,11 @@
-#include "types.h"
+#include "engine/types.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <optional>
 
-#include "testing.h"
+#include "engine/testing.h"
 
 namespace chessengine {
 namespace {

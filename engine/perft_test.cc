@@ -6,8 +6,8 @@
 #include <ranges>
 
 #include "absl/strings/str_join.h"
+#include "engine/move_generator.h"
 #include "move.h"
-#include "move_generator.h"
 #include "position.h"
 
 namespace chessengine {

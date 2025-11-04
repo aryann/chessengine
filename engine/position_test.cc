@@ -5,8 +5,8 @@
 
 #include <expected>
 
+#include "engine/testing.h"
 #include "scoped_move.h"
-#include "testing.h"
 
 namespace chessengine {
 namespace {

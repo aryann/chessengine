@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 
 #include "absl/strings/str_split.h"
-#include "testing.h"
+#include "engine/testing.h"
 
 namespace chessengine {
 namespace {

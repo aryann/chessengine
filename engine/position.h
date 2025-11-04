@@ -6,9 +6,9 @@
 #include <string_view>
 
 #include "bitboard.h"
-#include "castling.h"
-#include "move.h"
-#include "types.h"
+#include "engine/castling.h"
+#include "engine/move.h"
+#include "engine/types.h"
 
 namespace chessengine {
 

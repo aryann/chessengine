@@ -7,7 +7,7 @@
 #include <string>
 
 #include "absl/log/check.h"
-#include "types.h"
+#include "engine/types.h"
 
 namespace chessengine {
 

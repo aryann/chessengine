@@ -6,8 +6,8 @@
 #include <string>
 
 #include "absl/log/check.h"
-#include "castling.h"
-#include "types.h"
+#include "engine/castling.h"
+#include "engine/types.h"
 
 namespace chessengine {
 

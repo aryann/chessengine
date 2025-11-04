@@ -7,8 +7,8 @@
 #include "commands/display.h"
 #include "commands/perft_command.h"
 #include "commands/position_command.h"
-#include "move_generator.h"
-#include "position.h"
+#include "engine/move_generator.h"
+#include "engine/position.h"
 
 [[noreturn]] int main(int argc, char **argv) {
   std::println("Welcome!");

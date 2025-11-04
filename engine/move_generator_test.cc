@@ -1,10 +1,10 @@
-#include "move_generator.h"
+#include "engine/move_generator.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "position.h"
-#include "testing.h"
+#include "engine/position.h"
+#include "engine/testing.h"
 
 namespace chessengine {
 namespace {

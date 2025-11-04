@@ -1,11 +1,11 @@
-#include "move_generator.h"
+#include "engine/move_generator.h"
 
 #include <vector>
 
 #include "absl/log/check.h"
-#include "attacks.h"
+#include "engine/attacks.h"
+#include "engine/types.h"
 #include "line.h"
-#include "types.h"
 
 namespace chessengine {
 namespace {

@@ -1,9 +1,9 @@
-#include "attacks.h"
 #include "benchmark/benchmark.h"
-#include "move_generator.h"
-#include "position.h"
-#include "scoped_move.h"
-#include "types.h"
+#include "engine/attacks.h"
+#include "engine/move_generator.h"
+#include "engine/position.h"
+#include "engine/scoped_move.h"
+#include "engine/types.h"
 
 namespace chessengine {
 namespace {

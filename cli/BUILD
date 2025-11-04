@@ -3,12 +3,12 @@ cc_binary(
     srcs = ["chessengine.cc"],
     deps = [
         ":command",
-        "//:move_generator",
-        "//:perft",
-        "//:position",
         "//cli/commands:display",
         "//cli/commands:perft_command",
         "//cli/commands:position_command",
+        "//engine:move_generator",
+        "//engine:perft",
+        "//engine:position",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -21,8 +21,8 @@ cc_library(
         "//cli/commands:__subpackages__",
     ],
     deps = [
-        "//:perft",
-        "//:position",
+        "//engine:perft",
+        "//engine:position",
         "@abseil-cpp//absl/strings",
     ],
 )

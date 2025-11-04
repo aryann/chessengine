@@ -1,9 +1,9 @@
-#include "attacks.h"
+#include "engine/attacks.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "testing.h"
+#include "engine/testing.h"
 
 namespace chessengine {
 namespace {

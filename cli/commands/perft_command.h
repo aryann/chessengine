@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "cli/command.h"
-#include "perft.h"
-#include "position.h"
+#include "engine/perft.h"
+#include "engine/position.h"
 
 namespace chessengine {
 

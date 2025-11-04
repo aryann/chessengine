@@ -1,6 +1,6 @@
-#include "attacks.h"
 #include "benchmark/benchmark.h"
-#include "types.h"
+#include "engine/attacks.h"
+#include "engine/types.h"
 
 namespace chessengine {
 namespace {
