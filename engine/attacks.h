@@ -5,9 +5,8 @@
 #include <random>
 
 #include "absl/log/check.h"
-#include "absl/log/log.h"
-#include "absl/strings/str_join.h"
 #include "bitboard.h"
+#include "engine/magic.generated.h"
 
 namespace chessengine {
 

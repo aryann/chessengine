@@ -1,9 +1,10 @@
+load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 
 cc_library(
     name = "attacks",
-    srcs = [],
+    srcs = ["magic.generated.h"],
     hdrs = ["attacks.h"],
     visibility = [
         "//benchmarks:__subpackages__",
@@ -63,6 +64,21 @@ cc_test(
         ":testing",
         "@googletest//:gtest_main",
     ],
+)
+
+cc_binary(
+    name = "generate_magic",
+    srcs = ["generate_magic.cc"],
+    deps = [],
+)
+
+run_binary(
+    name = "run_generate_magic",
+    outs = [
+        "magic.generated.h",
+    ],
+    args = ["$(location magic.generated.h)"],
+    tool = ":generate_magic",
 )
 
 cc_library(
