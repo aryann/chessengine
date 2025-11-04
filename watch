@@ -10,11 +10,10 @@ set -o nounset
 
   # Start fswatch, which feeds all future file change events
   # into the same pipe.
-  fswatch -o ./*.cc ./*.h BUILD
+  fswatch --recursive -o .
 
 } | \
 xargs -n1 -I{} bazel test ... \
-  -c opt \
   --test_output=streamed \
   --test_arg=--gtest_color=yes \
   --test_arg=--gtest_fail_if_no_test_linked

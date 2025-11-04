@@ -11,6 +11,7 @@ cc_library(
     ],
     deps = [
         ":bitboard",
+        ":magic",
         "@abseil-cpp//absl/log",
         "@abseil-cpp//absl/log:check",
     ],
@@ -66,21 +67,6 @@ cc_test(
     ],
 )
 
-cc_binary(
-    name = "generate_magic",
-    srcs = ["generate_magic.cc"],
-    deps = [],
-)
-
-run_binary(
-    name = "run_generate_magic",
-    outs = [
-        "magic.generated.h",
-    ],
-    args = ["$(location magic.generated.h)"],
-    tool = ":generate_magic",
-)
-
 cc_library(
     name = "line",
     srcs = [],
@@ -100,6 +86,32 @@ cc_test(
         ":testing",
         "@googletest//:gtest_main",
     ],
+)
+
+cc_library(
+    name = "magic",
+    srcs = [],
+    hdrs = ["magic.h"],
+    deps = [
+        ":bitboard",
+        ":types",
+        "@abseil-cpp//absl/log",
+    ],
+)
+
+cc_binary(
+    name = "magic_main",
+    srcs = ["magic_main.cc"],
+    deps = [":magic"],
+)
+
+run_binary(
+    name = "magic_main_generate",
+    outs = [
+        "magic.generated.h",
+    ],
+    args = ["$(location magic.generated.h)"],
+    tool = ":magic_main",
 )
 
 cc_library(

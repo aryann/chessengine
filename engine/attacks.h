@@ -7,6 +7,7 @@
 #include "absl/log/check.h"
 #include "bitboard.h"
 #include "engine/magic.generated.h"
+#include "engine/magic.h"
 
 namespace chessengine {
 
@@ -78,194 +79,12 @@ consteval std::array<Bitboard, kNumSquares> GenerateKingAttacks() {
   return attacks;
 }
 
-// Returns a bitboard representing a ray from the `from` square in the given
-// `Direction`. The ray extends to the edge of the board, but the `from`
-// square is not included.
-template <Direction Direction>
-constexpr Bitboard MakeRay(Square from) {
-  Bitboard result;
-  Bitboard curr(from);
-  Bitboard edge;
-  while (curr) {
-    curr = curr.Shift<Direction>();
-    if (curr) {
-      edge = curr;
-    }
-    result |= curr;
-  }
-  return result & ~edge;
-}
-
-template <Direction Direction>
-constexpr Bitboard GenerateRayAttacks(Square from, Bitboard occupied) {
-  Bitboard attacks;
-  Bitboard curr(from);
-  while (curr) {
-    curr = curr.Shift<Direction>();
-    attacks |= curr;
-    if (curr & occupied) {
-      break;
-    }
-  }
-  return attacks;
-}
-
-template <Direction... Directions>
-constexpr Bitboard GenerateSlidingAttacks(Square from, Bitboard occupied) {
-  return (GenerateRayAttacks<Directions>(from, occupied) | ...);
-}
-
-constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
-  // https://www.chessprogramming.org/Traversing_Subsets_of_a_Set
-  const std::size_t cardinality = 1ULL << mask.GetCount();
-  std::vector<Bitboard> subsets(cardinality);
-
-  Bitboard sub_mask;
-  for (int i = 0; i < cardinality; ++i) {
-    subsets[i] = sub_mask;
-    sub_mask = (sub_mask - mask) & mask;
-  }
-
-  return subsets;
-}
-
-// Holds the magic bitboard data for a single square and piece type
-// (bishop or rook).
-struct MagicEntry {
-  // The mask of relevant squares for this piece and square.
-  Bitboard mask;
-
-  std::uint64_t magic;
-  std::uint8_t shift;
-
-  // Pointer to the start of this square's attack table.
-  Bitboard *attack_table;
-};
-
-struct SlidingAttackTables {
-  // The following diagram shows the number of relevancy bits (i.e., squares
-  // on the relevant attack rays, excluding edges) for a bishop *on* each
-  // square:
-  //
-  //   8: 6 5 5 5 5 5 5 6
-  //   7: 5 5 5 5 5 5 5 5
-  //   6: 5 5 7 7 7 7 5 5
-  //   5: 5 5 7 9 9 7 5 5
-  //   4: 5 5 7 9 9 7 5 5
-  //   3: 5 5 7 7 7 7 5 5
-  //   2: 5 5 5 5 5 5 5 5
-  //   1: 6 5 5 5 5 5 5 6
-  //      a b c d e f g h
-  //
-  // The worst-case is 9 bits (in the center). For simplicity, we allocate
-  // a table of size 2^9 for every square.
-  static constexpr int kBishopTableSizePerSquare = (1 << 9);
-
-  // The number of relevancy bits for a rook also varies:
-  //
-  //   * 12 bits for corners (a1, h1, a8, h8)
-  //   * 11 bits for other edge squares
-  //   * 10 bits for all other squares
-  //
-  // The worst-case is 12 bits. For simplicity, we allocate a table of size 2^12
-  // for every square.
-  static constexpr int kRookTableSizePerSquare = (1 << 12);
-
-  // TODO(aryann): Consider tightly packing all attacks. Only 107,648 slots are
-  // required. The current scheme sets aside 294,912 slots, which is 2.7 times
-  // more space than is necessary.
-  static constexpr int kAttackTableSize =
-      (kBishopTableSizePerSquare + kRookTableSizePerSquare) * kNumSquares;
-  std::array<Bitboard, kAttackTableSize> attacks;
-
-  std::array<MagicEntry, kNumSquares> bishop_magic_squares;
-  std::array<MagicEntry, kNumSquares> rook_magic_squares;
-};
-
-template <Direction... Directions>
-constexpr void FindMagicForSquare(Square from, Bitboard *attack_table,
-                                  MagicEntry &magic_struct) {
-  Bitboard mask = (MakeRay<Directions>(from) | ...);
-  std::vector<Bitboard> occupancies = MakePowerSet(mask);
-  std::uint8_t shift = 64 - mask.GetCount();
-
-  std::vector<Bitboard> attacks;
-  attacks.reserve(occupancies.size());
-  for (Bitboard occupied : occupancies) {
-    attacks.push_back(GenerateSlidingAttacks<Directions...>(from, occupied));
-  }
-
-  static std::mt19937 kEngine(std::random_device{}());
-  std::uniform_int_distribution<std::uint64_t> dist(0);
-
-  while (true) {
-    // Generate a "sparse" magic number candidate. ANDing three random numbers
-    // reduces the bit density to ~1/8.
-    //
-    // This heuristic is known to produce "good" magic numbers (those
-    // that minimize collisions) much faster than fully random numbers.
-    std::uint64_t magic = dist(kEngine) & dist(kEngine) & dist(kEngine);
-
-    std::vector<Bitboard> placements(attacks.size(), Bitboard(0));
-    bool found = true;
-
-    for (int i = 0; i < occupancies.size(); ++i) {
-      std::uint64_t index = (magic * occupancies[i].Data()) >> shift;
-
-      if (placements[index]) {
-        found = false;
-        break;
-      }
-      placements[index] = attacks[i];
-    }
-
-    if (found) {
-      for (int i = 0; i < placements.size(); ++i) {
-        attack_table[i] = placements[i];
-      }
-
-      magic_struct = {
-          .mask = mask,
-          .shift = shift,
-          .magic = magic,
-          .attack_table = attack_table,
-      };
-      break;
-    }
-  }
-}
-
-constexpr SlidingAttackTables GenerateSlidingAttackTables() {
-  SlidingAttackTables sliding_attacks;
-  Bitboard *bishop_attack_table = sliding_attacks.attacks.begin();
-  Bitboard *rook_attack_table =
-      sliding_attacks.attacks.begin() +
-      SlidingAttackTables::kBishopTableSizePerSquare * kNumSquares;
-
-  for (int square = A8; square < kNumSquares; ++square) {
-    Square from = static_cast<Square>(square);
-
-    // Generate the MagicEntry for a bishop on this square:
-    FindMagicForSquare<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(
-        from, bishop_attack_table + (1 << 9) * from,
-        sliding_attacks.bishop_magic_squares[square]);
-
-    // Generate the MagicEntry for a rook on this square:
-    FindMagicForSquare<kNorth, kEast, kSouth, kWest>(
-        from, rook_attack_table + (1 << 12) * from,
-        sliding_attacks.rook_magic_squares[square]);
-  }
-  return sliding_attacks;
-}
-
-const auto kSlidingAttackTables = GenerateSlidingAttackTables();
-
 [[nodiscard]] constexpr Bitboard GenerateBishopAttacks(Square square,
                                                        Bitboard occupied) {
   const MagicEntry &magic = kSlidingAttackTables.bishop_magic_squares[square];
   occupied &= magic.mask;
   std::uint64_t index = (magic.magic * occupied.Data()) >> magic.shift;
-  return magic.attack_table[index];
+  return kSlidingAttackTables.attacks[magic.attack_table_index + index];
 }
 
 [[nodiscard]] constexpr Bitboard GenerateRookAttacks(Square square,
@@ -273,7 +92,7 @@ const auto kSlidingAttackTables = GenerateSlidingAttackTables();
   const MagicEntry &magic = kSlidingAttackTables.rook_magic_squares[square];
   occupied &= magic.mask;
   std::uint64_t index = (magic.magic * occupied.Data()) >> magic.shift;
-  return magic.attack_table[index];
+  return kSlidingAttackTables.attacks[magic.attack_table_index + index];
 }
 
 template <Piece Piece>
