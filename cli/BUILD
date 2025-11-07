@@ -2,6 +2,18 @@ cc_binary(
     name = "chessengine",
     srcs = ["chessengine.cc"],
     deps = [
+        ":cli",
+        ":command",
+        "//engine:position",
+        "@abseil-cpp//absl/strings",
+    ],
+)
+
+cc_library(
+    name = "cli",
+    srcs = ["cli.cc"],
+    hdrs = ["cli.h"],
+    deps = [
         ":command",
         "//cli/commands:display",
         "//cli/commands:perft_command",
