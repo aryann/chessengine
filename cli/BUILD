@@ -18,6 +18,7 @@ cc_library(
         "//cli/commands:display",
         "//cli/commands:perft_command",
         "//cli/commands:position_command",
+        "//cli/commands:uci_command",
         "//engine:move_generator",
         "//engine:perft",
         "//engine:position",

@@ -43,3 +43,15 @@ cc_library(
         "@abseil-cpp//absl/strings",
     ],
 )
+
+cc_library(
+    name = "uci_command",
+    srcs = [],
+    hdrs = ["uci_command.h"],
+    visibility = [
+        "//cli:__subpackages__",
+    ],
+    deps = [
+        "//cli:command",
+    ],
+)

@@ -1,11 +1,11 @@
 #include "cli.h"
 
 #include "absl/strings/str_join.h"
-#include "absl/strings/str_split.h"
 #include "command.h"
 #include "commands/display.h"
 #include "commands/perft_command.h"
 #include "commands/position_command.h"
+#include "commands/uci_command.h"
 #include "engine/move_generator.h"
 #include "engine/position.h"
 
@@ -27,6 +27,7 @@ CommandDispatcher MakeCommandDispatcher(CommandState& state) {
   dispatcher.Add("go", std::move(go_commands));
 
   dispatcher.Add("d", std::make_unique<Display>(position));
+  dispatcher.Add("uci", std::make_unique<Uci>());
 
   return dispatcher;
 }
