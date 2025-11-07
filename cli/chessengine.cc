@@ -12,10 +12,13 @@
 
   using ::chessengine::Command;
   using ::chessengine::CommandDispatcher;
+  using ::chessengine::CommandState;
   using ::chessengine::Position;
 
-  Position position = Position::Starting();
-  CommandDispatcher dispatcher = chessengine::MakeCommandDispatcher(position);
+  CommandState state = {
+      .position = Position::Starting(),
+  };
+  CommandDispatcher dispatcher = chessengine::MakeCommandDispatcher(state);
 
   std::string command;
   while (true) {

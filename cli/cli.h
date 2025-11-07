@@ -6,7 +6,11 @@
 
 namespace chessengine {
 
-CommandDispatcher MakeCommandDispatcher(Position& position);
+struct CommandState {
+  Position position;
+};
+
+CommandDispatcher MakeCommandDispatcher(CommandState& state);
 
 }  // namespace chessengine
 

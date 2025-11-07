@@ -11,7 +11,8 @@
 
 namespace chessengine {
 
-CommandDispatcher MakeCommandDispatcher(Position& position) {
+CommandDispatcher MakeCommandDispatcher(CommandState& state) {
+  Position& position = state.position;
   CommandDispatcher dispatcher;
 
   CommandDispatcher position_commands;
