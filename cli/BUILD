@@ -16,6 +16,7 @@ cc_library(
     deps = [
         ":command",
         "//cli/commands:display",
+        "//cli/commands:isready_command",
         "//cli/commands:perft_command",
         "//cli/commands:position_command",
         "//cli/commands:uci_command",

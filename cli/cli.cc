@@ -3,6 +3,7 @@
 #include "absl/strings/str_join.h"
 #include "command.h"
 #include "commands/display.h"
+#include "commands/isready_command.h"
 #include "commands/perft_command.h"
 #include "commands/position_command.h"
 #include "commands/uci_command.h"
@@ -27,6 +28,7 @@ CommandDispatcher MakeCommandDispatcher(CommandState& state) {
   dispatcher.Add("go", std::move(go_commands));
 
   dispatcher.Add("d", std::make_unique<Display>(position));
+  dispatcher.Add("isready", std::make_unique<IsReady>());
   dispatcher.Add("uci", std::make_unique<Uci>());
 
   return dispatcher;

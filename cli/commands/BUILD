@@ -45,6 +45,18 @@ cc_library(
 )
 
 cc_library(
+    name = "isready_command",
+    srcs = [],
+    hdrs = ["isready_command.h"],
+    visibility = [
+        "//cli:__subpackages__",
+    ],
+    deps = [
+        "//cli:command",
+    ],
+)
+
+cc_library(
     name = "uci_command",
     srcs = [],
     hdrs = ["uci_command.h"],
