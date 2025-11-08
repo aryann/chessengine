@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_CLI_COMMANDS_ISREADY_COMMAND_H_
 #define CHESS_ENGINE_CLI_COMMANDS_ISREADY_COMMAND_H_
 
+#include <iostream>
 #include <print>
 
 #include "cli/command.h"
@@ -15,7 +16,7 @@ class IsReady : public Command {
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    std::println("readyok");
+    std::println(std::cout, "readyok");
     return {};
   }
 };

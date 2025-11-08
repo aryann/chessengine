@@ -27,6 +27,16 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "cli_test",
+    srcs = ["cli_test.cc"],
+    deps = [
+        ":cli",
+        "//engine:position",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "command",
     srcs = ["command.cc"],
