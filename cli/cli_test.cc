@@ -3,11 +3,55 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "absl/strings/str_split.h"
+
 namespace chessengine {
 namespace {
 
 using ::testing::Eq;
 using ::testing::IsEmpty;
+
+std::size_t CountLeadingSpaces(std::string_view input) {
+  std::size_t count = 0;
+  for (char c : input) {
+    if (!std::isspace(c)) {
+      break;
+    }
+    ++count;
+  }
+  return count;
+}
+
+std::string Dedent(std::string_view input) {
+  std::vector<std::string_view> lines = absl::StrSplit(input, '\n');
+
+  // Remove the first line since it doesn't contain any part of the expected
+  // output.
+  lines.erase(lines.begin());
+
+  std::size_t leading_spaces = std::numeric_limits<std::size_t>::max();
+  for (std::string_view line : lines) {
+    if (line.empty()) {
+      continue;
+    }
+    leading_spaces = std::min(leading_spaces, CountLeadingSpaces(line));
+  }
+
+  if (leading_spaces == std::numeric_limits<std::size_t>::max()) {
+    return std::string(input);
+  }
+
+  std::string output;
+  for (std::string_view line : lines) {
+    if (line.empty()) {
+      output.append(line);
+    } else {
+      output.append(line.substr(leading_spaces, line.size()));
+    }
+    output.append(1, '\n');
+  }
+  return output;
+}
 
 class CliTest : public ::testing::Test {
  protected:
@@ -35,8 +79,27 @@ class CliTest : public ::testing::Test {
   std::streambuf* old_stdout_buffer_;
 };
 
+TEST_F(CliTest, Display) {
+  ASSERT_THAT(Run({"d"}).error_or(""), IsEmpty());
+
+  EXPECT_THAT(GetOutput(), Eq(Dedent(R"(
+      8: r n b q k b n r
+      7: p p p p p p p p
+      6: . . . . . . . .
+      5: . . . . . . . .
+      4: . . . . . . . .
+      3: . . . . . . . .
+      2: P P P P P P P P
+      1: R N B Q K B N R
+         a b c d e f g h
+
+         w KQkq - 0 1
+      )")));
+}
+
 TEST_F(CliTest, IsReady) {
   ASSERT_THAT(Run({"isready"}).error_or(""), IsEmpty());
+
   EXPECT_THAT(GetOutput(), Eq("readyok\n"));
 }
 

@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_
 #define CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_
 
+#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -19,7 +20,7 @@ class Display : public Command {
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    std::println("{}", position_);
+    std::println(std::cout, "{}", position_);
     return {};
   }
 

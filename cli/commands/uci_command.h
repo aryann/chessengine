@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_
 #define CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_
 
+#include <iostream>
 #include <print>
 
 #include "cli/command.h"
@@ -15,9 +16,9 @@ class Uci : public Command {
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    std::println("id name chessengine");
-    std::println("id author Aryan Naraghi");
-    std::println("uciok");
+    std::println(std::cout, "id name chessengine");
+    std::println(std::cout, "id author Aryan Naraghi");
+    std::println(std::cout, "uciok");
     return {};
   }
 };

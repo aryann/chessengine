@@ -33,6 +33,7 @@ cc_test(
     deps = [
         ":cli",
         "//engine:position",
+        "@abseil-cpp//absl/strings",
         "@googletest//:gtest_main",
     ],
 )

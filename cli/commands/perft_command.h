@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_
 #define CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_
 
+#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -29,11 +30,11 @@ class PerftCommand : public Command {
     RunPerft(depth, position_, depth_counts, final_move_counts);
 
     for (auto [move, count] : final_move_counts) {
-      std::println("{}: {}", move, count);
+      std::println(std::cout, "{}: {}", move, count);
     }
 
-    std::println();
-    std::println("Nodes searched: {}", depth_counts.back());
+    std::println(std::cout);
+    std::println(std::cout, "Nodes searched: {}", depth_counts.back());
     return {};
   }
 
