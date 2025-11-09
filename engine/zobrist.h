@@ -1,6 +1,7 @@
 #ifndef CHESS_ENGINE_ZOBRIST_H_
 #define CHESS_ENGINE_ZOBRIST_H_
 
+#include <optional>
 #include <random>
 
 #include "engine/castling.h"
@@ -20,7 +21,7 @@ struct ZobristKeys {
   std::uint64_t black_to_move;
 };
 
-inline ZobristKeys::ZobristKeys() : elements(), en_passant_files() {
+inline ZobristKeys::ZobristKeys() : elements(), en_passant_files(), castling() {
   std::mt19937 engine(std::random_device{}());
   std::uniform_int_distribution<std::uint64_t> dist(0);
 
@@ -62,8 +63,10 @@ class ZobristKey {
 
   constexpr void UpdateSideToMove() { key_ ^= kZobristKeys.black_to_move; }
 
-  constexpr void ToggleEnPassantTarget(Square target) {
-    key_ ^= kZobristKeys.en_passant_files[GetFile(target)];
+  constexpr void ToggleEnPassantTarget(std::optional<Square> target) {
+    if (target) {
+      key_ ^= kZobristKeys.en_passant_files[GetFile(*target)];
+    }
   }
 
   constexpr void ToggleCastlingRights(const CastlingRights& castling_rights) {

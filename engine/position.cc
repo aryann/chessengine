@@ -348,8 +348,11 @@ UndoInfo Position::Do(const Move &move) {
     ++full_moves_;
   }
   side_to_move_ = ~side_to_move_;
+
+  zobrist_key_.ToggleEnPassantTarget(en_passant_target_);
   if (move.IsDoublePawnPush()) {
     en_passant_target_ = move.GetEnPassantTarget();
+    zobrist_key_.ToggleEnPassantTarget(move.GetEnPassantTarget());
   } else {
     en_passant_target_ = std::nullopt;
   }
@@ -360,7 +363,10 @@ UndoInfo Position::Do(const Move &move) {
 
 void Position::Undo(const UndoInfo &undo_info) {
   const Move &move = undo_info.move;
+
+  zobrist_key_.ToggleEnPassantTarget(en_passant_target_);
   en_passant_target_ = undo_info.en_passant_target;
+  zobrist_key_.ToggleEnPassantTarget(en_passant_target_);
 
   zobrist_key_.ToggleCastlingRights(castling_rights_);
   castling_rights_ = undo_info.castling_rights;
@@ -433,6 +439,8 @@ void Position::InitKey() {
   if (side_to_move_ == kBlack) {
     zobrist_key_.UpdateSideToMove();
   }
+
+  zobrist_key_.ToggleEnPassantTarget(en_passant_target_);
   zobrist_key_.ToggleCastlingRights(castling_rights_);
 }
 
