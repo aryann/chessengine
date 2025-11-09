@@ -339,8 +339,10 @@ UndoInfo Position::Do(const Move &move) {
     zobrist_key_.Update(square, kRook, side_to_move_);
   }
 
+  zobrist_key_.ToggleCastlingRights(castling_rights_);
   castling_rights_.InvalidateOnMove(move.from());
   castling_rights_.InvalidateOnMove(move.to());
+  zobrist_key_.ToggleCastlingRights(castling_rights_);
 
   if (side_to_move_ == kBlack) {
     ++full_moves_;
@@ -358,7 +360,11 @@ UndoInfo Position::Do(const Move &move) {
 void Position::Undo(const UndoInfo &undo_info) {
   const Move &move = undo_info.move;
   en_passant_target_ = undo_info.en_passant_target;
+
+  zobrist_key_.ToggleCastlingRights(castling_rights_);
   castling_rights_ = undo_info.castling_rights;
+  zobrist_key_.ToggleCastlingRights(castling_rights_);
+
   side_to_move_ = ~side_to_move_;
 
   if (move.IsPromotion()) {
@@ -421,6 +427,8 @@ void Position::InitKey() {
 
     zobrist_key_.Update(square, piece, GetSide(square));
   }
+
+  zobrist_key_.ToggleCastlingRights(castling_rights_);
 }
 
 }  // namespace chessengine
