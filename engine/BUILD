@@ -296,7 +296,7 @@ cc_test(
 
 cc_library(
     name = "zobrist",
-    srcs = ["zobrist.cc"],
+    srcs = [],
     hdrs = ["zobrist.h"],
     deps = [
         ":types",
