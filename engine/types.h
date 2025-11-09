@@ -26,7 +26,9 @@ enum Square : std::uint8_t {
 
 using enum Square;
 
-constexpr std::size_t kNumSquares = 64;
+constexpr std::size_t kRanks = 8;
+constexpr std::size_t kFiles = 8;
+constexpr std::size_t kNumSquares = kRanks * kFiles;
 
 // Parses a string of the form "a1" as a Square. Returns `std::nullopt`
 // if and only if the input is invalid.

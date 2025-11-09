@@ -292,3 +292,22 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "zobrist",
+    srcs = ["zobrist.cc"],
+    hdrs = ["zobrist.h"],
+    deps = [
+        ":types",
+    ],
+)
+
+cc_test(
+    name = "zobrist_test",
+    srcs = ["zobrist_test.cc"],
+    deps = [
+        ":types",
+        ":zobrist",
+        "@googletest//:gtest_main",
+    ],
+)
