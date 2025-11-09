@@ -1,0 +1,97 @@
+#include "search/evaluation.h"
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include "engine/position.h"
+#include "engine/testing.h"
+
+namespace chessengine {
+namespace {
+
+using ::testing::Eq;
+
+TEST(Evaluation, GetMaterialScore) {
+  EXPECT_THAT(GetMaterialScore(Position::Starting()), Eq(0));
+
+  EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
+                                            "7: . . . . . . . ."
+                                            "6: . . . . . . . ."
+                                            "5: . . . . . . . ."
+                                            "4: . . . . . . . ."
+                                            "3: . . . . . . . ."
+                                            "2: . . . . . . . ."
+                                            "1: . . . . K . . ."
+                                            "   a b c d e f g h"
+                                            //
+                                            "   w - - 0 1")),
+              Eq(0));
+
+  EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
+                                            "7: . . . . . . . ."
+                                            "6: . . . . . . . ."
+                                            "5: . . . . . . . ."
+                                            "4: . . . . . . . ."
+                                            "3: . . . . . . . ."
+                                            "2: . . . . . . . ."
+                                            "1: . Q . . K . . ."
+                                            "   a b c d e f g h"
+                                            //
+                                            "   w - - 0 1")),
+              Eq(9));
+
+  EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
+                                            "7: . . . . . . . ."
+                                            "6: . . . . . . . ."
+                                            "5: . . . . . . . ."
+                                            "4: . B . . . . B ."
+                                            "3: . . . . . . . ."
+                                            "2: . . . . . . . ."
+                                            "1: . . . . K . . ."
+                                            "   a b c d e f g h"
+                                            //
+                                            "   w - - 0 1")),
+              Eq(6));
+
+  EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
+                                            "7: . . . . . . . ."
+                                            "6: . . . . . . . ."
+                                            "5: . . . . . . . ."
+                                            "4: . b . . . . b ."
+                                            "3: . . . . . . . ."
+                                            "2: . . . . . . . ."
+                                            "1: . . . . K . . ."
+                                            "   a b c d e f g h"
+                                            //
+                                            "   w - - 0 1")),
+              Eq(-6));
+
+  EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
+                                            "7: . . . . . . . ."
+                                            "6: . . . . . . . ."
+                                            "5: . . . . . . . ."
+                                            "4: . N . . . . b ."
+                                            "3: . . . . . . . ."
+                                            "2: . . . . . . . ."
+                                            "1: . . . . K . . ."
+                                            "   a b c d e f g h"
+                                            //
+                                            "   w - - 0 1")),
+              Eq(0));
+
+  EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
+                                            "7: . . . . . . . ."
+                                            "6: . . . . . . . ."
+                                            "5: . . . . . . . ."
+                                            "4: . N . . . . b ."
+                                            "3: . . . . . . . ."
+                                            "2: . . . . . . . ."
+                                            "1: R . . . K . . R"
+                                            "   a b c d e f g h"
+                                            //
+                                            "   w - - 0 1")),
+              Eq(10));
+}
+
+}  // namespace
+}  // namespace chessengine
