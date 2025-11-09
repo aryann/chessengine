@@ -128,6 +128,7 @@ cc_library(
         ":castling",
         ":move",
         ":types",
+        ":zobrist",
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
     ],

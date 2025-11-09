@@ -5,10 +5,11 @@
 #include <format>
 #include <string_view>
 
-#include "bitboard.h"
+#include "engine/bitboard.h"
 #include "engine/castling.h"
 #include "engine/move.h"
 #include "engine/types.h"
+#include "engine/zobrist.h"
 
 namespace chessengine {
 
@@ -71,12 +72,16 @@ class Position {
 
   void Undo(const UndoInfo &undo_info);
 
+  [[nodiscard]] std::uint64_t GetKey() const { return zobrist_key_.GetKey(); }
+
  private:
   Position()
       : side_to_move_(kWhite),
         en_passant_target_(std::nullopt),
         half_moves_(0),
         full_moves_(1) {}
+
+  void InitKey();
 
   std::array<Bitboard, kNumPieces> pieces_;
   std::array<Bitboard, kNumSides> sides_;
@@ -88,6 +93,8 @@ class Position {
 
   std::uint8_t half_moves_;
   int full_moves_;
+
+  ZobristKey zobrist_key_;
 };
 
 }  // namespace chessengine
@@ -132,6 +139,7 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
     out = std::format_to(out, "   {} {} {} {} {}\n", side,
                          position.GetCastlingRights(), en_passant_target,
                          position.GetHalfMoves(), position.GetFullMoves());
+
     return out;
   }
 };

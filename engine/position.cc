@@ -270,6 +270,7 @@ std::expected<Position, std::string> Position::FromFen(
   }
   position.full_moves_ = std::stoi(std::string(full_moves));
 
+  position.InitKey();
   return position;
 }
 
@@ -296,14 +297,19 @@ UndoInfo Position::Do(const Move &move) {
     pieces_[victim].Clear(move.to());
     sides_[~side_to_move_].Clear(move.to());
     half_moves_ = 0;
+    zobrist_key_.Update(move.to(), victim, ~side_to_move_);
   }
 
   Piece piece = GetPiece(move.from());
   DCHECK(piece != kEmptyPiece);
+  zobrist_key_.Update(move.from(), piece, side_to_move_);
+  zobrist_key_.Update(move.to(), piece, side_to_move_);
 
   if (move.IsEnPassantCapture()) {
-    pieces_[kPawn].Clear(move.GetEnPassantVictim());
-    sides_[~side_to_move_].Clear(move.GetEnPassantVictim());
+    Square en_passant_victim = move.GetEnPassantVictim();
+    pieces_[kPawn].Clear(en_passant_victim);
+    sides_[~side_to_move_].Clear(en_passant_victim);
+    zobrist_key_.Update(en_passant_victim, kPawn, ~side_to_move_);
     half_moves_ = 0;
   }
 
@@ -317,13 +323,21 @@ UndoInfo Position::Do(const Move &move) {
   if (move.IsPromotion()) {
     pieces_[kPawn].Clear(move.to());
     pieces_[move.GetPromotedPiece()].Set(move.to());
+    zobrist_key_.Update(move.to(), kPawn, side_to_move_);
+    zobrist_key_.Update(move.to(), move.GetPromotedPiece(), side_to_move_);
   }
 
   // Non-empty if and only if the move is a castling move.
+  //
+  // TODO(aryann): The Do() and Undo() castling logic can be shared.
   Bitboard rook_mask = GetCastlingRookMask(move, side);
   DCHECK(!rook_mask || move.IsKingSideCastling() || move.IsQueenSideCastling());
   pieces_[kRook] ^= rook_mask;
   sides_[side] ^= rook_mask;
+  while (rook_mask) {
+    Square square = rook_mask.PopLeastSignificantBit();
+    zobrist_key_.Update(square, kRook, side_to_move_);
+  }
 
   castling_rights_.InvalidateOnMove(move.from());
   castling_rights_.InvalidateOnMove(move.to());
@@ -345,16 +359,21 @@ void Position::Undo(const UndoInfo &undo_info) {
   const Move &move = undo_info.move;
   en_passant_target_ = undo_info.en_passant_target;
   castling_rights_ = undo_info.castling_rights;
+  side_to_move_ = ~side_to_move_;
 
   if (move.IsPromotion()) {
     pieces_[move.GetPromotedPiece()].Clear(move.to());
     pieces_[kPawn].Set(move.to());
+    zobrist_key_.Update(move.to(), kPawn, side_to_move_);
+    zobrist_key_.Update(move.to(), move.GetPromotedPiece(), side_to_move_);
   }
 
   Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
 
   Piece piece = GetPiece(move.to());
   DCHECK(piece != kEmptyPiece);
+  zobrist_key_.Update(move.from(), piece, side_to_move_);
+  zobrist_key_.Update(move.to(), piece, side_to_move_);
 
   pieces_[piece] ^= from_to;
 
@@ -363,14 +382,17 @@ void Position::Undo(const UndoInfo &undo_info) {
   sides_[side] ^= from_to;
 
   if (move.IsEnPassantCapture()) {
+    Square en_passant_victim = move.GetEnPassantVictim();
     pieces_[kPawn].Set(move.GetEnPassantVictim());
     sides_[~side].Set(move.GetEnPassantVictim());
+    zobrist_key_.Update(en_passant_victim, kPawn, ~side_to_move_);
   }
 
   if (undo_info.captured_piece != kEmptyPiece) {
     // Restores a non-passant captured piece.
     pieces_[undo_info.captured_piece].Set(move.to());
     sides_[~side].Set(move.to());
+    zobrist_key_.Update(move.to(), undo_info.captured_piece, ~side);
   }
 
   // Non-empty if and only if the move is a castling move.
@@ -378,12 +400,27 @@ void Position::Undo(const UndoInfo &undo_info) {
   DCHECK(!rook_mask || move.IsKingSideCastling() || move.IsQueenSideCastling());
   pieces_[kRook] ^= rook_mask;
   sides_[side] ^= rook_mask;
+  while (rook_mask) {
+    Square square = rook_mask.PopLeastSignificantBit();
+    zobrist_key_.Update(square, kRook, side_to_move_);
+  }
 
   if (side == kBlack) {
     --full_moves_;
   }
-  side_to_move_ = ~side_to_move_;
   half_moves_ = undo_info.half_moves;
+}
+
+void Position::InitKey() {
+  for (int i = 0; i < kNumSquares; ++i) {
+    Square square = static_cast<Square>(i);
+    Piece piece = GetPiece(square);
+    if (piece == kEmptyPiece) {
+      continue;
+    }
+
+    zobrist_key_.Update(square, piece, GetSide(square));
+  }
 }
 
 }  // namespace chessengine

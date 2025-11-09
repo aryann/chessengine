@@ -5,9 +5,9 @@
 
 namespace chessengine {
 
-class ZobristHash {
+class ZobristKey {
  public:
-  ZobristHash() : hash_(0ULL) {}
+  ZobristKey() : key_(0ULL) {}
 
   void Update(Square square, Piece piece, Side side);
 
@@ -15,12 +15,12 @@ class ZobristHash {
 
   void ToggleEnPassantTarget(Square target);
 
-  [[nodiscard]] std::uint64_t GetHash() const { return hash_; }
+  [[nodiscard]] std::uint64_t GetKey() const { return key_; }
 
-  constexpr auto operator<=>(const ZobristHash &other) const = default;
+  constexpr auto operator<=>(const ZobristKey &other) const = default;
 
  private:
-  std::uint64_t hash_;
+  std::uint64_t key_;
 };
 
 }  // namespace chessengine

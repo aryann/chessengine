@@ -14,6 +14,7 @@ namespace {
 using ::testing::Eq;
 using ::testing::IsFalse;
 using ::testing::IsTrue;
+using ::testing::Not;
 
 constexpr std::string_view kStartingPosition =
     "8: r n b q k b n r"
@@ -1275,6 +1276,33 @@ TEST(Castling, BlackKing) {
                                          //
                                          "   b KQkq - 0 1"));
   }
+}
+
+TEST(Position, Key) {
+  Position position = Position::Starting();
+  std::uint64_t v0 = position.GetKey();
+
+  {
+    ScopedMove first(Move(E2, E4), position);
+    std::uint64_t v1 = position.GetKey();
+    EXPECT_THAT(v1, Not(Eq(v0)));
+
+    {
+      ScopedMove second(Move(E7, E5), position);
+      std::uint64_t v2 = position.GetKey();
+      EXPECT_THAT(v2, Not(Eq(v1)));
+
+      {
+        ScopedMove third(Move(B1, C3), position);
+        EXPECT_THAT(position.GetKey(), Not(Eq(v2)));
+      }
+      EXPECT_THAT(position.GetKey(), Eq(v2));
+    }
+
+    EXPECT_THAT(position.GetKey(), Eq(v1));
+  }
+
+  EXPECT_THAT(position.GetKey(), Eq(v0));
 }
 
 }  // namespace

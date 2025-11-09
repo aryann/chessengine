@@ -1,5 +1,6 @@
 #include "engine/zobrist.h"
 
+#include <iostream>
 #include <random>
 
 namespace chessengine {
@@ -16,8 +17,8 @@ struct ZobristKeys {
   std::uint64_t black_to_move;
 };
 
-ZobristKeys::ZobristKeys() {
-  static std::mt19937 engine(std::random_device{}());
+ZobristKeys::ZobristKeys() : elements(), en_passant_files() {
+  std::mt19937 engine(std::random_device{}());
   std::uniform_int_distribution<std::uint64_t> dist(0);
 
   for (int i = 0; i < kNumSquares; ++i) {
@@ -44,14 +45,14 @@ ZobristKeys kZobristKeys;
 
 }  // namespace
 
-void ZobristHash::Update(Square square, Piece piece, Side side) {
-  hash_ ^= kZobristKeys.elements[square][piece][side];
+void ZobristKey::Update(Square square, Piece piece, Side side) {
+  key_ ^= kZobristKeys.elements[square][piece][side];
 }
 
-void ZobristHash::UpdateSideToMove() { hash_ ^= kZobristKeys.black_to_move; }
+void ZobristKey::UpdateSideToMove() { key_ ^= kZobristKeys.black_to_move; }
 
-void ZobristHash::ToggleEnPassantTarget(Square target) {
-  hash_ ^= kZobristKeys.en_passant_files[GetFile(target)];
+void ZobristKey::ToggleEnPassantTarget(Square target) {
+  key_ ^= kZobristKeys.en_passant_files[GetFile(target)];
 }
 
 }  // namespace chessengine
