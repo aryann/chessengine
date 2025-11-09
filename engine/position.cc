@@ -354,6 +354,7 @@ UndoInfo Position::Do(const Move &move) {
     en_passant_target_ = std::nullopt;
   }
 
+  zobrist_key_.UpdateSideToMove();
   return undo_info;
 }
 
@@ -415,6 +416,7 @@ void Position::Undo(const UndoInfo &undo_info) {
     --full_moves_;
   }
   half_moves_ = undo_info.half_moves;
+  zobrist_key_.UpdateSideToMove();
 }
 
 void Position::InitKey() {
@@ -428,6 +430,9 @@ void Position::InitKey() {
     zobrist_key_.Update(square, piece, GetSide(square));
   }
 
+  if (side_to_move_ == kBlack) {
+    zobrist_key_.UpdateSideToMove();
+  }
   zobrist_key_.ToggleCastlingRights(castling_rights_);
 }
 
