@@ -44,7 +44,7 @@ void BM_GenerateAttacksOnTheFly(benchmark::State& state) {
   std::uniform_int_distribution<std::uint64_t> dist(0);
 
   for (auto _ : state) {
-    Square square = static_cast<Square>(dist(engine) % kNumSquares);
+    const auto square = static_cast<Square>(dist(engine) % kNumSquares);
     Bitboard occupied(dist(engine));
     benchmark::DoNotOptimize(GenerateAttacksOnTheFly<Piece>(square, occupied));
   }
@@ -58,7 +58,7 @@ void BM_LookupAttacks(benchmark::State& state) {
   std::uniform_int_distribution<std::uint64_t> dist(0);
 
   for (auto _ : state) {
-    Square square = static_cast<Square>(dist(engine) % kNumSquares);
+    const auto square = static_cast<Square>(dist(engine) % kNumSquares);
     Bitboard occupied(dist(engine));
     benchmark::DoNotOptimize(GenerateAttacks<Piece>(square, occupied));
   }

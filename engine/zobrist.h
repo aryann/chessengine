@@ -57,13 +57,14 @@ class ZobristKey {
  public:
   ZobristKey() : key_(0ULL) {}
 
-  constexpr void Update(Square square, Piece piece, Side side) {
+  constexpr void Update(const Square square, const Piece piece,
+                        const Side side) {
     key_ ^= kZobristKeys.elements[square][piece][side];
   }
 
   constexpr void UpdateSideToMove() { key_ ^= kZobristKeys.black_to_move; }
 
-  constexpr void ToggleEnPassantTarget(std::optional<Square> target) {
+  constexpr void ToggleEnPassantTarget(const std::optional<Square> target) {
     if (target) {
       key_ ^= kZobristKeys.en_passant_files[GetFile(*target)];
     }

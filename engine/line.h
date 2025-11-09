@@ -28,7 +28,7 @@ consteval auto GenerateLineTable() {
   std::array<std::array<Bitboard, kNumSquares>, kNumSquares> lines;
 
   for (int square = A8; square < kNumSquares; ++square) {
-    Square from = static_cast<Square>(square);
+    const auto from = static_cast<Square>(square);
     std::array<Bitboard, kNumSquares> &curr = lines[square];
 
     FillFromOrigin<kNorth>(from, curr);
@@ -46,7 +46,7 @@ consteval auto GenerateLineTable() {
 
 // Gets a bitboard of squares on the line from `from` to `to`. The range is
 // inclusive of `from` and exclusive of `to`, i.e., [`from`, `to`).
-constexpr Bitboard GetLine(Square from, Square to) {
+constexpr Bitboard GetLine(const Square from, const Square to) {
   static constexpr std::array<std::array<Bitboard, kNumSquares>, kNumSquares>
       kLineTable = GenerateLineTable();
   return kLineTable[from][to];

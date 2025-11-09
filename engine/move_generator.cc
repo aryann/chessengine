@@ -14,7 +14,7 @@ void AddPawnMoves(Bitboard destinations, int offset, Move::Flags flag,
                   std::vector<Move> &moves) {
   while (destinations) {
     Square to = destinations.PopLeastSignificantBit();
-    Square from = static_cast<Square>(to - offset);
+    const auto from = static_cast<Square>(to - offset);
     moves.emplace_back(from, to, flag);
   }
 }
@@ -22,8 +22,8 @@ void AddPawnMoves(Bitboard destinations, int offset, Move::Flags flag,
 void AddPawnPromotions(Bitboard promotions, int offset,
                        std::vector<Move> &moves) {
   while (promotions) {
-    Square to = promotions.PopLeastSignificantBit();
-    Square from = static_cast<Square>(to - offset);
+    const Square to = promotions.PopLeastSignificantBit();
+    const auto from = static_cast<Square>(to - offset);
 
     moves.emplace_back(from, to, Move::Flags::kKnightPromotion);
     moves.emplace_back(from, to, Move::Flags::kBishopPromotion);

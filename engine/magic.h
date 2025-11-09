@@ -176,7 +176,7 @@ constexpr SlidingAttackTables GenerateSlidingAttackTables() {
       SlidingAttackTables::kBishopTableSizePerSquare * kNumSquares;
 
   for (int square = A8; square < kNumSquares; ++square) {
-    Square from = static_cast<Square>(square);
+    const auto from = static_cast<Square>(square);
 
     // Generate the MagicEntry for a bishop on this square:
     FindMagicForSquare<kNorthEast, kSouthEast, kSouthWest, kNorthWest>(

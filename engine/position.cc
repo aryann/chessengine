@@ -155,14 +155,14 @@ std::expected<void, std::string> ParseBoard(
     }
 
     if (std::isdigit(curr)) {
-      int empty_squares = curr - '0';
+      const int empty_squares = curr - '0';
       square_index += empty_squares;
       continue;
     }
 
-    auto square = static_cast<Square>(square_index);
+    const auto square = static_cast<Square>(square_index);
 
-    Side side = std::isupper(curr) ? kWhite : kBlack;
+    const Side side = std::isupper(curr) ? kWhite : kBlack;
     sides[side].Set(square);
 
     if (auto result = FillPiece(curr, square, pieces); !result.has_value()) {
@@ -427,7 +427,7 @@ void Position::Undo(const UndoInfo &undo_info) {
 
 void Position::InitKey() {
   for (int i = 0; i < kNumSquares; ++i) {
-    const Square square = static_cast<Square>(i);
+    const auto square = static_cast<Square>(i);
     const Piece piece = GetPiece(square);
     if (piece == kEmptyPiece) {
       continue;

@@ -26,6 +26,24 @@ class Quit : public Command {
   }
 };
 
+class Go : public Command {
+ public:
+  explicit Go(Position& position) : position_(position) {}
+
+  std::expected<void, std::string> Run(
+      std::vector<std::string_view> args) override {
+    if (position_.SideToMove() == kWhite) {
+      std::println(std::cout, "bestmove e2e4");
+    } else {
+      std::println(std::cout, "bestmove e7e5");
+    }
+    return {};
+  }
+
+ private:
+  Position& position_;
+};
+
 }  // namespace chessengine
 
 #endif  // CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_

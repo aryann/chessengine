@@ -22,14 +22,12 @@ CommandDispatcher MakeCommandDispatcher(CommandState& state) {
 
   dispatcher.Add("position", std::move(position_commands));
 
-  CommandDispatcher go_commands;
-  go_commands.Add("perft", std::make_unique<PerftCommand>(position));
-
-  dispatcher.Add("go", std::move(go_commands));
+  dispatcher.Add("perft", std::make_unique<PerftCommand>(position));
 
   dispatcher.Add("d", std::make_unique<Display>(position));
   dispatcher.Add("isready", std::make_unique<IsReady>());
   dispatcher.Add("uci", std::make_unique<Uci>());
+  dispatcher.Add("go", std::make_unique<Go>(position));
   dispatcher.Add("quit", std::make_unique<Quit>());
 
   return dispatcher;
