@@ -14,7 +14,7 @@ namespace {
 template <typename T>
 const T& GetRandomElement(const std::vector<T>& items) {
   static std::mt19937 kEngine(std::random_device{}());
-  std::uniform_int_distribution<std::uint64_t> dist(0, items.size());
+  std::uniform_int_distribution<std::uint64_t> dist(0, items.size() - 1);
   std::size_t random_index = dist(kEngine);
   return items[random_index];
 }
