@@ -30,6 +30,7 @@ CommandDispatcher MakeCommandDispatcher(CommandState& state) {
   dispatcher.Add("d", std::make_unique<Display>(position));
   dispatcher.Add("isready", std::make_unique<IsReady>());
   dispatcher.Add("uci", std::make_unique<Uci>());
+  dispatcher.Add("quit", std::make_unique<Quit>());
 
   return dispatcher;
 }

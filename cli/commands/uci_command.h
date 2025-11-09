@@ -10,16 +10,19 @@ namespace chessengine {
 
 class Uci : public Command {
  public:
-  Uci() = default;
-
-  ~Uci() override = default;
-
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
     std::println(std::cout, "id name chessengine");
     std::println(std::cout, "id author Aryan Naraghi");
     std::println(std::cout, "uciok");
     return {};
+  }
+};
+
+class Quit : public Command {
+  std::expected<void, std::string> Run(
+      std::vector<std::string_view> args) override {
+    std::exit(0);
   }
 };
 
