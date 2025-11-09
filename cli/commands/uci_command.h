@@ -40,7 +40,7 @@ class Go : public Command {
   }
 
  private:
-  const SearchFunc& search_func_;
+  SearchFunc search_func_;
   Position& position_;
 };
 

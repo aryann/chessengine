@@ -20,7 +20,9 @@ cc_library(
     hdrs = ["random_search.h"],
     deps = [
         "//engine:move",
+        "//engine:move_generator",
         "//engine:position",
+        "//engine:scoped_move",
         "//engine:types",
     ],
 )

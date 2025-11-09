@@ -10,6 +10,7 @@ namespace {
 
 using ::testing::Eq;
 using ::testing::IsEmpty;
+using ::testing::StartsWith;
 
 std::size_t CountLeadingSpaces(std::string_view input) {
   std::size_t count = 0;
@@ -101,6 +102,12 @@ TEST_F(CliTest, IsReady) {
   ASSERT_THAT(Run({"isready"}).error_or(""), IsEmpty());
 
   EXPECT_THAT(GetOutput(), Eq("readyok\n"));
+}
+
+TEST_F(CliTest, Go) {
+  ASSERT_THAT(Run({"go"}).error_or(""), IsEmpty());
+
+  EXPECT_THAT(GetOutput(), StartsWith("bestmove "));
 }
 
 }  // namespace
