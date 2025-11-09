@@ -65,5 +65,6 @@ cc_library(
     ],
     deps = [
         "//cli:command",
+        "//search",
     ],
 )

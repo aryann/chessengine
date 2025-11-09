@@ -1,14 +1,15 @@
 load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
-load("@rules_cc//cc:cc_library.bzl", "cc_library")
-load("@rules_cc//cc:cc_test.bzl", "cc_test")
+
+package(
+    default_visibility = [
+        "//:__subpackages__",
+    ],
+)
 
 cc_library(
     name = "attacks",
     srcs = ["magic.generated.h"],
     hdrs = ["attacks.h"],
-    visibility = [
-        "//benchmarks:__subpackages__",
-    ],
     deps = [
         ":bitboard",
         ":magic",
@@ -118,10 +119,6 @@ cc_library(
     name = "position",
     srcs = ["position.cc"],
     hdrs = ["position.h"],
-    visibility = [
-        "//benchmarks:__subpackages__",
-        "//cli:__subpackages__",
-    ],
     deps = [
         ":attacks",
         ":bitboard",
@@ -157,9 +154,6 @@ cc_library(
     name = "scoped_move",
     srcs = [],
     hdrs = ["scoped_move.h"],
-    visibility = [
-        "//benchmarks:__subpackages__",
-    ],
     deps = [
         ":move",
         ":position",
@@ -170,9 +164,6 @@ cc_library(
     name = "move",
     srcs = ["move.cc"],
     hdrs = ["move.h"],
-    visibility = [
-        "//cli:__subpackages__",
-    ],
     deps = [
         ":castling",
         ":types",
@@ -193,9 +184,6 @@ cc_library(
     name = "perft",
     srcs = ["perft.cc"],
     hdrs = ["perft.h"],
-    visibility = [
-        "//cli:__subpackages__",
-    ],
     deps = [
         ":move",
         ":move_generator",
@@ -223,10 +211,6 @@ cc_library(
     name = "move_generator",
     srcs = ["move_generator.cc"],
     hdrs = ["move_generator.h"],
-    visibility = [
-        "//benchmarks:__subpackages__",
-        "//cli:__subpackages__",
-    ],
     deps = [
         ":attacks",
         ":line",
@@ -275,9 +259,6 @@ cc_library(
     name = "types",
     srcs = ["types.cc"],
     hdrs = ["types.h"],
-    visibility = [
-        "//benchmarks:__subpackages__",
-    ],
     deps = [
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings:str_format",

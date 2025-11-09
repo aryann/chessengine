@@ -5,6 +5,7 @@
 #include <print>
 
 #include "cli/command.h"
+#include "search/search.h"
 
 namespace chessengine {
 
@@ -28,19 +29,18 @@ class Quit : public Command {
 
 class Go : public Command {
  public:
-  explicit Go(Position& position) : position_(position) {}
+  explicit Go(const SearchFunc& search_func, Position& position)
+      : search_func_(search_func), position_(position) {}
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    if (position_.SideToMove() == kWhite) {
-      std::println(std::cout, "bestmove e2e4");
-    } else {
-      std::println(std::cout, "bestmove e7e5");
-    }
+    Move move = search_func_(position_);
+    std::println(std::cout, "bestmove {}", move);
     return {};
   }
 
  private:
+  const SearchFunc& search_func_;
   Position& position_;
 };
 
