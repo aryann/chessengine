@@ -3,6 +3,7 @@
 
 #include <random>
 
+#include "engine/castling.h"
 #include "engine/types.h"
 
 namespace chessengine {
@@ -14,6 +15,7 @@ struct ZobristKeys {
              kNumSquares>
       elements;
   std::array<std::uint64_t, kFiles> en_passant_files;
+  std::array<std::uint64_t, kNumCastlingCombinations> castling;
 
   std::uint64_t black_to_move;
 };
@@ -39,6 +41,10 @@ inline ZobristKeys::ZobristKeys() : elements(), en_passant_files() {
     file = dist(engine);
   }
 
+  for (std::uint64_t& combination : castling) {
+    combination = dist(engine);
+  }
+
   black_to_move = dist(engine);
 }
 
@@ -58,6 +64,11 @@ class ZobristKey {
 
   constexpr void ToggleEnPassantTarget(Square target) {
     key_ ^= kZobristKeys.en_passant_files[GetFile(target)];
+  }
+
+  constexpr void ToggleCastlingRights(const CastlingRights& castling_rights) {
+    DCHECK(castling_rights.Get() < kNumCastlingCombinations);
+    key_ ^= kZobristKeys.castling[castling_rights.Get()];
   }
 
   [[nodiscard]] std::uint64_t GetKey() const { return key_; }

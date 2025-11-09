@@ -91,6 +91,8 @@ class CastlingRights {
     rights_ |= static_cast<std::uint8_t>(flags);
   }
 
+  [[nodiscard]] constexpr std::uint8_t Get() const { return rights_; }
+
   constexpr bool operator==(const CastlingRights &other) const = default;
 
   constexpr explicit operator bool() const {
@@ -102,6 +104,8 @@ class CastlingRights {
 };
 
 using enum CastlingRights::Flags;
+
+constexpr std::size_t kNumCastlingCombinations = 1 << 4;
 
 }  // namespace chessengine
 

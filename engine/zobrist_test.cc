@@ -3,6 +3,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "engine/castling.h"
+
 namespace chessengine {
 namespace {
 
@@ -74,6 +76,27 @@ TEST(ZobristKey, EnPassant) {
 
   EXPECT_THAT(v0, Not(Eq(v1)));
   EXPECT_THAT(v0, Eq(v2));
+}
+
+TEST(ZobristKey, Castling) {
+  ZobristKey key;
+  key.Update(E7, kPawn, kBlack);
+  key.Update(E5, kPawn, kBlack);
+
+  std::uint64_t v0 = key.GetKey();
+  key.ToggleCastlingRights(CastlingRights(kAllCastlingRights));
+  std::uint64_t v1 = key.GetKey();
+  key.ToggleCastlingRights(CastlingRights(kAllCastlingRights));
+  std::uint64_t v2 = key.GetKey();
+  key.ToggleCastlingRights(CastlingRights(kWhiteQueen));
+  std::uint64_t v3 = key.GetKey();
+  key.ToggleCastlingRights(CastlingRights(kWhiteQueen));
+  std::uint64_t v4 = key.GetKey();
+
+  EXPECT_THAT(v0, Not(Eq(v1)));
+  EXPECT_THAT(v0, Eq(v2));
+  EXPECT_THAT(v2, Not(Eq(v3)));
+  EXPECT_THAT(v2, Eq(v4));
 }
 
 }  // namespace

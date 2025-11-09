@@ -299,6 +299,7 @@ cc_library(
     srcs = [],
     hdrs = ["zobrist.h"],
     deps = [
+        ":castling",
         ":types",
     ],
 )
@@ -307,6 +308,7 @@ cc_test(
     name = "zobrist_test",
     srcs = ["zobrist_test.cc"],
     deps = [
+        ":castling",
         ":types",
         ":zobrist",
         "@googletest//:gtest_main",
