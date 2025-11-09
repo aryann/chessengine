@@ -149,9 +149,9 @@ template <>
 struct std::formatter<chessengine::Move> : std::formatter<std::string> {
  public:
   template <class ParseContext>
-  constexpr auto parse(ParseContext &ctx) {
-    auto it = ctx.begin();
-    if (it == ctx.end()) {
+  constexpr auto parse(ParseContext &context) {
+    auto it = context.begin();
+    if (it == context.end()) {
       return it;
     }
 
@@ -160,7 +160,7 @@ struct std::formatter<chessengine::Move> : std::formatter<std::string> {
       return ++it;
     }
 
-    if (it != ctx.end() && *it != '}') {
+    if (it != context.end() && *it != '}') {
       throw std::format_error(
           "Invalid format specifier for chessengine::Move: Expected {} or "
           "{:f}.");

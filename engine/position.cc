@@ -413,8 +413,8 @@ void Position::Undo(const UndoInfo &undo_info) {
 
 void Position::InitKey() {
   for (int i = 0; i < kNumSquares; ++i) {
-    Square square = static_cast<Square>(i);
-    Piece piece = GetPiece(square);
+    const Square square = static_cast<Square>(i);
+    const Piece piece = GetPiece(square);
     if (piece == kEmptyPiece) {
       continue;
     }

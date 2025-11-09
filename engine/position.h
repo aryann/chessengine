@@ -101,8 +101,28 @@ class Position {
 
 template <>
 struct std::formatter<chessengine::Position> : std::formatter<std::string> {
-  static auto format(chessengine::Position position,
-                     std::format_context &context) {
+  template <class ParseContext>
+  constexpr auto parse(ParseContext &context) {
+    auto it = context.begin();
+    if (it == context.end()) {
+      return it;
+    }
+
+    if (*it == 'k') {
+      show_key = true;
+      return ++it;
+    }
+
+    if (it != context.end() && *it != '}') {
+      throw std::format_error(
+          "Invalid format specifier for chessengine::Position: Expected {} or "
+          "{:k}.");
+    }
+    return it;
+  }
+
+  auto format(const chessengine::Position &position,
+              std::format_context &context) const {
     auto GetSquare = [&](chessengine::Square square) {
       static char kPieceChars[] = {'P', 'N', 'B', 'R', 'Q', 'K', '.', '.'};
       char result = kPieceChars[static_cast<int>(position.GetPiece(square))];
@@ -140,8 +160,15 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
                          position.GetCastlingRights(), en_passant_target,
                          position.GetHalfMoves(), position.GetFullMoves());
 
+    if (show_key) {
+      out = std::format_to(out, "   {:x}", position.GetKey());
+    }
+
     return out;
   }
+
+ private:
+  bool show_key = false;
 };
 
 #endif  // CHESS_ENGINE_POSITION_H_

@@ -74,17 +74,23 @@ MATCHER_P(EqualsPosition, expected, "") {
   }
 
   std::vector<std::string> expected_parts =
-      absl::StrSplit(std::format("{}", expected_position), '\n');
+      absl::StrSplit(std::format("{:k}", expected_position), '\n');
   std::vector<std::string> actual_parts =
-      absl::StrSplit(std::format("{}", actual_position), '\n');
+      absl::StrSplit(std::format("{:k}", actual_position), '\n');
 
   *result_listener << "\n\n"
-                   << "      Expected:                Actual:\n"
-                   << "      ---------                -------";
+                   << "      Expected:                  Actual:\n"
+                   << "      ---------                  -------";
 
+  int max_line_length = std::ssize(expected_parts.front()) + 2;
   for (int i = 0; i < expected_parts.size(); ++i) {
-    *result_listener << '\n'
-                     << expected_parts[i] << "      " << actual_parts[i];
+    *result_listener << '\n' << expected_parts[i];
+
+    for (int j = 0; j < max_line_length - std::ssize(expected_parts[i]); ++j) {
+      *result_listener << ' ';
+    }
+
+    *result_listener << "      " << actual_parts[i];
     if (expected_parts[i] != actual_parts[i]) {
       *result_listener << "  <-";
     }
