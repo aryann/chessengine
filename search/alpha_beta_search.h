@@ -6,7 +6,7 @@
 
 namespace chessengine {
 
-Move AlphaBetaSearch(const Position& position);
+Move AlphaBetaSearch(const Position& position, int depth);
 
 }  // namespace chessengine
 

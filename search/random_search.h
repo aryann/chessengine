@@ -6,7 +6,7 @@
 
 namespace chessengine {
 
-Move RandomSearch(const Position& position);
+Move RandomSearch(const Position& position, int depth);
 
 }  // namespace chessengine
 

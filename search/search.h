@@ -7,7 +7,7 @@
 
 namespace chessengine {
 
-using SearchFunc = std::function<Move(const Position&)>;
+using SearchFunc = std::function<Move(const Position&, int depth)>;
 
 }  // namespace chessengine
 

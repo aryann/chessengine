@@ -11,6 +11,8 @@
 namespace chessengine {
 namespace {}  // namespace
 
-Move AlphaBetaSearch(const Position& position) { return Move(E2, E4); }
+Move AlphaBetaSearch(const Position& position, int depth) {
+  return Move(E2, E4);
+}
 
 }  // namespace chessengine

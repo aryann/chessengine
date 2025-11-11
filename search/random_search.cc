@@ -21,7 +21,7 @@ const T& GetRandomElement(const std::vector<T>& items) {
 
 }  // namespace
 
-Move RandomSearch(const Position& position) {
+Move RandomSearch(const Position& position, int depth) {
   Position mutable_position = position;
   std::vector<Move> pseudo_legal_moves = GenerateMoves(position);
 
