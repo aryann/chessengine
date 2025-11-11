@@ -23,7 +23,7 @@ cc_library(
         "//engine:move_generator",
         "//engine:perft",
         "//engine:position",
-        "//search:random_search",
+        "//search:alpha_beta_search",
         "@abseil-cpp//absl/strings",
     ],
 )

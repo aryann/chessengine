@@ -12,7 +12,7 @@ namespace {
 using ::testing::Eq;
 
 TEST(Evaluation, GetMaterialScore) {
-  EXPECT_THAT(GetMaterialScore(Position::Starting()), Eq(0));
+  EXPECT_THAT(GetMaterialScore(Position::Starting()), Eq(000));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -25,7 +25,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(0));
+              Eq(000));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -38,7 +38,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(9));
+              Eq(900));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -51,7 +51,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(6));
+              Eq(600));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -64,7 +64,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(-6));
+              Eq(-600));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -77,7 +77,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(0));
+              Eq(000));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -90,7 +90,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(10));
+              Eq(1000));
 }
 
 }  // namespace

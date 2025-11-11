@@ -13,12 +13,12 @@ namespace {
 }  // namespace
 
 [[nodiscard]] int GetMaterialScore(const Position& position) {
-  return 200 * SideDifference(position, kKing) +
-         9 * SideDifference(position, kQueen) +
-         5 * SideDifference(position, kRook) +
-         3 * SideDifference(position, kBishop) +
-         3 * SideDifference(position, kKnight) +
-         1 * SideDifference(position, kPawn);
+  return 20'000 * SideDifference(position, kKing) +
+         900 * SideDifference(position, kQueen) +
+         500 * SideDifference(position, kRook) +
+         300 * SideDifference(position, kBishop) +
+         300 * SideDifference(position, kKnight) +
+         100 * SideDifference(position, kPawn);
 }
 
 }  // namespace chessengine

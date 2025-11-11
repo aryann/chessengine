@@ -9,6 +9,7 @@ cc_library(
     srcs = ["alpha_beta_search.cc"],
     hdrs = ["alpha_beta_search.h"],
     deps = [
+        ":evaluation",
         "//engine:move",
         "//engine:move_generator",
         "//engine:position",
