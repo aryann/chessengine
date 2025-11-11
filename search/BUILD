@@ -5,6 +5,19 @@ package(
 )
 
 cc_library(
+    name = "alpha_beta_search",
+    srcs = ["alpha_beta_search.cc"],
+    hdrs = ["alpha_beta_search.h"],
+    deps = [
+        "//engine:move",
+        "//engine:move_generator",
+        "//engine:position",
+        "//engine:scoped_move",
+        "//engine:types",
+    ],
+)
+
+cc_library(
     name = "evaluation",
     srcs = ["evaluation.cc"],
     hdrs = ["evaluation.h"],
