@@ -16,12 +16,14 @@ namespace {
 class AlphaBetaSearcher {
  public:
   AlphaBetaSearcher(const Position& position, int depth)
-      : position_(position), depth_(depth) {}
+      : position_(position), depth_(depth), nodes_(0) {}
 
   [[nodiscard]] Move GetBestMove() {
     if (best_move_) {
       return *best_move_;
     }
+
+    start_time_ = std::chrono::system_clock::now();
 
     constexpr static int kInitialAlpha = std::numeric_limits<int>::min();
     constexpr static int kInitialBeta = std::numeric_limits<int>::max();
@@ -34,6 +36,10 @@ class AlphaBetaSearcher {
  private:
   // NOLINTNEXTLINE(misc-no-recursion)
   int Search(int alpha, int beta, int depth) {
+    ++nodes_;
+
+    MaybeLog(depth);
+
     if (depth == 0) {
       int score = Evaluate(position_);
       return position_.SideToMove() == kWhite ? score : -score;
@@ -82,9 +88,27 @@ class AlphaBetaSearcher {
     return best_score;
   }
 
+  constexpr void MaybeLog(int depth) {
+    constexpr std::int64_t kLogFrequency = 1 << 16;
+    if (nodes_ % kLogFrequency != 0) {
+      return;
+    }
+
+    const auto now = std::chrono::system_clock::now();
+    const std::chrono::duration<double> elapsed = now - start_time_;
+    const double elapsed_seconds = elapsed.count();
+    int nodes_per_second = static_cast<int>(nodes_ / elapsed_seconds);
+
+    std::println(std::cout, "info depth {} nodes {} nps {}", depth, nodes_,
+                 nodes_per_second);
+  }
+
   Position position_;
   const int depth_;
   std::optional<Move> best_move_;
+
+  std::chrono::system_clock::time_point start_time_;
+  int nodes_;
 };
 
 }  // namespace
