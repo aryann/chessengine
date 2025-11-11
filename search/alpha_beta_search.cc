@@ -40,12 +40,14 @@ class AlphaBetaSearcher {
     }
 
     int best_score = std::numeric_limits<int>::min();
-
+    bool has_legal_moves = false;
     for (Move move : GenerateMoves(position_)) {
       ScopedMove scoped_move(move, position_);
       if (position_.GetCheckers(~position_.SideToMove())) {
+        // This move is not legal.
         continue;
       }
+      has_legal_moves = true;
 
       int score = -Search(-beta, -alpha, depth - 1);
 
@@ -64,6 +66,16 @@ class AlphaBetaSearcher {
 
       if (score >= beta) {
         return best_score;
+      }
+    }
+
+    if (!has_legal_moves) {
+      if (position_.GetCheckers(position_.SideToMove())) {
+        constexpr int kCheckMateScore = -20'000;
+        return kCheckMateScore;
+      } else {
+        constexpr int kStalemateScore = 0;
+        return kStalemateScore;
       }
     }
 
