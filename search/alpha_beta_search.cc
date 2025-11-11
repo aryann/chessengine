@@ -35,7 +35,7 @@ class AlphaBetaSearcher {
   // NOLINTNEXTLINE(misc-no-recursion)
   int Search(int alpha, int beta, int depth) {
     if (depth == 0) {
-      int score = GetMaterialScore(position_);
+      int score = Evaluate(position_);
       return position_.SideToMove() == kWhite ? score : -score;
     }
 
@@ -49,7 +49,7 @@ class AlphaBetaSearcher {
       }
       has_legal_moves = true;
 
-      int score = -Search(-beta, -alpha, depth - 1);
+      int score = Search(-beta, -alpha, depth - 1);
 
       if (score > best_score) {
         // Found a better move.
@@ -83,7 +83,7 @@ class AlphaBetaSearcher {
   }
 
   Position position_;
-  int depth_;
+  const int depth_;
   std::optional<Move> best_move_;
 };
 
