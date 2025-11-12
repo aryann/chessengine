@@ -77,7 +77,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(000));
+              Eq(0));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."

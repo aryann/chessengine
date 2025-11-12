@@ -8,8 +8,7 @@
 
 namespace chessengine {
 
-std::vector<Move> OrderMoves(const Position& position,
-                             const std::vector<Move>& moves);
+void OrderMoves(const Position& position, std::vector<Move>& moves);
 
 }  // namespace chessengine
 

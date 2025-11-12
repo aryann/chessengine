@@ -53,6 +53,18 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "move_ordering_test",
+    srcs = ["move_ordering_test.cc"],
+    deps = [
+        ":move_ordering",
+        "//engine:move",
+        "//engine:position",
+        "//engine:testing",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "search",
     srcs = [],

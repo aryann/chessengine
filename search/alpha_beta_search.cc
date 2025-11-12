@@ -47,7 +47,10 @@ class AlphaBetaSearcher {
 
     int best_score = std::numeric_limits<int>::min();
     bool has_legal_moves = false;
-    for (Move move : GenerateMoves(position_)) {
+    std::vector<Move> moves = GenerateMoves(position_);
+    OrderMoves(position_, moves);
+
+    for (Move move : moves) {
       ScopedMove scoped_move(move, position_);
       if (position_.GetCheckers(~position_.SideToMove())) {
         // This move is not legal.
