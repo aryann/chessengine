@@ -6,7 +6,6 @@
 #include <string>
 
 #include "absl/log/check.h"
-#include "absl/strings/str_join.h"
 #include "engine/castling.h"
 #include "engine/types.h"
 
@@ -103,28 +102,23 @@ class Move {
       return out;
     }
 
-    // TODO(aryann): A std::vector may not be necessary here.
-    std::vector<std::string> flags;
     if (IsCapture()) {
       if (IsEnPassantCapture()) {
-        flags.emplace_back("ep");
+        out = std::format_to(out, "#ep");
       } else {
-        flags.emplace_back("c");
+        out = std::format_to(out, "#c");
       }
     }
     if (IsDoublePawnPush()) {
-      flags.emplace_back("dpp");
+      out = std::format_to(out, "#dpp");
     }
     if (IsKingSideCastling()) {
-      flags.emplace_back("oo");
+      out = std::format_to(out, "#oo");
     }
     if (IsQueenSideCastling()) {
-      flags.emplace_back("ooo");
+      out = std::format_to(out, "#ooo");
     }
 
-    if (!flags.empty()) {
-      out = std::format_to(out, "#{}", absl::StrJoin(flags, ";"));
-    }
     return out;
   }
 

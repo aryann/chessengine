@@ -23,25 +23,22 @@ std::optional<Move::Flags> ParsePromotionPiece(char c) {
 }
 
 std::optional<Move::Flags> ParseFlags(std::string_view input) {
-  std::uint8_t flags = 0;
-
-  for (std::string_view part : absl::StrSplit(input, ';')) {
-    if (part == "c") {
-      flags |= Move::Flags::kCapture;
-    } else if (part == "dpp") {
-      flags |= Move::Flags::kDoublePawnPush;
-    } else if (part == "ep") {
-      flags |= Move::Flags::kEnPassantCapture;
-    } else if (part == "oo") {
-      flags |= Move::Flags::kKingCastle;
-    } else if (part == "ooo") {
-      flags |= Move::Flags::kQueenCastle;
-    } else {
-      return std::nullopt;
-    }
+  if (input == "c") {
+    return Move::Flags::kCapture;
   }
-
-  return static_cast<Move::Flags>(flags);
+  if (input == "dpp") {
+    return Move::Flags::kDoublePawnPush;
+  }
+  if (input == "ep") {
+    return Move::Flags::kEnPassantCapture;
+  }
+  if (input == "oo") {
+    return Move::Flags::kKingCastle;
+  }
+  if (input == "ooo") {
+    return Move::Flags::kQueenCastle;
+  }
+  return std::nullopt;
 }
 
 }  // namespace
