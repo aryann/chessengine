@@ -103,15 +103,17 @@ class Move {
       return out;
     }
 
+    // TODO(aryann): A std::vector may not be necessary here.
     std::vector<std::string> flags;
     if (IsCapture()) {
-      flags.emplace_back("c");
+      if (IsEnPassantCapture()) {
+        flags.emplace_back("ep");
+      } else {
+        flags.emplace_back("c");
+      }
     }
     if (IsDoublePawnPush()) {
       flags.emplace_back("dpp");
-    }
-    if (IsEnPassantCapture()) {
-      flags.emplace_back("ep");
     }
     if (IsKingSideCastling()) {
       flags.emplace_back("oo");

@@ -50,7 +50,6 @@ TEST(Move, EnPassantCapture) {
 }
 
 TEST(Move, Promotion) {
-  //
   {
     Move move(A7, A8, Move::Flags::kKnightPromotion);
 
@@ -59,7 +58,6 @@ TEST(Move, Promotion) {
     EXPECT_THAT(move.IsPromotion(), IsTrue());
     EXPECT_THAT(move.GetPromotedPiece(), Eq(kKnight));
   }
-  //
   {
     Move move(A7, A8, Move::Flags::kBishopPromotion);
 
@@ -68,7 +66,6 @@ TEST(Move, Promotion) {
     EXPECT_THAT(move.IsPromotion(), IsTrue());
     EXPECT_THAT(move.GetPromotedPiece(), Eq(kBishop));
   }
-  //
   {
     Move move(A7, A8, Move::Flags::kRookPromotion);
 
@@ -77,7 +74,6 @@ TEST(Move, Promotion) {
     EXPECT_THAT(move.IsPromotion(), IsTrue());
     EXPECT_THAT(move.GetPromotedPiece(), Eq(kRook));
   }
-  //
   {
     Move move(A7, A8, Move::Flags::kQueenPromotion);
 
@@ -104,24 +100,24 @@ TEST(Move, Equality) {
 }
 
 TEST(FromUCI, Valid) {
-  //
   {
     std::expected<Move, std::string> move = Move::FromUCI("e2e4");
     ASSERT_THAT(move.error_or(""), IsEmpty());
     EXPECT_THAT(move->from(), Eq(E2));
     EXPECT_THAT(move->to(), Eq(E4));
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
     EXPECT_THAT(move->IsQueenSideCastling(), IsFalse());
     EXPECT_THAT(move->IsPromotion(), IsFalse());
   }
-  //
   {
-    std::expected<Move, std::string> move = Move::FromUCI("e1g1n");
+    std::expected<Move, std::string> move = Move::FromUCI("e7e8n");
     ASSERT_THAT(move.error_or(""), IsEmpty());
-    EXPECT_THAT(move->from(), Eq(E1));
-    EXPECT_THAT(move->to(), Eq(G1));
+    EXPECT_THAT(move->from(), Eq(E7));
+    EXPECT_THAT(move->to(), Eq(E8));
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
@@ -129,10 +125,10 @@ TEST(FromUCI, Valid) {
     ASSERT_THAT(move->IsPromotion(), IsTrue());
     EXPECT_THAT(move->GetPromotedPiece(), Eq(kKnight));
   }
-  //
   {
-    std::expected<Move, std::string> move = Move::FromUCI("e1g1b");
+    std::expected<Move, std::string> move = Move::FromUCI("e7e8b");
     ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
@@ -140,10 +136,10 @@ TEST(FromUCI, Valid) {
     ASSERT_THAT(move->IsPromotion(), IsTrue());
     EXPECT_THAT(move->GetPromotedPiece(), Eq(kBishop));
   }
-  //
   {
-    std::expected<Move, std::string> move = Move::FromUCI("e1g1r");
+    std::expected<Move, std::string> move = Move::FromUCI("e7e8r");
     ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
@@ -151,10 +147,10 @@ TEST(FromUCI, Valid) {
     ASSERT_THAT(move->IsPromotion(), IsTrue());
     EXPECT_THAT(move->GetPromotedPiece(), Eq(kRook));
   }
-  //
   {
-    std::expected<Move, std::string> move = Move::FromUCI("e1g1q");
+    std::expected<Move, std::string> move = Move::FromUCI("e7e8q");
     ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
@@ -162,7 +158,29 @@ TEST(FromUCI, Valid) {
     ASSERT_THAT(move->IsPromotion(), IsTrue());
     EXPECT_THAT(move->GetPromotedPiece(), Eq(kQueen));
   }
-  //
+  {
+    std::expected<Move, std::string> move = Move::FromUCI("e7f8q#c");
+    ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsTrue());
+    EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
+    EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
+    EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
+    EXPECT_THAT(move->IsQueenSideCastling(), IsFalse());
+    ASSERT_THAT(move->IsPromotion(), IsTrue());
+    EXPECT_THAT(move->GetPromotedPiece(), Eq(kQueen));
+  }
+  {
+    std::expected<Move, std::string> move = Move::FromUCI("e2e3#c");
+    ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->from(), Eq(E2));
+    EXPECT_THAT(move->to(), Eq(E3));
+    EXPECT_THAT(move->IsCapture(), IsTrue());
+    EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
+    EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
+    EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
+    EXPECT_THAT(move->IsQueenSideCastling(), IsFalse());
+    EXPECT_THAT(move->IsPromotion(), IsFalse());
+  }
   {
     std::expected<Move, std::string> move = Move::FromUCI("d2d4#dpp");
     ASSERT_THAT(move.error_or(""), IsEmpty());
@@ -172,10 +190,10 @@ TEST(FromUCI, Valid) {
     EXPECT_THAT(move->IsQueenSideCastling(), IsFalse());
     EXPECT_THAT(move->IsPromotion(), IsFalse());
   }
-  //
   {
     std::expected<Move, std::string> move = Move::FromUCI("b5a6#ep");
     ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsTrue());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     ASSERT_THAT(move->IsEnPassantCapture(), IsTrue());
     EXPECT_THAT(move->GetEnPassantVictim(), Eq(A5));
@@ -183,20 +201,20 @@ TEST(FromUCI, Valid) {
     EXPECT_THAT(move->IsQueenSideCastling(), IsFalse());
     EXPECT_THAT(move->IsPromotion(), IsFalse());
   }
-  //
   {
     std::expected<Move, std::string> move = Move::FromUCI("e1c1#oo");
     ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsTrue());
     EXPECT_THAT(move->IsQueenSideCastling(), IsFalse());
     EXPECT_THAT(move->IsPromotion(), IsFalse());
   }
-  //
   {
     std::expected<Move, std::string> move = Move::FromUCI("e1c1#ooo");
     ASSERT_THAT(move.error_or(""), IsEmpty());
+    EXPECT_THAT(move->IsCapture(), IsFalse());
     EXPECT_THAT(move->IsDoublePawnPush(), IsFalse());
     EXPECT_THAT(move->IsEnPassantCapture(), IsFalse());
     EXPECT_THAT(move->IsKingSideCastling(), IsFalse());
@@ -230,7 +248,7 @@ TEST(Move, String) {
   EXPECT_THAT(ToString(Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
   EXPECT_THAT(ToString(Move(B5, A6, Move::Flags::kEnPassantCapture)),
-              Eq("b5a6#c;ep"));
+              Eq("b5a6#ep"));
   EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kBishopPromotion)),
@@ -266,7 +284,7 @@ TEST(Move, String) {
   EXPECT_THAT(std::format("{:f}", Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
   EXPECT_THAT(std::format("{:f}", Move(B5, A6, Move::Flags::kEnPassantCapture)),
-              Eq("b5a6#c;ep"));
+              Eq("b5a6#ep"));
   EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kBishopPromotion)),
