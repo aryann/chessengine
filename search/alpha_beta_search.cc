@@ -9,6 +9,7 @@
 #include "engine/scoped_move.h"
 #include "engine/types.h"
 #include "search/evaluation.h"
+#include "search/move_ordering.h"
 
 namespace chessengine {
 namespace {

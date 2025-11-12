@@ -10,6 +10,7 @@ cc_library(
     hdrs = ["alpha_beta_search.h"],
     deps = [
         ":evaluation",
+        ":move_ordering",
         "//engine:move",
         "//engine:move_generator",
         "//engine:position",
@@ -39,6 +40,16 @@ cc_test(
         "//engine:position",
         "//engine:testing",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "move_ordering",
+    srcs = ["move_ordering.cc"],
+    hdrs = ["move_ordering.h"],
+    deps = [
+        "//engine:move",
+        "//engine:position",
     ],
 )
 
