@@ -158,8 +158,8 @@ TEST(Pawns, Captures) {
 
     EXPECT_THAT(GenerateMoves<kCapture>(position),
                 UnorderedElementsAreArray(MakeMoves({
-                    "e3d4",
-                    "e3f4",
+                    "e3d4#c",
+                    "e3f4#c",
                 })));
   }
   {
@@ -178,8 +178,8 @@ TEST(Pawns, Captures) {
 
     EXPECT_THAT(GenerateMoves<kCapture>(position),
                 UnorderedElementsAreArray(MakeMoves({
-                    "d5c4",
-                    "d5e4",
+                    "d5c4#c",
+                    "d5e4#c",
                 })));
   }
   {
@@ -198,14 +198,14 @@ TEST(Pawns, Captures) {
 
     EXPECT_THAT(GenerateMoves<kCapture>(position),
                 UnorderedElementsAreArray(MakeMoves({
-                    "e7d8n",
-                    "e7d8b",
-                    "e7d8r",
-                    "e7d8q",
-                    "e7f8n",
-                    "e7f8b",
-                    "e7f8r",
-                    "e7f8q",
+                    "e7d8n#c",
+                    "e7d8b#c",
+                    "e7d8r#c",
+                    "e7d8q#c",
+                    "e7f8n#c",
+                    "e7f8b#c",
+                    "e7f8r#c",
+                    "e7f8q#c",
                 })));
   }
 }

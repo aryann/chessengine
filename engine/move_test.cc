@@ -230,7 +230,7 @@ TEST(Move, String) {
   EXPECT_THAT(ToString(Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
   EXPECT_THAT(ToString(Move(B5, A6, Move::Flags::kEnPassantCapture)),
-              Eq("b5a6#ep"));
+              Eq("b5a6#c;ep"));
   EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(ToString(Move(G2, G1, Move::Flags::kBishopPromotion)),
@@ -266,7 +266,7 @@ TEST(Move, String) {
   EXPECT_THAT(std::format("{:f}", Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
   EXPECT_THAT(std::format("{:f}", Move(B5, A6, Move::Flags::kEnPassantCapture)),
-              Eq("b5a6#ep"));
+              Eq("b5a6#c;ep"));
   EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kKnightPromotion)),
               Eq("g2g1n"));
   EXPECT_THAT(std::format("{:f}", Move(G2, G1, Move::Flags::kBishopPromotion)),

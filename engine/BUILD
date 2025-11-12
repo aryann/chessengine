@@ -168,6 +168,7 @@ cc_library(
         ":castling",
         ":types",
         "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
