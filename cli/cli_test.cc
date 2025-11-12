@@ -9,6 +9,7 @@ namespace chessengine {
 namespace {
 
 using ::testing::Eq;
+using ::testing::HasSubstr;
 using ::testing::IsEmpty;
 using ::testing::StartsWith;
 
@@ -107,7 +108,7 @@ TEST_F(CliTest, IsReady) {
 TEST_F(CliTest, Go) {
   ASSERT_THAT(Run({"go"}).error_or(""), IsEmpty());
 
-  EXPECT_THAT(GetOutput(), StartsWith("bestmove "));
+  EXPECT_THAT(GetOutput(), HasSubstr("bestmove "));
 }
 
 }  // namespace

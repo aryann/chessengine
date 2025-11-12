@@ -41,8 +41,7 @@ class AlphaBetaSearcher {
     MaybeLog(depth);
 
     if (depth == 0) {
-      int score = Evaluate(position_);
-      return position_.SideToMove() == kWhite ? score : -score;
+      return Evaluate(position_);
     }
 
     int best_score = std::numeric_limits<int>::min();

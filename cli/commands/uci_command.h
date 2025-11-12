@@ -34,7 +34,7 @@ class Go : public Command {
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    constexpr static int kDepth = 7;
+    constexpr static int kDepth = 8;
     Move move = search_func_(position_, kDepth);
     std::println(std::cout, "bestmove {}", move);
     return {};
