@@ -245,6 +245,7 @@ TEST(Move, String) {
   };
 
   EXPECT_THAT(ToString(Move(E7, E5)), Eq("e7e5"));
+  EXPECT_THAT(ToString(Move(E2, F3, Move::Flags::kCapture)), Eq("e2f3#c"));
   EXPECT_THAT(ToString(Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
   EXPECT_THAT(ToString(Move(B5, A6, Move::Flags::kEnPassantCapture)),
@@ -262,6 +263,8 @@ TEST(Move, String) {
               Eq("e1c1#ooo"));
 
   EXPECT_THAT(std::format("{}", Move(E7, E5)), Eq("e7e5"));
+  EXPECT_THAT(std::format("{}", Move(E2, F3, Move::Flags::kCapture)),
+              Eq("e2f3"));
   EXPECT_THAT(std::format("{}", Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4"));
   EXPECT_THAT(std::format("{}", Move(B5, A6, Move::Flags::kEnPassantCapture)),
@@ -274,13 +277,14 @@ TEST(Move, String) {
               Eq("g2g1r"));
   EXPECT_THAT(std::format("{}", Move(G2, G1, Move::Flags::kQueenPromotion)),
               Eq("g2g1q"));
-
   EXPECT_THAT(std::format("{}", Move(E1, G1, Move::Flags::kKingCastle)),
               Eq("e1g1"));
   EXPECT_THAT(std::format("{}", Move(E1, C1, Move::Flags::kQueenCastle)),
               Eq("e1c1"));
 
   EXPECT_THAT(std::format("{:f}", Move(E7, E5)), Eq("e7e5"));
+  EXPECT_THAT(std::format("{:f}", Move(E2, F3, Move::Flags::kCapture)),
+              Eq("e2f3#c"));
   EXPECT_THAT(std::format("{:f}", Move(D2, D4, Move::Flags::kDoublePawnPush)),
               Eq("d2d4#dpp"));
   EXPECT_THAT(std::format("{:f}", Move(B5, A6, Move::Flags::kEnPassantCapture)),
