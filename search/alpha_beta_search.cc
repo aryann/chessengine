@@ -111,7 +111,7 @@ class AlphaBetaSearcher {
   std::optional<Move> best_move_;
 
   std::chrono::system_clock::time_point start_time_;
-  int nodes_;
+  std::int64_t nodes_;
 };
 
 }  // namespace
