@@ -25,7 +25,7 @@ TEST(Evaluation, GetMaterialScore) {
                                             "   a b c d e f g h"
                                             //
                                             "   w - - 0 1")),
-              Eq(000));
+              Eq(0));
 
   EXPECT_THAT(GetMaterialScore(MakePosition("8: . . . . k . . ."
                                             "7: . . . . . . . ."
@@ -91,6 +91,34 @@ TEST(Evaluation, GetMaterialScore) {
                                             //
                                             "   w - - 0 1")),
               Eq(1000));
+}
+
+TEST(Evaluation, GetPlacementScore) {
+  EXPECT_THAT(GetPlacementScore(MakePosition("8: . . . . . . . ."
+                                             "7: . . . . . . . ."
+                                             "6: . . . . . . . ."
+                                             "5: . . . P P . . ."
+                                             "4: . . . . . . . ."
+                                             "3: . . . . . . . ."
+                                             "2: . . . . . . . ."
+                                             "1: . . . . . . . ."
+                                             "   a b c d e f g h"
+                                             //
+                                             "   w - - 0 1")),
+              Eq(50));
+
+  EXPECT_THAT(GetPlacementScore(MakePosition("8: . . . . . . . ."
+                                             "7: . . . . . . . ."
+                                             "6: . . . . . . . ."
+                                             "5: . . . . . . . ."
+                                             "4: . . . p p . . ."
+                                             "3: . . . . . . . ."
+                                             "2: . . . . . . . ."
+                                             "1: . . . . . . . ."
+                                             "   a b c d e f g h"
+                                             //
+                                             "   w - - 0 1")),
+              Eq(-50));
 }
 
 }  // namespace
