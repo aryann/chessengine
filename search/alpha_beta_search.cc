@@ -45,7 +45,10 @@ class AlphaBetaSearcher {
       return Evaluate(position_);
     }
 
-    int best_score = std::numeric_limits<int>::min();
+    Side side = position_.SideToMove();
+    using Limits = std::numeric_limits<int>;
+    int best_score = side == kWhite ? Limits::min() : Limits::max();
+
     bool has_legal_moves = false;
     std::vector<Move> moves = GenerateMoves(position_);
     OrderMoves(position_, moves);
@@ -58,7 +61,38 @@ class AlphaBetaSearcher {
       }
       has_legal_moves = true;
 
-      int score = Search(-beta, -alpha, depth - 1);
+      int score = Search(alpha, beta, depth - 1);
+
+      if (side == kWhite) {
+        if (score > best_score) {
+          best_score = score;
+          if (depth_ == depth) {
+            // Save the best move if and only if this is the root.
+            best_move_ = move;
+          }
+        }
+
+        if (best_score >= beta) {
+          return best_score;
+        }
+        alpha = std::max(alpha, score);
+
+      } else {
+        DCHECK(side == kBlack);
+        if (score < best_score) {
+          best_score = score;
+
+          if (depth_ == depth) {
+            // Save the best move if and only if this is the root.
+            best_move_ = move;
+          }
+        }
+
+        if (best_score <= alpha) {
+          return best_score;
+        }
+        beta = std::min(beta, score);
+      }
 
       if (score > best_score) {
         // Found a better move.
@@ -71,10 +105,6 @@ class AlphaBetaSearcher {
             best_move_ = move;
           }
         }
-      }
-
-      if (score >= beta) {
-        return best_score;
       }
     }
 

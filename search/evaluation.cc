@@ -207,11 +207,7 @@ constexpr std::array<std::int8_t, kNumSquares> kBlackKingPlacementScores = {
 }
 
 [[nodiscard]] int Evaluate(const Position& position) {
-  int score = GetMaterialScore(position) + GetPlacementScore(position);
-  if (position.SideToMove() == kBlack) {
-    return -score;
-  }
-  return score;
+  return GetMaterialScore(position) + GetPlacementScore(position);
 }
 
 }  // namespace chessengine
