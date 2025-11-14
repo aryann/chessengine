@@ -9,6 +9,7 @@
 #include "engine/scoped_move.h"
 #include "engine/types.h"
 #include "search/evaluation.h"
+#include "search/move_ordering.h"
 
 namespace chessengine {
 namespace {
@@ -25,9 +26,9 @@ class AlphaBetaSearcher {
 
     start_time_ = std::chrono::system_clock::now();
 
-    constexpr static int kInitialAlpha = std::numeric_limits<int>::min();
-    constexpr static int kInitialBeta = std::numeric_limits<int>::max();
-    Search(kInitialAlpha, kInitialBeta, depth_);
+    constexpr static int kAlpha = -100'000;
+    constexpr static int kBeta = 100'000;
+    Search(kAlpha, kBeta, depth_);
     DCHECK(best_move_.has_value());
 
     return *best_move_;
@@ -35,42 +36,41 @@ class AlphaBetaSearcher {
 
  private:
   // NOLINTNEXTLINE(misc-no-recursion)
-  int Search(int alpha, int beta, int depth) {
+  int Search(int alpha, const int beta, const int depth) {
     ++nodes_;
 
     MaybeLog(depth);
 
     if (depth == 0) {
-      return Evaluate(position_);
+      const int score = Evaluate(position_);
+      return position_.SideToMove() == kWhite ? score : -score;
     }
 
-    int best_score = std::numeric_limits<int>::min();
     bool has_legal_moves = false;
-    for (Move move : GenerateMoves(position_)) {
+    std::vector<Move> moves = GenerateMoves(position_);
+    OrderMoves(position_, moves);
+
+    for (Move move : moves) {
       ScopedMove scoped_move(move, position_);
-      if (position_.GetCheckers(~position_.SideToMove())) {
-        // This move is not legal.
+      const bool is_legal = !position_.GetCheckers(~position_.SideToMove());
+      if (!is_legal) {
         continue;
       }
       has_legal_moves = true;
 
-      int score = Search(-beta, -alpha, depth - 1);
-
-      if (score > best_score) {
-        // Found a better move.
-        best_score = score;
-
-        if (score > alpha) {
-          alpha = score;
-          if (depth_ == depth) {
-            // Save the best move if and only if this is the root.
-            best_move_ = move;
-          }
-        }
-      }
+      const int score = -Search(-beta, -alpha, depth - 1);
 
       if (score >= beta) {
-        return best_score;
+        return beta;
+      }
+
+      if (score > alpha) {
+        alpha = score;
+        if (depth == depth_) {
+          // Store this move as the best move if and only if this is a root
+          // node.
+          best_move_ = move;
+        }
       }
     }
 
@@ -84,11 +84,11 @@ class AlphaBetaSearcher {
       }
     }
 
-    return best_score;
+    return alpha;
   }
 
   constexpr void MaybeLog(int depth) {
-    constexpr std::int64_t kLogFrequency = 1 << 16;
+    constexpr std::int64_t kLogFrequency = 1 << 10;
     if (nodes_ % kLogFrequency != 0) {
       return;
     }
@@ -96,10 +96,10 @@ class AlphaBetaSearcher {
     const auto now = std::chrono::system_clock::now();
     const std::chrono::duration<double> elapsed = now - start_time_;
     const double elapsed_seconds = elapsed.count();
-    int nodes_per_second = static_cast<int>(nodes_ / elapsed_seconds);
+    auto nodes_per_second = static_cast<std::int64_t>(nodes_ / elapsed_seconds);
 
-    std::println(std::cout, "info depth {} nodes {} nps {}", depth, nodes_,
-                 nodes_per_second);
+    std::println(std::cout, "info depth {} nodes {} nps {}", depth_ - depth,
+                 nodes_, nodes_per_second);
   }
 
   Position position_;
@@ -107,7 +107,7 @@ class AlphaBetaSearcher {
   std::optional<Move> best_move_;
 
   std::chrono::system_clock::time_point start_time_;
-  int nodes_;
+  std::int64_t nodes_;
 };
 
 }  // namespace

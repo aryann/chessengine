@@ -19,16 +19,22 @@ void AddPawnMoves(Bitboard destinations, int offset, Move::Flags flag,
   }
 }
 
-void AddPawnPromotions(Bitboard promotions, int offset,
+void AddPawnPromotions(Bitboard promotions, int offset, Move::Flags flag,
                        std::vector<Move> &moves) {
+  using enum Move::Flags;
+
   while (promotions) {
     const Square to = promotions.PopLeastSignificantBit();
     const auto from = static_cast<Square>(to - offset);
 
-    moves.emplace_back(from, to, Move::Flags::kKnightPromotion);
-    moves.emplace_back(from, to, Move::Flags::kBishopPromotion);
-    moves.emplace_back(from, to, Move::Flags::kRookPromotion);
-    moves.emplace_back(from, to, Move::Flags::kQueenPromotion);
+    moves.emplace_back(from, to,
+                       static_cast<Move::Flags>(kKnightPromotion | flag));
+    moves.emplace_back(from, to,
+                       static_cast<Move::Flags>(kBishopPromotion | flag));
+    moves.emplace_back(from, to,
+                       static_cast<Move::Flags>(kRookPromotion | flag));
+    moves.emplace_back(from, to,
+                       static_cast<Move::Flags>(kQueenPromotion | flag));
   }
 }
 
@@ -46,7 +52,8 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     Bitboard single_moves = pawns.Shift<forward>() & empty;
     AddPawnMoves(single_moves & ~promotion_rank, forward, Move::Flags::kNone,
                  moves);
-    AddPawnPromotions(single_moves & promotion_rank, forward, moves);
+    AddPawnPromotions(single_moves & promotion_rank, forward,
+                      Move::Flags::kNone, moves);
 
     // Double pawn pushes:
     Bitboard second_rank = Side == kWhite ? rank::k3 : rank::k6;
@@ -65,9 +72,9 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
     Bitboard left_captures = pawns.Shift<left>() & enemies;
     Bitboard right_captures = pawns.Shift<right>() & enemies;
 
-    AddPawnMoves(left_captures & ~promotion_rank, left, Move::Flags::kNone,
+    AddPawnMoves(left_captures & ~promotion_rank, left, Move::Flags::kCapture,
                  moves);
-    AddPawnMoves(right_captures & ~promotion_rank, right, Move::Flags::kNone,
+    AddPawnMoves(right_captures & ~promotion_rank, right, Move::Flags::kCapture,
                  moves);
 
     std::optional<Square> en_passant_target = position.GetEnPassantTarget();
@@ -79,8 +86,10 @@ void GeneratePawnMoves(const Position &position, std::vector<Move> &moves) {
                    Move::Flags::kEnPassantCapture, moves);
     }
 
-    AddPawnPromotions(left_captures & promotion_rank, left, moves);
-    AddPawnPromotions(right_captures & promotion_rank, right, moves);
+    AddPawnPromotions(left_captures & promotion_rank, left,
+                      Move::Flags::kCapture, moves);
+    AddPawnPromotions(right_captures & promotion_rank, right,
+                      Move::Flags::kCapture, moves);
   }
 }
 

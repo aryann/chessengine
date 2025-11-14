@@ -106,9 +106,9 @@ TEST_F(CliTest, IsReady) {
 }
 
 TEST_F(CliTest, Go) {
-  ASSERT_THAT(Run({"go"}).error_or(""), IsEmpty());
+  ASSERT_THAT(Run({"go", "depth", "5"}).error_or(""), IsEmpty());
 
-  EXPECT_THAT(GetOutput(), HasSubstr("bestmove "));
+  EXPECT_THAT(GetOutput(), HasSubstr("bestmove e2e4"));
 }
 
 }  // namespace

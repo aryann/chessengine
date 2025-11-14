@@ -110,9 +110,11 @@ class Bitboard {
     return *this;
   }
 
-  constexpr explicit operator bool() const { return data_ != 0; }
+  constexpr operator bool() const { return data_ != 0; }
 
-  constexpr bool Get(Square square) { return bool(data_ & 1ULL << square); }
+  [[nodiscard]] constexpr bool Get(Square square) const {
+    return data_ & 1ULL << square;
+  }
 
   constexpr void Set(Square square) { data_ |= 1ULL << square; }
 

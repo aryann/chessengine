@@ -20,11 +20,16 @@ class Move {
     kDoublePawnPush = /*        */ 0b0001,
     kKingCastle = /*            */ 0b0010,
     kQueenCastle = /*           */ 0b0011,
+    kCapture = /*               */ 0b0100,
     kEnPassantCapture = /*      */ 0b0101,
     kKnightPromotion = /*       */ 0b1000,
     kBishopPromotion = /*       */ 0b1001,
     kRookPromotion = /*         */ 0b1010,
     kQueenPromotion = /*        */ 0b1011,
+    kKnightPromotionCapture = /**/ 0b1100,
+    kBishopPromotionCapture = /**/ 0b1101,
+    kRookPromotionCapture = /*  */ 0b1110,
+    kQueenPromotionCapture = /* */ 0b1111,
   };
 
   explicit constexpr Move(Square from, Square to, Flags flags = kNone)
@@ -38,6 +43,10 @@ class Move {
 
   [[nodiscard]] constexpr Square to() const {
     return static_cast<Square>((data_ >> 6) & 0b111111);
+  }
+
+  [[nodiscard]] constexpr bool IsCapture() const {
+    return GetFlags() & kCapture;
   }
 
   [[nodiscard]] constexpr bool IsDoublePawnPush() const {
@@ -93,18 +102,19 @@ class Move {
       return out;
     }
 
+    if (IsCapture()) {
+      if (IsEnPassantCapture()) {
+        out = std::format_to(out, "#ep");
+      } else {
+        out = std::format_to(out, "#c");
+      }
+    }
     if (IsDoublePawnPush()) {
       out = std::format_to(out, "#dpp");
     }
-
-    if (IsEnPassantCapture()) {
-      out = std::format_to(out, "#ep");
-    }
-
     if (IsKingSideCastling()) {
       out = std::format_to(out, "#oo");
     }
-
     if (IsQueenSideCastling()) {
       out = std::format_to(out, "#ooo");
     }

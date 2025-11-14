@@ -2,6 +2,8 @@
 
 #include <ostream>
 
+#include "absl/strings/str_split.h"
+
 namespace chessengine {
 namespace {
 
@@ -20,51 +22,66 @@ std::optional<Move::Flags> ParsePromotionPiece(char c) {
   }
 }
 
+std::optional<Move::Flags> ParseFlags(std::string_view input) {
+  if (input == "c") {
+    return Move::Flags::kCapture;
+  }
+  if (input == "dpp") {
+    return Move::Flags::kDoublePawnPush;
+  }
+  if (input == "ep") {
+    return Move::Flags::kEnPassantCapture;
+  }
+  if (input == "oo") {
+    return Move::Flags::kKingCastle;
+  }
+  if (input == "ooo") {
+    return Move::Flags::kQueenCastle;
+  }
+  return std::nullopt;
+}
+
 }  // namespace
 
 std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
   auto error = std::unexpected(std::format("Invalid UCI move: {}", input));
+  std::vector<std::string_view> parts = absl::StrSplit(input, '#');
+  if (parts.size() > 2) {
+    return error;
+  }
+  std::string_view head = parts[0];
 
-  if (input.size() < 4) {
+  if (head.size() < 4) {
+    return error;
+  }
+  if (head.size() > 5) {
     return error;
   }
 
-  std::optional<Square> from = ParseSquare(input.substr(0, 2));
-  std::optional<Square> to = ParseSquare(input.substr(2, 2));
+  std::optional<Square> from = ParseSquare(head.substr(0, 2));
+  std::optional<Square> to = ParseSquare(head.substr(2, 2));
   if (!from || !to) {
     return error;
   }
-  input = input.substr(4, input.size());
-  if (input.empty()) {
-    return Move(*from, *to);
-  }
 
-  if (input.front() != '#') {
-    std::optional<Flags> promotion_piece = ParsePromotionPiece(input[0]);
-    if (!promotion_piece) {
+  Flags flags = kNone;
+  if (parts.size() == 2) {
+    std::optional<Flags> parsed = ParseFlags(parts.back());
+    if (!parsed) {
       return error;
     }
-
-    return Move(*from, *to, *promotion_piece);
+    flags = *parsed;
   }
 
-  if (input == "#dpp") {
-    return Move(*from, *to, kDoublePawnPush);
+  if (head.size() == 5) {
+    std::optional<Flags> promotion_flag = ParsePromotionPiece(head[4]);
+    if (!promotion_flag) {
+      return error;
+    }
+    flags = static_cast<Flags>(flags | *promotion_flag);
   }
 
-  if (input == "#ep") {
-    return Move(*from, *to, kEnPassantCapture);
-  }
-
-  if (input == "#oo") {
-    return Move(*from, *to, kKingCastle);
-  }
-
-  if (input == "#ooo") {
-    return Move(*from, *to, kQueenCastle);
-  }
-
-  return error;
+  return Move(*from, *to, flags);
 }
 
 std::ostream &operator<<(std::ostream &os, const Move &move) {
