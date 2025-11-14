@@ -34,8 +34,20 @@ class Go : public Command {
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    constexpr static int kDepth = 5;
-    Move move = search_func_(position_, kDepth);
+    constexpr static int kDefaultSearchDepth = 6;
+    int depth = kDefaultSearchDepth;
+
+    if (!args.empty()) {
+      if (args.front() == "depth") {
+        if (args.size() != 2) {
+          return std::unexpected(std::format("Invalid go command: {}", args));
+        }
+
+        depth = std::stoi(std::string(args.back()));
+      }
+    }
+
+    Move move = search_func_(position_, depth);
     std::println(std::cout, "bestmove {}", move);
     return {};
   }
