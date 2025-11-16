@@ -17,3 +17,17 @@ BM_Search/Starting/5            24687332 ns     24511857 ns           28
 BM_Search/Starting/6           160750490 ns    159718000 ns            4
 BM_Search/Position3/1               1367 ns         1365 ns       511688
 BM_Search/Position3/2              15538 ns        15516 ns        45272
+BM_Search/Position3/3              48700 ns        48646 ns        14457
+BM_Search/Position3/4             316004 ns       315632 ns         2167
+BM_Search/Position3/5             959841 ns       958542 ns          690
+BM_Search/Position3/6            4542439 ns      4537006 ns          154
+BM_Search/Position3/7           24956034 ns     24925893 ns           28
+BM_Search/Position3/8          135636009 ns    135486400 ns            5
+BM_Search/HighTransposition/1       1407 ns         1406 ns       497028
+BM_Search/HighTransposition/2       6800 ns         6795 ns       102005
+BM_Search/HighTransposition/3      43353 ns        43331 ns        16012
+BM_Search/HighTransposition/4     188803 ns       188709 ns         3704
+BM_Search/HighTransposition/5     996156 ns       987884 ns          717
+BM_Search/HighTransposition/6    2271840 ns      2196881 ns          329
+BM_Search/HighTransposition/7   13223397 ns     13215365 ns           52
+BM_Search/HighTransposition/8   48130619 ns     48064733 ns           15
