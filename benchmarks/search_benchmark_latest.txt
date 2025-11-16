@@ -1,25 +1,33 @@
-2025-11-16T11:11:28-08:00
+2025-11-16T11:18:03-08:00
 Running /private/var/tmp/_bazel_aryan/da5ded6585b5f0289d91e48210b8a75e/execroot/_main/bazel-out/darwin_arm64-opt/bin/benchmarks/search_benchmark
 Run on (10 X 24 MHz CPU s)
 CPU Caches:
   L1 Data 64 KiB
   L1 Instruction 128 KiB
   L2 Unified 4096 KiB (x10)
-Load Average: 3.30, 3.29, 4.08
-----------------------------------------------------------------
-Benchmark                      Time             CPU   Iterations
-----------------------------------------------------------------
-BM_Search/Starting/1        1740 ns         1728 ns       401399
-BM_Search/Starting/2       21052 ns        20984 ns        33340
-BM_Search/Starting/3      251221 ns       250610 ns         2776
-BM_Search/Starting/4     2638420 ns      2634322 ns          264
-BM_Search/Starting/5    24078125 ns     24021276 ns           29
-BM_Search/Starting/6   162081281 ns    161294000 ns            4
-BM_Search/Position3/1       1317 ns         1314 ns       531782
-BM_Search/Position3/2      14973 ns        14946 ns        46249
-BM_Search/Position3/3      46473 ns        46460 ns        14965
-BM_Search/Position3/4     297173 ns       297038 ns         2339
-BM_Search/Position3/5     920546 ns       917568 ns          759
-BM_Search/Position3/6    4577207 ns      4568068 ns          146
-BM_Search/Position3/7   24208930 ns     24155345 ns           29
-BM_Search/Position3/8  129449673 ns    129206500 ns            6
+Load Average: 1.75, 1.95, 3.10
+------------------------------------------------------------------------
+Benchmark                              Time             CPU   Iterations
+------------------------------------------------------------------------
+BM_Search/Starting/1                1676 ns         1674 ns       424255
+BM_Search/Starting/2               20102 ns        20088 ns        33810
+BM_Search/Starting/3              238919 ns       238845 ns         2852
+BM_Search/Starting/4             2530697 ns      2529640 ns          275
+BM_Search/Starting/5            22207526 ns     22202806 ns           31
+BM_Search/Starting/6           141907158 ns    141859200 ns            5
+BM_Search/Position3/1               1284 ns         1284 ns       545456
+BM_Search/Position3/2              15116 ns        15109 ns        46052
+BM_Search/Position3/3              47104 ns        47089 ns        14813
+BM_Search/Position3/4             298213 ns       298097 ns         2336
+BM_Search/Position3/5             885788 ns       885599 ns          773
+BM_Search/Position3/6            4513420 ns      4483311 ns          164
+BM_Search/Position3/7           25265182 ns     25119214 ns           28
+BM_Search/Position3/8          131966308 ns    131771200 ns            5
+BM_Search/HighTransposition/1       1365 ns         1363 ns       513724
+BM_Search/HighTransposition/2       6703 ns         6695 ns       102872
+BM_Search/HighTransposition/3      42552 ns        42535 ns        16380
+BM_Search/HighTransposition/4     183427 ns       183351 ns         3794
+BM_Search/HighTransposition/5     946972 ns       946111 ns          733
+BM_Search/HighTransposition/6    1974797 ns      1973585 ns          349
+BM_Search/HighTransposition/7   12818718 ns     12814278 ns           54
+BM_Search/HighTransposition/8   44716807 ns     44700125 ns           16

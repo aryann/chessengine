@@ -27,6 +27,10 @@ BENCHMARK_CAPTURE(BM_Search, Position3,
                   R"(8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1)")
     ->DenseRange(/* start = */ 1, /* limit = */ 8, /* step = */ 1);
 
+BENCHMARK_CAPTURE(BM_Search, HighTransposition,
+                  R"(8/8/7r/K7/1R6/7k/8/N7 w - - 0 1)")
+    ->DenseRange(/* start = */ 1, /* limit = */ 8, /* step = */ 1);
+
 }  // namespace
 }  // namespace chessengine
 
