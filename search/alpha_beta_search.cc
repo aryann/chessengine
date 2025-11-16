@@ -106,14 +106,6 @@ class AlphaBetaSearcher {
         continue;
       }
 
-      // std::println(std::cout, "{:f}", move);
-
-      if (!move.IsCapture()) {
-        // TODO(aryann): Determine why `GenerateMoves<kCapture>(position_)`
-        // contains non-capturing moves.
-        continue;
-      }
-
       score = -QuiescentSearch(-beta, -alpha, depth + 1);
 
       if (score >= beta) {
