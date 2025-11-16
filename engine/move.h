@@ -32,6 +32,8 @@ class Move {
     kQueenPromotionCapture = /* */ 0b1111,
   };
 
+  constexpr Move() : data_(0) {}
+
   explicit constexpr Move(Square from, Square to, Flags flags = kNone)
       : data_(from + (to << 6) + (flags << 12)) {}
 

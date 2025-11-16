@@ -16,6 +16,7 @@ cc_library(
         "//engine:position",
         "//engine:scoped_move",
         "//engine:types",
+        "@abseil-cpp//absl/container:flat_hash_map",
     ],
 )
 
