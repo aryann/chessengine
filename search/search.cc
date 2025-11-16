@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-#include "absl/container/flat_hash_map.h"
 #include "engine/move.h"
 #include "engine/move_generator.h"
 #include "engine/position.h"
@@ -11,30 +10,19 @@
 #include "engine/types.h"
 #include "search/evaluation.h"
 #include "search/move_ordering.h"
+#include "transposition.h"
 
 namespace chessengine {
 namespace {
 
-enum BoundType : std::int8_t {
-  Exact,
-  UpperBound,
-  LowerBound,
-};
-
-struct Transposition {
-  int depth = 0;
-  int score = 0;
-  BoundType type = Exact;
-};
-
 class AlphaBetaSearcher {
  public:
   AlphaBetaSearcher(const Position& position, const SearchOptions& options)
-      : position_(position),
-        requested_search_depth_(options.depth),
-        log_every_n_(options.log_every_n),
-        nodes_(0),
-        transposition_hits_(0) {}
+      : position_{position},
+        requested_search_depth_{options.depth},
+        log_every_n_{options.log_every_n},
+        nodes_{0},
+        transpositions_{position_} {}
 
   [[nodiscard]] Move GetBestMove() {
     if (best_move_) {
@@ -54,21 +42,18 @@ class AlphaBetaSearcher {
  private:
   // NOLINTNEXTLINE(misc-no-recursion)
   int Search(int alpha, const int beta, const int depth) {
+    using enum TranspositionTable::BoundType;
+
     ++nodes_;
     MaybeLog(depth);
 
-    if (std::optional<int> score = ProbeTranspositions(alpha, beta, depth)) {
-      ++transposition_hits_;
+    if (std::optional<int> score = transpositions_.Probe(alpha, beta, depth)) {
       return *score;
     }
 
     if (depth == requested_search_depth_) {
       int score = QuiescentSearch(alpha, beta, 1);
-      transpositions_[position_.GetKey()] = {
-          .depth = depth,
-          .score = score,
-          .type = Exact,
-      };
+      transpositions_.Record(score, depth, Exact);
       return score;
     }
 
@@ -76,11 +61,10 @@ class AlphaBetaSearcher {
     std::vector<Move> moves = GenerateMoves(position_);
     OrderMoves(position_, moves);
 
-    BoundType transposition_type = UpperBound;
+    TranspositionTable::BoundType transposition_type = UpperBound;
     for (Move move : moves) {
       ScopedMove scoped_move(move, position_);
-      const bool is_legal = !position_.GetCheckers(~position_.SideToMove());
-      if (!is_legal) {
+      if (!IsLastMoveLegal()) {
         continue;
       }
       has_legal_moves = true;
@@ -88,11 +72,8 @@ class AlphaBetaSearcher {
       const int score = -Search(-beta, -alpha, depth + 1);
 
       if (score >= beta) {
-        transpositions_[position_.GetKey()] = {
-            .depth = depth,
-            .score = score,
-            .type = LowerBound,
-        };
+        transpositions_.Record(score, depth, LowerBound);
+
         return beta;
       }
 
@@ -108,16 +89,11 @@ class AlphaBetaSearcher {
     }
 
     if (has_legal_moves) {
-      transpositions_[position_.GetKey()] = {
-          .depth = depth,
-          .score = alpha,
-          .type = transposition_type,
-      };
+      transpositions_.Record(alpha, depth, transposition_type);
       return alpha;
     }
 
-    const bool is_checkmate = position_.GetCheckers(position_.SideToMove());
-    if (is_checkmate) {
+    if (CurrentSideInCheck()) {
       constexpr int kBaseCheckMateScore = -20'000;
 
       // Favor checkmates closer to the root of the tree.
@@ -165,6 +141,14 @@ class AlphaBetaSearcher {
     return position_.SideToMove() == kWhite ? score : -score;
   }
 
+  [[nodiscard]] constexpr bool IsLastMoveLegal() const {
+    return !position_.GetCheckers(~position_.SideToMove());
+  }
+
+  [[nodiscard]] constexpr bool CurrentSideInCheck() const {
+    return position_.GetCheckers(position_.SideToMove());
+  }
+
   constexpr void MaybeLog(const int depth,
                           const int additional_depth = 0) const {
     if (nodes_ % log_every_n_ != 0) {
@@ -180,36 +164,7 @@ class AlphaBetaSearcher {
 
     std::println(
         std::cout, "info depth {} seldepth {} nodes {} nps {} tbhits {}", depth,
-        selective_depth, nodes_, nodes_per_second, transposition_hits_);
-  }
-
-  [[nodiscard]] std::optional<int> ProbeTranspositions(const int alpha,
-                                                       const int beta,
-                                                       const int depth) const {
-    auto it = transpositions_.find(position_.GetKey());
-    if (it == transpositions_.end()) {
-      return std::nullopt;
-    }
-
-    const Transposition& transposition = it->second;
-    if (transposition.depth < depth) {
-      return std::nullopt;
-    }
-
-    switch (transposition.type) {
-      case Exact:
-        return transposition.score;
-      case UpperBound:
-        if (transposition.score <= alpha) {
-          return alpha;
-        }
-      case LowerBound:
-        if (transposition.score >= beta) {
-          return beta;
-        }
-      default:
-        return std::nullopt;
-    }
+        selective_depth, nodes_, nodes_per_second, transpositions_.GetHits());
   }
 
   Position position_;
@@ -221,9 +176,8 @@ class AlphaBetaSearcher {
 
   std::chrono::system_clock::time_point start_time_;
   std::int64_t nodes_;
-  std::int64_t transposition_hits_;
 
-  absl::flat_hash_map<std::uint64_t, Transposition> transpositions_;
+  TranspositionTable transpositions_;
 };
 
 }  // namespace

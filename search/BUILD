@@ -57,11 +57,21 @@ cc_library(
     deps = [
         ":evaluation",
         ":move_ordering",
+        ":transposition",
         "//engine:move",
         "//engine:move_generator",
         "//engine:position",
         "//engine:scoped_move",
         "//engine:types",
+    ],
+)
+
+cc_library(
+    name = "transposition",
+    srcs = [],
+    hdrs = ["transposition.h"],
+    deps = [
+        "//engine:position",
         "@abseil-cpp//absl/container:flat_hash_map",
     ],
 )
