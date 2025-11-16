@@ -23,9 +23,8 @@ enum BoundType : std::int8_t {
 
 struct Transposition {
   int depth = 0;
-  int score;
-  BoundType type;
-  Move best_move;
+  int score = 0;
+  BoundType type = Exact;
 };
 
 class AlphaBetaSearcher {
@@ -68,7 +67,6 @@ class AlphaBetaSearcher {
           .depth = depth,
           .score = score,
           .type = Exact,
-          .best_move = *best_move_,
       };
       return score;
     }
@@ -93,7 +91,6 @@ class AlphaBetaSearcher {
             .depth = depth,
             .score = score,
             .type = LowerBound,
-            .best_move = *best_move_,
         };
         return beta;
       }
@@ -114,7 +111,6 @@ class AlphaBetaSearcher {
           .depth = depth,
           .score = alpha,
           .type = transposition_type,
-          .best_move = *best_move_,
       };
       return alpha;
     }
