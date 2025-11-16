@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+OUTPUT="$(dirname $(realpath $0))/benchmarks/${1?}_benchmark_latest.txt"
+
+bazel run \
+    -c opt \
+    "//benchmarks:${1}_benchmark" \
+    -- \
+    --benchmark_out="${OUTPUT}" \
+    --benchmark_out_format=console
