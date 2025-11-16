@@ -29,12 +29,7 @@ std::expected<void, std::string> ApplyMoves(
   }
 
   for (int i = 1; i < uci_moves.size(); ++i) {
-    std::vector<Move> moves;
-    if (position.GetCheckers(position.SideToMove())) {
-      moves = GenerateMoves<kEvasion>(position);
-    } else {
-      moves = GenerateMoves<kQuiet, kCapture>(position);
-    }
+    std::vector<Move> moves = GenerateMoves(position);
 
     std::optional<Move> move = FindMove(uci_moves[i], moves);
     if (!move) {

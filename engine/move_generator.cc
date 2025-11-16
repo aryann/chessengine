@@ -247,15 +247,19 @@ void GenerateMoves(const Position &position, std::vector<Move> &moves) {
 
 }  // namespace
 
-template <MoveType... MoveType>
+template <MoveType MoveType>
+void GenerateMoves(const Position &position, std::vector<Move> &moves) {
+  if (position.SideToMove() == kWhite) {
+    GenerateMoves<kWhite, MoveType>(position, moves);
+  } else {
+    GenerateMoves<kBlack, MoveType>(position, moves);
+  }
+}
+
+template <MoveType MoveType>
 std::vector<Move> GenerateMoves(const Position &position) {
   std::vector<Move> moves;
-  if (position.SideToMove() == kWhite) {
-    (..., GenerateMoves<kWhite, MoveType>(position, moves));
-  } else {
-    (..., GenerateMoves<kBlack, MoveType>(position, moves));
-  }
-
+  GenerateMoves<MoveType>(position, moves);
   return moves;
 }
 
@@ -266,17 +270,17 @@ template std::vector<Move> GenerateMoves<kQuiet>(const Position &position);
 
 template std::vector<Move> GenerateMoves<kCapture>(const Position &position);
 
-template std::vector<Move> GenerateMoves<kQuiet, kCapture>(
-    const Position &position);
-
 template std::vector<Move> GenerateMoves<kEvasion>(const Position &position);
 
 std::vector<Move> GenerateMoves(const Position &position) {
+  std::vector<Move> moves;
   if (position.GetCheckers(position.SideToMove())) {
-    return GenerateMoves<kEvasion>(position);
+    GenerateMoves<kEvasion>(position, moves);
   } else {
-    return GenerateMoves<kQuiet, kCapture>(position);
+    GenerateMoves<kQuiet>(position, moves);
+    GenerateMoves<kCapture>(position, moves);
   }
+  return moves;
 }
 
 }  // namespace chessengine
