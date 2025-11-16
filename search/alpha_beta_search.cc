@@ -38,7 +38,6 @@ class AlphaBetaSearcher {
   // NOLINTNEXTLINE(misc-no-recursion)
   int Search(int alpha, const int beta, const int depth) {
     ++nodes_;
-
     MaybeLog(depth);
 
     if (depth == 0) {

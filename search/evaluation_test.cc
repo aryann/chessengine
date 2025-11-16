@@ -119,6 +119,32 @@ TEST(Evaluation, GetPlacementScore) {
                                              //
                                              "   w - - 0 1")),
               Eq(-50));
+
+  EXPECT_THAT(GetPlacementScore(MakePosition("8: . . . . . . . ."
+                                             "7: . . . . . . . ."
+                                             "6: . . . . . . . ."
+                                             "5: . . . . . . . ."
+                                             "4: . . . . . . . ."
+                                             "3: . . . . . . . ."
+                                             "2: . . . . . . . ."
+                                             "1: . . . . . . . k"
+                                             "   a b c d e f g h"
+                                             //
+                                             "   w - - 0 1")),
+              Eq(30));
+
+  EXPECT_THAT(GetPlacementScore(MakePosition("8: q . . . . . . ."
+                                             "7: . . . . . . . ."
+                                             "6: . . . . . . . ."
+                                             "5: . . . . . . . ."
+                                             "4: . . . . . . . ."
+                                             "3: . . . . . . . ."
+                                             "2: . . . . . . . ."
+                                             "1: . . . . . . . k"
+                                             "   a b c d e f g h"
+                                             //
+                                             "   w - - 0 1")),
+              Eq(50));
 }
 
 }  // namespace

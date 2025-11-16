@@ -36,5 +36,13 @@ TEST(Square, ToString) {
   EXPECT_THAT(ToString(H1), Eq("h1"));
 }
 
+TEST(Square, Reflect) {
+  EXPECT_THAT(Reflect(A8), A1);
+  EXPECT_THAT(Reflect(H1), H8);
+  EXPECT_THAT(Reflect(D5), D4);
+  EXPECT_THAT(Reflect(A1), A8);
+  EXPECT_THAT(Reflect(H3), H6);
+}
+
 }  // namespace
 }  // namespace chessengine
