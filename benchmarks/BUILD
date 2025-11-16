@@ -18,3 +18,13 @@ cc_binary(
         "@google_benchmark//:benchmark",
     ],
 )
+
+cc_binary(
+    name = "search_benchmark",
+    srcs = ["search_benchmark.cc"],
+    deps = [
+        "//engine:position",
+        "//search",
+        "@google_benchmark//:benchmark",
+    ],
+)

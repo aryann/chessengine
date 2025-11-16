@@ -29,9 +29,10 @@ struct Transposition {
 
 class AlphaBetaSearcher {
  public:
-  AlphaBetaSearcher(const Position& position, const int depth)
+  AlphaBetaSearcher(const Position& position, const SearchOptions& options)
       : position_(position),
-        requested_search_depth_(depth),
+        requested_search_depth_(options.depth),
+        log_every_n_(options.log_every_n),
         nodes_(0),
         transposition_hits_(0) {}
 
@@ -166,8 +167,7 @@ class AlphaBetaSearcher {
 
   constexpr void MaybeLog(const int depth,
                           const int additional_depth = 0) const {
-    constexpr std::int64_t kLogFrequency = 1 << 10;
-    if (nodes_ % kLogFrequency != 0) {
+    if (nodes_ % log_every_n_ != 0) {
       return;
     }
 
@@ -213,7 +213,10 @@ class AlphaBetaSearcher {
   }
 
   Position position_;
+
   const int requested_search_depth_;
+  const std::int64_t log_every_n_;
+
   std::optional<Move> best_move_;
 
   std::chrono::system_clock::time_point start_time_;
@@ -225,8 +228,8 @@ class AlphaBetaSearcher {
 
 }  // namespace
 
-Move Search(const Position& position, int depth) {
-  AlphaBetaSearcher searcher(position, depth);
+Move Search(const Position& position, const SearchOptions& options) {
+  AlphaBetaSearcher searcher(position, options);
   return searcher.GetBestMove();
 }
 
