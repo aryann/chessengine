@@ -29,8 +29,7 @@ class Quit : public Command {
 
 class Go : public Command {
  public:
-  explicit Go(const SearchFunc& search_func, Position& position)
-      : search_func_(search_func), position_(position) {}
+  explicit Go(Position& position) : position_(position) {}
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
@@ -47,13 +46,12 @@ class Go : public Command {
       }
     }
 
-    Move move = search_func_(position_, depth);
+    Move move = Search(position_, depth);
     std::println(std::cout, "bestmove {}", move);
     return {};
   }
 
  private:
-  SearchFunc search_func_;
   Position& position_;
 };
 

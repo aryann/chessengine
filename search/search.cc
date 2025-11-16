@@ -1,4 +1,4 @@
-#include "search/alpha_beta_search.h"
+#include "search/search.h"
 
 #include <iostream>
 #include <vector>
@@ -225,7 +225,7 @@ class AlphaBetaSearcher {
 
 }  // namespace
 
-Move AlphaBetaSearch(const Position& position, int depth) {
+Move Search(const Position& position, int depth) {
   AlphaBetaSearcher searcher(position, depth);
   return searcher.GetBestMove();
 }

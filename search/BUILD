@@ -5,22 +5,6 @@ package(
 )
 
 cc_library(
-    name = "alpha_beta_search",
-    srcs = ["alpha_beta_search.cc"],
-    hdrs = ["alpha_beta_search.h"],
-    deps = [
-        ":evaluation",
-        ":move_ordering",
-        "//engine:move",
-        "//engine:move_generator",
-        "//engine:position",
-        "//engine:scoped_move",
-        "//engine:types",
-        "@abseil-cpp//absl/container:flat_hash_map",
-    ],
-)
-
-cc_library(
     name = "evaluation",
     srcs = ["evaluation.cc"],
     hdrs = ["evaluation.h"],
@@ -68,23 +52,16 @@ cc_test(
 
 cc_library(
     name = "search",
-    srcs = [],
+    srcs = ["search.cc"],
     hdrs = ["search.h"],
     deps = [
-        "//engine:move",
-        "//engine:position",
-    ],
-)
-
-cc_library(
-    name = "random_search",
-    srcs = ["random_search.cc"],
-    hdrs = ["random_search.h"],
-    deps = [
+        ":evaluation",
+        ":move_ordering",
         "//engine:move",
         "//engine:move_generator",
         "//engine:position",
         "//engine:scoped_move",
         "//engine:types",
+        "@abseil-cpp//absl/container:flat_hash_map",
     ],
 )

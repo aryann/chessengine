@@ -1,13 +1,12 @@
 #ifndef CHESS_ENGINE_SEARCH_SEARCH_H_
 #define CHESS_ENGINE_SEARCH_SEARCH_H_
-#include <functional>
 
 #include "engine/move.h"
 #include "engine/position.h"
 
 namespace chessengine {
 
-using SearchFunc = std::function<Move(const Position&, int depth)>;
+Move Search(const Position& position, int depth);
 
 }  // namespace chessengine
 
