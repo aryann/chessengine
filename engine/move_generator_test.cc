@@ -391,10 +391,10 @@ TEST(Knights, Captures) {
 
     EXPECT_THAT(GenerateMoves<kCapture>(position),
                 UnorderedElementsAreArray(MakeMoves({
-                    "e3d1",
-                    "e3d5",
-                    "e3f1",
-                    "e3f5",
+                    "e3d1#c",
+                    "e3d5#c",
+                    "e3f1#c",
+                    "e3f5#c",
                 })));
   }
 }
@@ -438,10 +438,10 @@ TEST(Bishops, Captures) {
 
   EXPECT_THAT(GenerateMoves<kCapture>(position),
               UnorderedElementsAreArray(MakeMoves({
-                  "d4b6",
-                  "d4b2",
-                  "d4f6",
-                  "d4f2",
+                  "d4b6#c",
+                  "d4b2#c",
+                  "d4f6#c",
+                  "d4f2#c",
               })));
 }
 
@@ -934,7 +934,7 @@ TEST(Evasion, CheckResolvedViaKnightCapture) {
       //
       "   b - - 0 2");
 
-  EXPECT_THAT(GenerateMoves<kEvasion>(position), Contains(MakeMove("g6f7")));
+  EXPECT_THAT(GenerateMoves<kEvasion>(position), Contains(MakeMove("g6f7#c")));
 }
 
 }  // namespace

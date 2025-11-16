@@ -97,7 +97,6 @@ template <Side Side, Piece Piece>
 void GenerateMoves(const Position &position, Bitboard targets,
                    std::vector<Move> &moves) {
   Bitboard pieces = position.GetPieces(Side, Piece);
-
   while (pieces) {
     Square from = pieces.PopLeastSignificantBit();
     Bitboard attacks =
@@ -105,7 +104,12 @@ void GenerateMoves(const Position &position, Bitboard targets,
 
     while (attacks) {
       Square to = attacks.PopLeastSignificantBit();
-      moves.emplace_back(from, to);
+
+      Move::Flags flags = Move::Flags::kNone;
+      if (position.GetPiece(to) != kEmptyPiece) {
+        flags = Move::Flags::kCapture;
+      }
+      moves.emplace_back(from, to, flags);
     }
   }
 }
