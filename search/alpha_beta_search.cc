@@ -16,8 +16,8 @@ namespace {
 
 class AlphaBetaSearcher {
  public:
-  AlphaBetaSearcher(const Position& position, int depth)
-      : position_(position), depth_(depth), nodes_(0) {}
+  AlphaBetaSearcher(const Position& position, const int depth)
+      : position_(position), requested_search_depth_(depth), nodes_(0) {}
 
   [[nodiscard]] Move GetBestMove() {
     if (best_move_) {
@@ -28,7 +28,7 @@ class AlphaBetaSearcher {
 
     constexpr static int kAlpha = -100'000;
     constexpr static int kBeta = 100'000;
-    Search(kAlpha, kBeta, depth_);
+    Search(kAlpha, kBeta, 0);
     DCHECK(best_move_.has_value());
 
     return *best_move_;
@@ -40,9 +40,8 @@ class AlphaBetaSearcher {
     ++nodes_;
     MaybeLog(depth);
 
-    if (depth == 0) {
-      const int score = Evaluate(position_);
-      return position_.SideToMove() == kWhite ? score : -score;
+    if (depth == requested_search_depth_) {
+      return QuiescentSearch(alpha, beta, 1);
     }
 
     bool has_legal_moves = false;
@@ -57,7 +56,7 @@ class AlphaBetaSearcher {
       }
       has_legal_moves = true;
 
-      const int score = -Search(-beta, -alpha, depth - 1);
+      const int score = -Search(-beta, -alpha, depth + 1);
 
       if (score >= beta) {
         return beta;
@@ -65,7 +64,7 @@ class AlphaBetaSearcher {
 
       if (score > alpha) {
         alpha = score;
-        if (depth == depth_) {
+        if (depth == 0) {
           // Store this move as the best move if and only if this is a root
           // node.
           best_move_ = move;
@@ -86,7 +85,51 @@ class AlphaBetaSearcher {
     return alpha;
   }
 
-  constexpr void MaybeLog(int depth) {
+  // NOLINTNEXTLINE(misc-no-recursion)
+  [[nodiscard]] int QuiescentSearch(int alpha, const int beta,
+                                    const int depth) {
+    ++nodes_;
+    MaybeLog(requested_search_depth_, depth);
+
+    int score = GetScore();
+    if (score >= beta) {
+      return beta;
+    }
+    alpha = std::max(alpha, score);
+
+    std::vector<Move> moves = GenerateMoves<kCapture>(position_);
+    OrderMoves(position_, moves);
+    for (Move move : moves) {
+      ScopedMove scoped_move(move, position_);
+      const bool is_legal = !position_.GetCheckers(~position_.SideToMove());
+      if (!is_legal) {
+        continue;
+      }
+
+      if (!move.IsCapture()) {
+        // TODO(aryann): Determine why `GenerateMoves<kCapture>(position_)`
+        // contains non-capturing moves.
+        continue;
+      }
+
+      score = -QuiescentSearch(-beta, -alpha, depth + 1);
+
+      if (score >= beta) {
+        return beta;
+      }
+      alpha = std::max(alpha, score);
+    }
+
+    return alpha;
+  }
+
+  [[nodiscard]] int GetScore() const {
+    const int score = Evaluate(position_);
+    return position_.SideToMove() == kWhite ? score : -score;
+  }
+
+  constexpr void MaybeLog(const int depth,
+                          const int additional_depth = 0) const {
     constexpr std::int64_t kLogFrequency = 1 << 10;
     if (nodes_ % kLogFrequency != 0) {
       return;
@@ -97,12 +140,14 @@ class AlphaBetaSearcher {
     const double elapsed_seconds = elapsed.count();
     auto nodes_per_second = static_cast<std::int64_t>(nodes_ / elapsed_seconds);
 
-    std::println(std::cout, "info depth {} nodes {} nps {}", depth_ - depth,
-                 nodes_, nodes_per_second);
+    const int selective_depth = depth + additional_depth;
+
+    std::println(std::cout, "info depth {} seldepth {} nodes {} nps {}", depth,
+                 selective_depth, nodes_, nodes_per_second);
   }
 
   Position position_;
-  const int depth_;
+  const int requested_search_depth_;
   std::optional<Move> best_move_;
 
   std::chrono::system_clock::time_point start_time_;
