@@ -72,17 +72,20 @@ class AlphaBetaSearcher {
       }
     }
 
-    if (!has_legal_moves) {
-      if (position_.GetCheckers(position_.SideToMove())) {
-        constexpr int kCheckMateScore = -20'000;
-        return kCheckMateScore;
-      } else {
-        constexpr int kStalemateScore = 0;
-        return kStalemateScore;
-      }
+    if (has_legal_moves) {
+      return alpha;
     }
 
-    return alpha;
+    const bool is_checkmate = position_.GetCheckers(position_.SideToMove());
+    if (is_checkmate) {
+      constexpr int kBaseCheckMateScore = -20'000;
+
+      // Favor checkmates closer to the root of the tree.
+      return kBaseCheckMateScore + depth;
+    }
+
+    constexpr int kStalemateScore = 0;
+    return kStalemateScore;
   }
 
   // NOLINTNEXTLINE(misc-no-recursion)
