@@ -39,11 +39,11 @@ class Move {
 
   static std::expected<Move, std::string> FromUCI(std::string_view input);
 
-  [[nodiscard]] constexpr Square from() const {
+  [[nodiscard]] constexpr Square GetFrom() const {
     return static_cast<Square>(data_ & 0b111111);
   }
 
-  [[nodiscard]] constexpr Square to() const {
+  [[nodiscard]] constexpr Square GetTo() const {
     return static_cast<Square>((data_ >> 6) & 0b111111);
   }
 
@@ -58,8 +58,8 @@ class Move {
   [[nodiscard]] constexpr Square GetEnPassantTarget() const {
     DCHECK(IsDoublePawnPush());
 
-    int diff = from() < to() ? 8 : -8;
-    return static_cast<Square>(from() + diff);
+    int diff = GetFrom() < GetTo() ? 8 : -8;
+    return static_cast<Square>(GetFrom() + diff);
   }
 
   [[nodiscard]] constexpr bool IsEnPassantCapture() const {
@@ -68,7 +68,7 @@ class Move {
 
   [[nodiscard]] constexpr Square GetEnPassantVictim() const {
     DCHECK(IsEnPassantCapture());
-    return MakeSquare(GetRank(from()), GetFile(to()));
+    return MakeSquare(GetRank(GetFrom()), GetFile(GetTo()));
   }
 
   [[nodiscard]] constexpr bool IsKingSideCastling() const {
@@ -92,7 +92,7 @@ class Move {
 
   template <typename Out>
   Out FormatTo(Out out, bool full) const {
-    out = std::format_to(out, "{}{}", from(), to());
+    out = std::format_to(out, "{}{}", GetFrom(), GetTo());
 
     if (IsPromotion()) {
       static char kPieceChars[] = {'n', 'b', 'r', 'q'};

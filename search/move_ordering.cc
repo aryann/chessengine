@@ -11,8 +11,8 @@ namespace {
 
 [[nodiscard]] int MoveKey(const Position& position, Move move) {
   if (move.IsCapture()) {
-    const Piece attacker = position.GetPiece(move.from());
-    const Piece victim = position.GetPiece(move.to());
+    const Piece attacker = position.GetPiece(move.GetFrom());
+    const Piece victim = position.GetPiece(move.GetTo());
 
     const int victim_score = kKing - victim;
     const int attacker_score = attacker;

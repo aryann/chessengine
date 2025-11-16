@@ -280,7 +280,7 @@ std::expected<Position, std::string> Position::FromFen(std::string_view fen) {
 
 UndoInfo Position::Do(const Move &move) {
   // TODO(aryann): Reset the half move clock if there was a pawn move.
-  Piece victim = GetPiece(move.to());
+  Piece victim = GetPiece(move.GetTo());
   const UndoInfo undo_info = {
       .move = move,
       .captured_piece = victim,
@@ -292,18 +292,18 @@ UndoInfo Position::Do(const Move &move) {
   if (victim == kEmptyPiece) {
     ++half_moves_;
   } else {
-    DCHECK(GetSide(move.to()) == ~side_to_move_);
+    DCHECK(GetSide(move.GetTo()) == ~side_to_move_);
 
-    pieces_[victim].Clear(move.to());
-    sides_[~side_to_move_].Clear(move.to());
+    pieces_[victim].Clear(move.GetTo());
+    sides_[~side_to_move_].Clear(move.GetTo());
     half_moves_ = 0;
-    zobrist_key_.Update(move.to(), victim, ~side_to_move_);
+    zobrist_key_.Update(move.GetTo(), victim, ~side_to_move_);
   }
 
-  Piece piece = GetPiece(move.from());
+  Piece piece = GetPiece(move.GetFrom());
   DCHECK(piece != kEmptyPiece);
-  zobrist_key_.Update(move.from(), piece, side_to_move_);
-  zobrist_key_.Update(move.to(), piece, side_to_move_);
+  zobrist_key_.Update(move.GetFrom(), piece, side_to_move_);
+  zobrist_key_.Update(move.GetTo(), piece, side_to_move_);
 
   if (move.IsEnPassantCapture()) {
     Square en_passant_victim = move.GetEnPassantVictim();
@@ -313,18 +313,18 @@ UndoInfo Position::Do(const Move &move) {
     half_moves_ = 0;
   }
 
-  Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
+  Bitboard from_to = Bitboard(move.GetFrom()) | Bitboard(move.GetTo());
   pieces_[piece] ^= from_to;
 
-  Side side = GetSide(move.from());
+  Side side = GetSide(move.GetFrom());
   DCHECK(side != kEmptySide);
   sides_[side] ^= from_to;
 
   if (move.IsPromotion()) {
-    pieces_[kPawn].Clear(move.to());
-    pieces_[move.GetPromotedPiece()].Set(move.to());
-    zobrist_key_.Update(move.to(), kPawn, side_to_move_);
-    zobrist_key_.Update(move.to(), move.GetPromotedPiece(), side_to_move_);
+    pieces_[kPawn].Clear(move.GetTo());
+    pieces_[move.GetPromotedPiece()].Set(move.GetTo());
+    zobrist_key_.Update(move.GetTo(), kPawn, side_to_move_);
+    zobrist_key_.Update(move.GetTo(), move.GetPromotedPiece(), side_to_move_);
   }
 
   // Non-empty if and only if the move is a castling move.
@@ -340,8 +340,8 @@ UndoInfo Position::Do(const Move &move) {
   }
 
   zobrist_key_.ToggleCastlingRights(castling_rights_);
-  castling_rights_.InvalidateOnMove(move.from());
-  castling_rights_.InvalidateOnMove(move.to());
+  castling_rights_.InvalidateOnMove(move.GetFrom());
+  castling_rights_.InvalidateOnMove(move.GetTo());
   zobrist_key_.ToggleCastlingRights(castling_rights_);
 
   if (side_to_move_ == kBlack) {
@@ -375,22 +375,22 @@ void Position::Undo(const UndoInfo &undo_info) {
   side_to_move_ = ~side_to_move_;
 
   if (move.IsPromotion()) {
-    pieces_[move.GetPromotedPiece()].Clear(move.to());
-    pieces_[kPawn].Set(move.to());
-    zobrist_key_.Update(move.to(), kPawn, side_to_move_);
-    zobrist_key_.Update(move.to(), move.GetPromotedPiece(), side_to_move_);
+    pieces_[move.GetPromotedPiece()].Clear(move.GetTo());
+    pieces_[kPawn].Set(move.GetTo());
+    zobrist_key_.Update(move.GetTo(), kPawn, side_to_move_);
+    zobrist_key_.Update(move.GetTo(), move.GetPromotedPiece(), side_to_move_);
   }
 
-  Bitboard from_to = Bitboard(move.from()) | Bitboard(move.to());
+  Bitboard from_to = Bitboard(move.GetFrom()) | Bitboard(move.GetTo());
 
-  Piece piece = GetPiece(move.to());
+  Piece piece = GetPiece(move.GetTo());
   DCHECK(piece != kEmptyPiece);
-  zobrist_key_.Update(move.from(), piece, side_to_move_);
-  zobrist_key_.Update(move.to(), piece, side_to_move_);
+  zobrist_key_.Update(move.GetFrom(), piece, side_to_move_);
+  zobrist_key_.Update(move.GetTo(), piece, side_to_move_);
 
   pieces_[piece] ^= from_to;
 
-  Side side = GetSide(move.to());
+  Side side = GetSide(move.GetTo());
   DCHECK(side != kEmptySide);
   sides_[side] ^= from_to;
 
@@ -403,9 +403,9 @@ void Position::Undo(const UndoInfo &undo_info) {
 
   if (undo_info.captured_piece != kEmptyPiece) {
     // Restores a non-passant captured piece.
-    pieces_[undo_info.captured_piece].Set(move.to());
-    sides_[~side].Set(move.to());
-    zobrist_key_.Update(move.to(), undo_info.captured_piece, ~side);
+    pieces_[undo_info.captured_piece].Set(move.GetTo());
+    sides_[~side].Set(move.GetTo());
+    zobrist_key_.Update(move.GetTo(), undo_info.captured_piece, ~side);
   }
 
   // Non-empty if and only if the move is a castling move.
