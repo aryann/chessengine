@@ -66,6 +66,20 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "search_test",
+    srcs = ["search_test.cc"],
+    deps = [
+        ":search",
+        "//engine:move",
+        "//engine:move_generator",
+        "//engine:position",
+        "//engine:scoped_move",
+        "//engine:testing",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "transposition",
     srcs = [],

@@ -50,7 +50,6 @@ class TranspositionTable {
   }
 
   const Entry& entry = it->second;
-
   if (entry.depth < depth) {
     return std::nullopt;
   }
