@@ -14,7 +14,7 @@ namespace {
 
 using ::testing::ElementsAreArray;
 
-[[nodiscard]] bool GameOver(Position& position) {
+[[nodiscard]] bool GameOver(Position position) {
   for (Move move : GenerateMoves(position)) {
     ScopedMove scoped_move(move, position);
     if (!position.GetCheckers(~position.SideToMove())) {
@@ -25,12 +25,13 @@ using ::testing::ElementsAreArray;
   return true;
 }
 
-std::vector<Move> Play(Position& position) {
+std::vector<Move> Play(Game& game) {
   std::vector<Move> moves;
 
-  while (!GameOver(position)) {
-    Move move = Search(position, SearchOptions().SetDepth(3));
-    position.Do(move);
+  while (!GameOver(game.GetPosition())) {
+    Move move = Search(game, SearchOptions().SetDepth(3));
+    std::println("{}", move);
+    game.Do(move);
     moves.push_back(move);
   }
 
@@ -39,20 +40,20 @@ std::vector<Move> Play(Position& position) {
 
 TEST(Search, SimpleEndGames) {
   {
-    Position position = MakePosition(
-        "8: k . . . . . . ."
-        "7: . . . . . . . ."
-        "6: . r . . . . . ."
-        "5: . . r . . . . ."
-        "4: . . . . . . . ."
-        "3: . . . . . . . ."
-        "2: . . . . . . . ."
-        "1: . . . . . . . K"
-        "   a b c d e f g h"
-        //
-        "   b - - 0 1");
+    Game game(
+        MakePosition("8: k . . . . . . ."
+                     "7: . . . . . . . ."
+                     "6: . r . . . . . ."
+                     "5: . . r . . . . ."
+                     "4: . . . . . . . ."
+                     "3: . . . . . . . ."
+                     "2: . . . . . . . ."
+                     "1: . . . . . . . K"
+                     "   a b c d e f g h"
+                     //
+                     "   b - - 0 1"));
 
-    std::vector<Move> moves = Play(position);
+    std::vector<Move> moves = Play(game);
     EXPECT_THAT(moves, testing::SizeIs(testing::Lt(8)));
   }
 

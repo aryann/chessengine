@@ -17,8 +17,9 @@ namespace {
 
 class AlphaBetaSearcher {
  public:
-  AlphaBetaSearcher(const Position& position, const SearchOptions& options)
-      : position_{position},
+  AlphaBetaSearcher(const Game& game, const SearchOptions& options)
+      : game_{game},
+        position_{game_.GetPosition()},
         requested_search_depth_{options.depth},
         log_every_n_{options.log_every_n},
         nodes_{0},
@@ -63,7 +64,7 @@ class AlphaBetaSearcher {
 
     TranspositionTable::BoundType transposition_type = UpperBound;
     for (Move move : moves) {
-      ScopedMove scoped_move(move, position_);
+      ScopedMove2 scoped_move(move, game_);
       if (!IsLastMoveLegal()) {
         continue;
       }
@@ -119,7 +120,7 @@ class AlphaBetaSearcher {
     std::vector<Move> moves = GenerateMoves<kCapture>(position_);
     OrderMoves(position_, moves);
     for (Move move : moves) {
-      ScopedMove scoped_move(move, position_);
+      ScopedMove2 scoped_move(move, game_);
       const bool is_legal = !position_.GetCheckers(~position_.SideToMove());
       if (!is_legal) {
         continue;
@@ -167,7 +168,8 @@ class AlphaBetaSearcher {
         selective_depth, nodes_, nodes_per_second, transpositions_.GetHits());
   }
 
-  Position position_;
+  Game game_;
+  const Position& position_;
 
   const int requested_search_depth_;
   const std::int64_t log_every_n_;
@@ -182,8 +184,8 @@ class AlphaBetaSearcher {
 
 }  // namespace
 
-Move Search(const Position& position, const SearchOptions& options) {
-  AlphaBetaSearcher searcher(position, options);
+Move Search(const Game& game, const SearchOptions& options) {
+  AlphaBetaSearcher searcher(game, options);
   return searcher.GetBestMove();
 }
 

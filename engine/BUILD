@@ -167,6 +167,7 @@ cc_library(
     srcs = [],
     hdrs = ["scoped_move.h"],
     deps = [
+        ":game",
         ":move",
         ":position",
     ],

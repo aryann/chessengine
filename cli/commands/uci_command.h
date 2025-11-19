@@ -46,8 +46,8 @@ class Go : public Command {
       }
     }
 
-    Move move = Search(game_.GetPosition(),
-                       SearchOptions().SetDepth(depth).SetLogEveryN(1 << 10));
+    Move move =
+        Search(game_, SearchOptions().SetDepth(depth).SetLogEveryN(1 << 10));
     std::println(std::cout, "bestmove {}", move);
     return {};
   }

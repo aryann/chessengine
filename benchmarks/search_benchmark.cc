@@ -12,9 +12,10 @@ void BM_Search(benchmark::State& state, Args&&... args) {
   int depth = state.range(0);
   auto position = Position::FromFen(std::get<0>(args_tuple));
   CHECK_EQ(position.error_or(""), "");
+  Game game(position.value());
 
   for (auto _ : state) {
-    Search(position.value(), SearchOptions().SetDepth(depth));
+    Search(game, SearchOptions().SetDepth(depth));
   }
 }
 
