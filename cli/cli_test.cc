@@ -58,8 +58,7 @@ std::string Dedent(std::string_view input) {
 class CliTest : public ::testing::Test {
  protected:
   CliTest()
-      : state_({.position = Position::Starting()}),
-        command_dispatcher_(MakeCommandDispatcher(state_)),
+      : command_dispatcher_(MakeCommandDispatcher(state_)),
         old_stdout_buffer_((std::cout.rdbuf())) {
     std::cout.rdbuf(stream_.rdbuf());
   }

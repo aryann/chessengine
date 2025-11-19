@@ -29,7 +29,7 @@ class Quit : public Command {
 
 class Go : public Command {
  public:
-  explicit Go(Position& position) : position_(position) {}
+  explicit Go(Game& game) : game_(game) {}
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
@@ -46,14 +46,14 @@ class Go : public Command {
       }
     }
 
-    Move move = Search(position_,
+    Move move = Search(game_.GetPosition(),
                        SearchOptions().SetDepth(depth).SetLogEveryN(1 << 10));
     std::println(std::cout, "bestmove {}", move);
     return {};
   }
 
  private:
-  Position& position_;
+  Game& game_;
 };
 
 }  // namespace chessengine

@@ -13,21 +13,21 @@
 namespace chessengine {
 
 CommandDispatcher MakeCommandDispatcher(CommandState& state) {
-  Position& position = state.position;
+  Game& game = state.game;
   CommandDispatcher dispatcher;
 
   CommandDispatcher position_commands;
-  position_commands.Add("fen", std::make_unique<FenPos>(position));
-  position_commands.Add("startpos", std::make_unique<StartPos>(position));
+  position_commands.Add("fen", std::make_unique<FenPos>(game));
+  position_commands.Add("startpos", std::make_unique<StartPos>(game));
 
   dispatcher.Add("position", std::move(position_commands));
 
-  dispatcher.Add("perft", std::make_unique<PerftCommand>(position));
+  dispatcher.Add("perft", std::make_unique<PerftCommand>(game));
 
-  dispatcher.Add("d", std::make_unique<Display>(position));
+  dispatcher.Add("d", std::make_unique<Display>(game));
   dispatcher.Add("isready", std::make_unique<IsReady>());
   dispatcher.Add("uci", std::make_unique<Uci>());
-  dispatcher.Add("go", std::make_unique<Go>(position));
+  dispatcher.Add("go", std::make_unique<Go>(game));
   dispatcher.Add("quit", std::make_unique<Quit>());
 
   return dispatcher;

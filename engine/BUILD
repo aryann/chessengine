@@ -69,6 +69,17 @@ cc_test(
 )
 
 cc_library(
+    name = "game",
+    srcs = ["game.cc"],
+    hdrs = ["game.h"],
+    deps = [
+        ":position",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/log:check",
+    ],
+)
+
+cc_library(
     name = "line",
     srcs = [],
     hdrs = ["line.h"],
@@ -126,6 +137,7 @@ cc_library(
         ":move",
         ":types",
         ":zobrist",
+        "@abseil-cpp//absl/container:flat_hash_map",
         "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/strings",
     ],

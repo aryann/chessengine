@@ -4,7 +4,6 @@
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_split.h"
 #include "cli.h"
-#include "engine/position.h"
 
 [[noreturn]] int main(int argc, char **argv) {
   std::println("Welcome!");
@@ -13,11 +12,8 @@
   using ::chessengine::Command;
   using ::chessengine::CommandDispatcher;
   using ::chessengine::CommandState;
-  using ::chessengine::Position;
 
-  CommandState state = {
-      .position = Position::Starting(),
-  };
+  CommandState state;
   CommandDispatcher dispatcher = chessengine::MakeCommandDispatcher(state);
 
   std::string command;

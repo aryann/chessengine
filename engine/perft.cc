@@ -40,7 +40,7 @@ std::size_t RunPerft(std::size_t depth, std::size_t current_depth,
 
 }  // namespace
 
-void RunPerft(std::size_t depth, Position &position,
+void RunPerft(std::size_t depth, const Position &position,
               std::vector<std::size_t> &final_depth_counts,
               std::map<Move, std::size_t> &final_move_counts) {
   if (depth == 0) {

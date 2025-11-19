@@ -19,7 +19,7 @@ std::optional<Move> FindMove(std::string_view uci_move,
 }
 
 std::expected<void, std::string> ApplyMoves(
-    const std::vector<std::string_view> &uci_moves, Position &position) {
+    const std::vector<std::string_view> &uci_moves, Game &game) {
   if (uci_moves.empty()) {
     return {};
   }
@@ -29,15 +29,15 @@ std::expected<void, std::string> ApplyMoves(
   }
 
   for (int i = 1; i < uci_moves.size(); ++i) {
-    std::vector<Move> moves = GenerateMoves(position);
+    std::vector<Move> moves = GenerateMoves(game.GetPosition());
 
     std::optional<Move> move = FindMove(uci_moves[i], moves);
     if (!move) {
       return std::unexpected(std::format("Illegal move: {}", uci_moves[i]));
     }
 
-    position.Do(*move);
-    if (position.GetCheckers(~position.SideToMove())) {
+    game.Do(*move);
+    if (game.GetPosition().GetCheckers(~game.GetPosition().SideToMove())) {
       return std::unexpected(std::format(
           "Illegal move (cannot place own king in check): {}", *move));
     }
@@ -50,8 +50,8 @@ std::expected<void, std::string> ApplyMoves(
 
 std::expected<void, std::string> StartPos::Run(
     std::vector<std::string_view> args) {
-  position_ = Position::Starting();
-  return ApplyMoves(args, position_);
+  game_ = Game(Position::Starting());
+  return ApplyMoves(args, game_);
 }
 
 std::expected<void, std::string> FenPos::Run(
@@ -64,8 +64,8 @@ std::expected<void, std::string> FenPos::Run(
     return std::unexpected(result.error());
   }
 
-  position_ = result.value();
-  return ApplyMoves({args.begin() + 6, args.end()}, position_);
+  game_ = Game(result.value());
+  return ApplyMoves({args.begin() + 6, args.end()}, game_);
 }
 
 }  // namespace chessengine

@@ -7,8 +7,7 @@ cc_library(
     ],
     deps = [
         "//cli:command",
-        "//engine:perft",
-        "//engine:position",
+        "//engine:game",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -37,6 +36,7 @@ cc_library(
     ],
     deps = [
         "//cli:command",
+        "//engine:game",
         "//engine:move",
         "//engine:perft",
         "//engine:position",
@@ -65,6 +65,7 @@ cc_library(
     ],
     deps = [
         "//cli:command",
+        "//engine:game",
         "//search",
     ],
 )

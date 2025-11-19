@@ -4,7 +4,6 @@ cc_binary(
     deps = [
         ":cli",
         ":command",
-        "//engine:position",
         "@abseil-cpp//absl/strings",
     ],
 )
@@ -20,6 +19,7 @@ cc_library(
         "//cli/commands:perft_command",
         "//cli/commands:position_command",
         "//cli/commands:uci_command",
+        "//engine:game",
         "//engine:move_generator",
         "//engine:perft",
         "//engine:position",

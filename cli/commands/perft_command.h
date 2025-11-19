@@ -7,14 +7,14 @@
 #include <vector>
 
 #include "cli/command.h"
+#include "engine/game.h"
 #include "engine/perft.h"
-#include "engine/position.h"
 
 namespace chessengine {
 
 class PerftCommand : public Command {
  public:
-  explicit PerftCommand(Position &position) : position_(position) {}
+  explicit PerftCommand(Game &game) : game_(game) {}
 
   ~PerftCommand() override = default;
 
@@ -27,7 +27,7 @@ class PerftCommand : public Command {
 
     std::vector<std::size_t> depth_counts;
     std::map<Move, std::size_t> final_move_counts;
-    RunPerft(depth, position_, depth_counts, final_move_counts);
+    RunPerft(depth, game_.GetPosition(), depth_counts, final_move_counts);
 
     for (auto [move, count] : final_move_counts) {
       std::println(std::cout, "{}: {}", move, count);
@@ -39,7 +39,7 @@ class PerftCommand : public Command {
   }
 
  private:
-  Position &position_;
+  Game &game_;
 };
 
 }  // namespace chessengine

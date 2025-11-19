@@ -6,13 +6,14 @@
 #include <vector>
 
 #include "cli/command.h"
+#include "engine/game.h"
 #include "engine/position.h"
 
 namespace chessengine {
 
 class StartPos : public Command {
  public:
-  explicit StartPos(Position &position) : position_(position) {}
+  explicit StartPos(Game& game) : game_(game) {}
 
   ~StartPos() override = default;
 
@@ -20,12 +21,12 @@ class StartPos : public Command {
       std::vector<std::string_view> args) override;
 
  private:
-  Position &position_;
+  Game& game_;
 };
 
 class FenPos : public Command {
  public:
-  explicit FenPos(Position &position) : position_(position) {}
+  explicit FenPos(Game& game) : game_(game) {}
 
   ~FenPos() override = default;
 
@@ -33,7 +34,7 @@ class FenPos : public Command {
       std::vector<std::string_view> args) override;
 
  private:
-  Position &position_;
+  Game& game_;
 };
 
 }  // namespace chessengine

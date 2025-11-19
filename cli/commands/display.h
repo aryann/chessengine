@@ -7,25 +7,25 @@
 #include <vector>
 
 #include "cli/command.h"
-#include "engine/position.h"
+#include "engine/game.h"
 
 namespace chessengine {
 class Position;
 
 class Display : public Command {
  public:
-  explicit Display(const Position &position) : position_(position) {}
+  explicit Display(const Game &game) : game_(game) {}
 
   ~Display() override = default;
 
   std::expected<void, std::string> Run(
       std::vector<std::string_view> args) override {
-    std::println(std::cout, "{}", position_);
+    std::println(std::cout, "{}", game_.GetPosition());
     return {};
   }
 
  private:
-  const Position &position_;
+  const Game &game_;
 };
 
 }  // namespace chessengine
