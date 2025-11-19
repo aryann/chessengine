@@ -48,6 +48,12 @@ class AlphaBetaSearcher {
     ++nodes_;
     MaybeLog(depth);
 
+    if (game_.GetRepetitionCount() >= 3) {
+      // TODO(aryann): Figure out what when draws can be offered due to the
+      // three repetition rule.
+      return 0;
+    }
+
     if (std::optional<int> score = transpositions_.Probe(alpha, beta, depth)) {
       return *score;
     }

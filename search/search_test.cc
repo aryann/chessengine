@@ -14,6 +14,8 @@ namespace {
 
 using ::testing::ElementsAreArray;
 
+constexpr int kMaxMovesAllowed = 256;
+
 [[nodiscard]] bool GameOver(Position position) {
   for (Move move : GenerateMoves(position)) {
     ScopedMove scoped_move(move, position);
@@ -30,9 +32,11 @@ std::vector<Move> Play(Game& game) {
 
   while (!GameOver(game.GetPosition())) {
     Move move = Search(game, SearchOptions().SetDepth(3));
-    std::println("{}", move);
     game.Do(move);
     moves.push_back(move);
+
+    CHECK_LE(moves.size(), kMaxMovesAllowed)
+        << "Reached maximum number of moves allowed.";
   }
 
   return moves;
@@ -57,26 +61,23 @@ TEST(Search, SimpleEndGames) {
     EXPECT_THAT(moves, testing::SizeIs(testing::Lt(8)));
   }
 
-  // TODO(aryann): This test doesn't pass because we do not track board
-  // repetitions across Search() calls.
-  //
-  // {
-  //   Position position = MakePosition(
-  //       "8: . . . K . . . ."
-  //       "7: . . . . . . . ."
-  //       "6: . . . . . . . ."
-  //       "5: . R . . . . . ."
-  //       "4: . . R . . . . ."
-  //       "3: . . . . . . . ."
-  //       "2: . . . . . . . ."
-  //       "1: . . . . . . . k"
-  //       "   a b c d e f g h"
-  //       //
-  //       "   w - - 0 1");
-  //
-  //   std::vector<Move> moves = Play(position);
-  //   EXPECT_THAT(moves, testing::SizeIs(testing::Lt(8)));
-  // }
+  {
+    // Game game(
+    //     MakePosition("8: . . . K . . . ."
+    //                  "7: . . . . . . . ."
+    //                  "6: . . . . . . . ."
+    //                  "5: . R . . . . . ."
+    //                  "4: . . R . . . . ."
+    //                  "3: . . . . . . . ."
+    //                  "2: . . . . . . . ."
+    //                  "1: . . . . . . . k"
+    //                  "   a b c d e f g h"
+    //                  //
+    //                  "   w - - 0 1"));
+    //
+    // std::vector<Move> moves = Play(game);
+    // EXPECT_THAT(moves, testing::SizeIs(testing::Lt(8)));
+  }
 }
 
 }  // namespace

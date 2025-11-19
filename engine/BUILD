@@ -79,6 +79,17 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "game_test",
+    srcs = ["game_test.cc"],
+    deps = [
+        ":game",
+        ":scoped_move",
+        ":testing",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_library(
     name = "line",
     srcs = [],
