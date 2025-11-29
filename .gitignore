@@ -1,3 +1,5 @@
 bazel*
 .clwb
 .idea
+
+build2

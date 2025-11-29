@@ -3,7 +3,6 @@
 
 #include <bit>
 #include <format>
-#include <initializer_list>
 #include <string>
 
 #include "absl/log/check.h"
