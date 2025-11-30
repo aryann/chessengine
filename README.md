@@ -3,12 +3,14 @@
 ## Building
 
 ```shell
-cmake --preset main # --fresh
-cmake --build build2
+cmake --preset debug
+cmake --build --preset debug
 ```
+
+[bitboard_test.cc](engine/bitboard_test.cc)
 
 ## Running Tests
 
-```shell
-GTEST_COLOR=1 ctest --test-dir build2/engine --output-on-failure
+```shell[bitboard_test.cc](engine/bitboard_test.cc)
+GTEST_COLOR=1 ctest --preset debug
 ```
