@@ -29,14 +29,16 @@ const std::vector<PerftTestCase> kTestCases = {
         .fen = R"(rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1)",
         .expected_node_counts =
             {
-                1,              //
-                20,             //
-                400,            //
-                8'902,          //
-                197'281,        //
+                1,        //
+                20,       //
+                400,      //
+                8'902,    //
+                197'281,  //
+#ifdef NDEBUG
                 4'865'609,      //
                 119'060'324,    //
                 3'195'901'860,  //
+#endif
             },
     },
 
@@ -47,13 +49,15 @@ const std::vector<PerftTestCase> kTestCases = {
             R"(r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1)",
         .expected_node_counts =
             {
-                1,              //
-                48,             //
-                2'039,          //
-                97'862,         //
+                1,       //
+                48,      //
+                2'039,   //
+                97'862,  //
+#ifdef NDEBUG
                 4'085'603,      //
                 193'690'690,    //
                 8'031'647'685,  //
+#endif
             },
     },
 
@@ -63,15 +67,17 @@ const std::vector<PerftTestCase> kTestCases = {
         .fen = R"(8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1)",
         .expected_node_counts =
             {
-                1,              //
-                14,             //
-                191,            //
-                2'812,          //
-                43'238,         //
-                674'624,        //
+                1,        //
+                14,       //
+                191,      //
+                2'812,    //
+                43'238,   //
+                674'624,  //
+#ifdef NDEBUG
                 11'030'083,     //
                 178'633'661,    //
                 3'009'794'393,  //
+#endif
             },
     },
 
@@ -82,12 +88,14 @@ const std::vector<PerftTestCase> kTestCases = {
             R"(r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1)",
         .expected_node_counts =
             {
-                1,           //
-                6,           //
-                264,         //
-                9'467,       //
+                1,      //
+                6,      //
+                264,    //
+                9'467,  //
+#ifdef NDEBUG
                 422'333,     //
                 15'833'292,  //
+#endif
             },
     },
 
@@ -98,12 +106,14 @@ const std::vector<PerftTestCase> kTestCases = {
         // This test is incomplete.
         .expected_node_counts =
             {
-                1,           //
-                44,          //
-                1'486,       //
-                62'379,      //
+                1,       //
+                44,      //
+                1'486,   //
+                62'379,  //
+#ifdef NDEBUG
                 2'103'487,   //
                 89'941'194,  //
+#endif
             },
     },
 
@@ -114,13 +124,15 @@ const std::vector<PerftTestCase> kTestCases = {
             R"(r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10)",
         .expected_node_counts =
             {
-                1,              //
-                46,             //
-                2'079,          //
-                89'890,         //
+                1,       //
+                46,      //
+                2'079,   //
+                89'890,  //
+#ifdef NDEBUG
                 3'894'594,      //
                 164'075'551,    //
                 6'923'051'137,  //
+#endif
             },
     }};
 
