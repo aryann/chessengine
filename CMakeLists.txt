@@ -12,6 +12,8 @@ elseif ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
 
 endif ()
 
+enable_testing()
+
 add_subdirectory(engine)
 add_subdirectory(third_party/abseil-cpp EXCLUDE_FROM_ALL)
 
