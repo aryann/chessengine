@@ -1,4 +1,32 @@
 ###############################################################################
+# Primitives:
+###############################################################################
+
+add_library(chessengine_primitives)
+
+target_sources(chessengine_primitives
+        PRIVATE
+        bitboard.cc
+        types.cc
+
+        PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/.."
+        FILES
+        bitboard.h
+        magic.h
+        types.h
+)
+
+target_link_libraries(chessengine_primitives
+        PRIVATE
+        absl::log
+        absl::check
+)
+
+target_compile_features(chessengine_primitives PUBLIC cxx_std_23)
+
+###############################################################################
 # Magic bitboard generation:
 ###############################################################################
 
@@ -7,18 +35,11 @@ add_executable(generate_magic)
 target_sources(generate_magic
         PRIVATE
         magic_main.cc
-        types.cc
-
-        PRIVATE
-        FILE_SET HEADERS
-        BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/.."
-        FILES
-        magic.h
-        bitboard.h
-        types.h
 )
 
 target_link_libraries(generate_magic
+        PRIVATE
+        chessengine_primitives
         absl::log
 )
 
@@ -31,7 +52,7 @@ add_custom_command(
         VERBATIM
 )
 
-add_custom_target(RunGenerateMagic DEPENDS ${MAGIC_HEADER_PATH})
+add_custom_target(run_generate_magic DEPENDS ${MAGIC_HEADER_PATH})
 
 add_library(magic INTERFACE)
 
@@ -43,31 +64,28 @@ target_sources(magic
 )
 
 add_dependencies(magic
-        RunGenerateMagic
+        run_generate_magic
 )
 
 ###############################################################################
 # Core engine library:
 ###############################################################################
 
-add_library(engine)
+add_library(chessengine_engine)
 
-target_sources(engine
+target_sources(chessengine_engine
         PRIVATE
-        bitboard.cc
         game.cc
         move_generator.cc
         move.cc
         perft.cc
         position.cc
-        types.cc
 
         PUBLIC
         FILE_SET HEADERS
         BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/.."
         FILES
         attacks.h
-        bitboard.h
         castling.h
         game.h
         line.h
@@ -77,18 +95,20 @@ target_sources(engine
         perft.h
         position.h
         scoped_move.h
-        types.h
         zobrist.h
 )
 
-target_link_libraries(engine
+target_link_libraries(chessengine_engine
         PUBLIC
+        chessengine_primitives
+
+        PRIVATE
         absl::check
         absl::log
         magic
 )
 
-target_compile_features(engine PRIVATE cxx_std_23)
+target_compile_features(chessengine_engine PRIVATE cxx_std_23)
 
 ###############################################################################
 # Testing library:
@@ -107,9 +127,10 @@ target_sources(testing
 
 target_link_libraries(testing
         PUBLIC
-        engine
+        chessengine_engine
         GTest::gmock
-        absl::strings)
+        absl::strings
+)
 
 target_compile_features(testing PRIVATE cxx_std_23)
 
@@ -119,15 +140,16 @@ target_compile_features(testing PRIVATE cxx_std_23)
 
 include(GoogleTest)
 
-macro(make_test TEST_NAME)
+function(make_test TEST_NAME)
     add_executable(${TEST_NAME} "${TEST_NAME}.cc")
     target_link_libraries(${TEST_NAME}
             PRIVATE
-            testing
             GTest::gtest_main
+            magic
+            testing
     )
     gtest_discover_tests(${TEST_NAME})
-endmacro()
+endfunction()
 
 make_test(attacks_test)
 make_test(bitboard_test)
