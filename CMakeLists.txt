@@ -14,7 +14,9 @@ endif ()
 
 enable_testing()
 
+add_subdirectory(cli)
 add_subdirectory(engine)
+add_subdirectory(search)
 add_subdirectory(third_party/abseil-cpp EXCLUDE_FROM_ALL)
 
 include(FetchContent)
