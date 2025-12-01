@@ -5,7 +5,7 @@
       "name": "base",
       "hidden": true,
       "description": "Base settings for all configurations",
-      "binaryDir": "${sourceDir}/build2/${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_CXX_STANDARD": "23"
       }
