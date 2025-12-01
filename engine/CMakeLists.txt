@@ -54,16 +54,16 @@ add_custom_command(
 
 add_custom_target(run_generate_magic DEPENDS ${MAGIC_HEADER_PATH})
 
-add_library(magic INTERFACE)
+add_library(chessengine_magic INTERFACE)
 
-target_sources(magic
+target_sources(chessengine_magic
         INTERFACE
         FILE_SET HEADERS
         BASE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/.."
         FILES ${MAGIC_HEADER_PATH}
 )
 
-add_dependencies(magic
+add_dependencies(chessengine_magic
         run_generate_magic
 )
 
@@ -101,11 +101,11 @@ target_sources(chessengine_engine
 target_link_libraries(chessengine_engine
         PUBLIC
         chessengine_primitives
+        chessengine_magic
 
         PRIVATE
         absl::check
         absl::log
-        magic
 )
 
 target_compile_features(chessengine_engine PRIVATE cxx_std_23)
@@ -146,7 +146,7 @@ function(make_test TEST_NAME)
             PRIVATE
             chessengine_testing
             GTest::gtest_main
-            magic
+            chessengine_magic
     )
     gtest_discover_tests(${TEST_NAME})
 endfunction()
