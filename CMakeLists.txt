@@ -14,19 +14,10 @@ endif ()
 
 enable_testing()
 
+add_subdirectory(benchmarks)
 add_subdirectory(cli)
 add_subdirectory(engine)
 add_subdirectory(search)
 add_subdirectory(third_party/abseil-cpp EXCLUDE_FROM_ALL)
-
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
-
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
+#add_subdirectory(third_party/benchmark EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/googletest EXCLUDE_FROM_ALL)
