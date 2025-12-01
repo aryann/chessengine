@@ -5,9 +5,6 @@ set -o nounset
 
 OUTPUT="$(dirname $(realpath $0))/benchmarks/${1?}_benchmark_latest.txt"
 
-bazel run \
-    -c opt \
-    "//benchmarks:${1}_benchmark" \
-    -- \
+"build2/release/benchmarks/${1}" \
     --benchmark_out="${OUTPUT}" \
     --benchmark_out_format=console
