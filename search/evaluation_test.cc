@@ -1,6 +1,5 @@
 #include "search/evaluation.h"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include "engine/position.h"
