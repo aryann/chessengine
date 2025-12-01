@@ -1,5 +1,4 @@
-bazel*
 .clwb
 .idea
 
-build2
+build
