@@ -19,7 +19,7 @@ target_sources(chessengine_primitives
 )
 
 target_link_libraries(chessengine_primitives
-        PRIVATE
+        PUBLIC
         absl::log
         absl::check
 )
@@ -114,9 +114,9 @@ target_compile_features(chessengine_engine PRIVATE cxx_std_23)
 # Testing library:
 ###############################################################################
 
-add_library(testing)
+add_library(chessengine_testing)
 
-target_sources(testing
+target_sources(chessengine_testing
         PRIVATE
         testing.cc
 
@@ -125,14 +125,14 @@ target_sources(testing
         FILES testing.h
 )
 
-target_link_libraries(testing
+target_link_libraries(chessengine_testing
         PUBLIC
         chessengine_engine
         GTest::gmock
         absl::strings
 )
 
-target_compile_features(testing PRIVATE cxx_std_23)
+target_compile_features(chessengine_testing PRIVATE cxx_std_23)
 
 ###############################################################################
 # Tests:
@@ -144,9 +144,9 @@ function(make_test TEST_NAME)
     add_executable(${TEST_NAME} "${TEST_NAME}.cc")
     target_link_libraries(${TEST_NAME}
             PRIVATE
+            chessengine_testing
             GTest::gtest_main
             magic
-            testing
     )
     gtest_discover_tests(${TEST_NAME})
 endfunction()
