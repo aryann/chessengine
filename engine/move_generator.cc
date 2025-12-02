@@ -4,7 +4,7 @@
 
 #include "absl/log/check.h"
 #include "engine/attacks.h"
-#include "engine/types.h"
+#include "engine/types.ccm"
 #include "line.h"
 
 namespace chessengine {

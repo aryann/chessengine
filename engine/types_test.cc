@@ -1,4 +1,4 @@
-#include "engine/types.h"
+#include "engine/types.ccm"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

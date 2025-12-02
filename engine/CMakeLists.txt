@@ -5,17 +5,12 @@
 add_library(chessengine_primitives)
 
 target_sources(chessengine_primitives
-        PRIVATE
-        bitboard.cc
-        types.cc
-
         PUBLIC
-        FILE_SET HEADERS
-        BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/.."
+        FILE_SET CXX_MODULES
         FILES
-        bitboard.h
-        magic.h
-        types.h
+        bitboard.ccm
+        magic.ccm
+        types.ccm
 )
 
 target_link_libraries(chessengine_primitives
@@ -89,7 +84,7 @@ target_sources(chessengine_engine
         castling.h
         game.h
         line.h
-        magic.h
+        #magic.ccm
         move_generator.h
         move.h
         perft.h

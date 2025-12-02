@@ -2,7 +2,8 @@
 #include <iostream>
 #include <print>
 
-#include "magic.h"
+import magic;
+import types;
 
 namespace {
 using ::chessengine::kNumSquares;

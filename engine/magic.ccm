@@ -1,12 +1,15 @@
-#ifndef CHESS_ENGINE_ENGINE_MAGIC_H_
-#define CHESS_ENGINE_ENGINE_MAGIC_H_
+module;
 
 #include <array>
 #include <format>
 #include <random>
 
 #include "absl/log/log.h"
-#include "bitboard.h"
+
+export module magic;
+
+import bitboard;
+import types;
 
 namespace chessengine {
 
@@ -63,7 +66,7 @@ constexpr std::vector<Bitboard> MakePowerSet(Bitboard mask) {
 
 // Holds the magic bitboard data for a single square and piece type
 // (bishop or rook).
-struct MagicEntry {
+export struct MagicEntry {
   // The mask of relevant squares for this piece and square.
   Bitboard mask;
 
@@ -74,7 +77,7 @@ struct MagicEntry {
   std::size_t attack_table_index;
 };
 
-struct SlidingAttackTables {
+export struct SlidingAttackTables {
   // The following diagram shows the number of relevancy bits (i.e., squares
   // on the relevant attack rays, excluding edges) for a bishop *on* each
   // square:
@@ -162,8 +165,8 @@ constexpr void FindMagicForSquare(Square from, std::size_t attack_table_index,
 
       magic_struct = {
           .mask = mask,
-          .shift = shift,
           .magic = magic,
+          .shift = shift,
           .attack_table_index = attack_table_index,
       };
       break;
@@ -171,7 +174,7 @@ constexpr void FindMagicForSquare(Square from, std::size_t attack_table_index,
   }
 }
 
-constexpr SlidingAttackTables GenerateSlidingAttackTables() {
+export constexpr SlidingAttackTables GenerateSlidingAttackTables() {
   SlidingAttackTables sliding_attacks;
   std::size_t rook_attack_table_index =
       SlidingAttackTables::kBishopTableSizePerSquare * kNumSquares;
@@ -194,5 +197,3 @@ constexpr SlidingAttackTables GenerateSlidingAttackTables() {
 }
 
 }  // namespace chessengine
-
-#endif  // CHESS_ENGINE_ENGINE_MAGIC_H_

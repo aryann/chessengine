@@ -5,7 +5,7 @@
 
 #include "move.h"
 #include "position.h"
-#include "types.h"
+#include "types.ccm"
 
 namespace chessengine {
 

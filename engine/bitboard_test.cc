@@ -1,4 +1,4 @@
-#include "bitboard.h"
+#include "bitboard.ccm"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

@@ -1,8 +1,8 @@
 #ifndef CHESS_ENGINE_LINE_H_
 #define CHESS_ENGINE_LINE_H_
 
-#include "bitboard.h"
-#include "engine/types.h"
+#include "bitboard.ccm"
+#include "engine/types.ccm"
 
 namespace chessengine {
 

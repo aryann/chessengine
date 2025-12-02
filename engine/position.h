@@ -5,10 +5,10 @@
 #include <format>
 #include <string_view>
 
-#include "engine/bitboard.h"
+#include "engine/bitboard.ccm"
 #include "engine/castling.h"
 #include "engine/move.h"
-#include "engine/types.h"
+#include "engine/types.ccm"
 #include "engine/zobrist.h"
 
 namespace chessengine {

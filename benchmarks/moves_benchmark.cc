@@ -3,7 +3,7 @@
 #include "engine/move_generator.h"
 #include "engine/position.h"
 #include "engine/scoped_move.h"
-#include "engine/types.h"
+#include "engine/types.ccm"
 
 namespace chessengine {
 namespace {

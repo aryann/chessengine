@@ -3,8 +3,8 @@
 
 #include <format>
 
-#include "bitboard.h"
-#include "types.h"
+#include "bitboard.ccm"
+#include "types.ccm"
 
 namespace chessengine {
 

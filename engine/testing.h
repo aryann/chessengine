@@ -9,7 +9,7 @@
 
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_split.h"
-#include "bitboard.h"
+#include "bitboard.ccm"
 #include "position.h"
 
 namespace chessengine {

@@ -5,9 +5,9 @@
 #include <random>
 
 #include "absl/log/check.h"
-#include "bitboard.h"
+#include "bitboard.ccm"
+#include "engine/magic.ccm"
 #include "engine/magic.generated.h"
-#include "engine/magic.h"
 
 namespace chessengine {
 

@@ -7,7 +7,7 @@
 
 #include "absl/log/check.h"
 #include "engine/castling.h"
-#include "engine/types.h"
+#include "engine/types.ccm"
 
 namespace chessengine {
 

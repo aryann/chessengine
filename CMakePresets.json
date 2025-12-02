@@ -5,14 +5,29 @@
       "name": "base",
       "hidden": true,
       "description": "Base settings for all configurations",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_CXX_STANDARD": "23"
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "base-macos",
+      "inherits": "base",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
+        "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+        "CMAKE_EXE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib -Wl,-rpath,/opt/homebrew/opt/llvm/lib",
+        "CMAKE_SHARED_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib -Wl,-rpath,/opt/homebrew/opt/llvm/lib",
+        "CMAKE_MODULE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib -Wl,-rpath,/opt/homebrew/opt/llvm/lib",
+        "CMAKE_CXX_FLAGS": "-I/opt/homebrew/opt/llvm/include/c++/v1"
       }
     },
     {
       "name": "debug",
-      "inherits": "base",
+      "inherits": "base-macos",
       "displayName": "Debug Build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
@@ -20,7 +35,7 @@
     },
     {
       "name": "release",
-      "inherits": "base",
+      "inherits": "base-macos",
       "displayName": "Release Build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"

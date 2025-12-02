@@ -1,12 +1,14 @@
-#ifndef CHESS_ENGINE_BITBOARD_H_
-#define CHESS_ENGINE_BITBOARD_H_
+module;
 
 #include <bit>
 #include <format>
 #include <string>
 
 #include "absl/log/check.h"
-#include "engine/types.h"
+
+export module bitboard;
+
+import types;
 
 namespace chessengine {
 
@@ -27,7 +29,7 @@ namespace chessengine {
 //
 // This layout matches the typical visual representation of a board, improving
 // code readability and debuggability.
-class Bitboard {
+export class Bitboard {
  public:
   constexpr explicit Bitboard(std::uint64_t data) : data_(data) {}
 
@@ -180,7 +182,7 @@ constexpr Bitboard kH = kG << 1;
 }  // namespace file
 
 constexpr Bitboard kEmptyBoard;
-constexpr Bitboard kEdges = file::kA | file::kH | rank::k1 | rank::k8;
+export constexpr Bitboard kEdges = file::kA | file::kH | rank::k1 | rank::k8;
 
 template <Direction D>
 constexpr Bitboard Bitboard::Shift() const {
@@ -252,5 +254,3 @@ struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
     return out;
   }
 };
-
-#endif  // CHESS_ENGINE_BITBOARD_H_

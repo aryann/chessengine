@@ -5,7 +5,7 @@
 #include <random>
 
 #include "engine/castling.h"
-#include "engine/types.h"
+#include "engine/types.ccm"
 
 namespace chessengine {
 

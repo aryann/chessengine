@@ -7,7 +7,7 @@
 #include "engine/move_generator.h"
 #include "engine/position.h"
 #include "engine/scoped_move.h"
-#include "engine/types.h"
+#include "engine/types.ccm"
 #include "search/evaluation.h"
 #include "search/move_ordering.h"
 #include "transposition.h"

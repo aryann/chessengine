@@ -1,5 +1,4 @@
-#ifndef CHESS_ENGINE_TYPES_H_
-#define CHESS_ENGINE_TYPES_H_
+module;
 
 #include <format>
 #include <optional>
@@ -8,10 +7,12 @@
 
 #include "absl/log/check.h"
 
+export module types;
+
 namespace chessengine {
 
 // See `Bitboard` comment.
-enum Square : std::uint8_t {
+export enum Square : std::uint8_t {
   // clang-format off
   A8, B8, C8, D8, E8, F8, G8, H8,
   A7, B7, C7, D7, E7, F7, G7, H7,
@@ -26,13 +27,29 @@ enum Square : std::uint8_t {
 
 using enum Square;
 
-constexpr std::size_t kRanks = 8;
-constexpr std::size_t kFiles = 8;
-constexpr std::size_t kNumSquares = kRanks * kFiles;
+export constexpr std::size_t kRanks = 8;
+export constexpr std::size_t kFiles = 8;
+export constexpr std::size_t kNumSquares = kRanks * kFiles;
 
 // Parses a string of the form "a1" as a Square. Returns `std::nullopt`
 // if and only if the input is invalid.
-std::optional<Square> ParseSquare(std::string_view input);
+export std::optional<Square> ParseSquare(std::string_view input) {
+  if (input.size() != 2) {
+    return std::nullopt;
+  }
+
+  char file = input[0];
+  char rank = input[1];
+
+  if (file < 'a' || file > 'h' || rank < '1' || rank > '8') {
+    return std::nullopt;
+  }
+
+  int file_index = file - 'a';
+  int rank_index = rank - '0';
+  int square = (8 - rank_index) * 8 + file_index;
+  return static_cast<Square>(square);
+}
 
 constexpr std::uint8_t GetRank(Square square) { return square / 8; }
 
@@ -52,7 +69,11 @@ constexpr Square Reflect(const Square square) {
   return static_cast<Square>(new_tank * 8 + GetFile(square));
 }
 
-std::string ToString(Square square);
+export std::string ToString(Square square) {
+  int rank = 8 - square / 8;
+  char file = 'a' + square % 8;
+  return file + std::to_string(rank);
+}
 
 // Required for GoogleTest to print Square in error messages.
 inline void PrintTo(const Square &square, std::ostream *os) {
@@ -69,7 +90,7 @@ constexpr std::size_t kNumSides = 2;
 
 constexpr Side operator~(Side side) { return side == kWhite ? kBlack : kWhite; }
 
-enum Direction : std::int8_t {
+export enum Direction : std::int8_t {
   kNorth = -8,
   kSouth = -kNorth,
   kEast = 1,
@@ -115,5 +136,3 @@ struct std::formatter<chessengine::Square> : std::formatter<std::string> {
     return std::format_to(context.out(), "{}", ToString(square));
   }
 };
-
-#endif  // CHESS_ENGINE_TYPES_H_
