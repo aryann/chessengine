@@ -10,8 +10,10 @@ set -o nounset
 
   # Start fswatch, which feeds all future file change events
   # into the same pipe.
-  fswatch --recursive -o benchmarks cli engine search
+  fswatch --recursive -o .
 
 } | \
-xargs -n1 -I{} /bin/bash -c "
-  cmake --build --preset debug && ctest --preset debug"
+xargs -n1 -I{} bazel test ... \
+  --test_output=streamed \
+  --test_arg=--gtest_color=yes \
+  --test_arg=--gtest_fail_if_no_test_linked

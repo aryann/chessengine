@@ -2,7 +2,6 @@
 #define CHESS_ENGINE_ENGINE_MAGIC_H_
 
 #include <array>
-#include <format>
 #include <random>
 
 #include "absl/log/log.h"
@@ -154,8 +153,8 @@ constexpr void FindMagicForSquare(Square from, std::size_t attack_table_index,
     }
 
     if (found) {
-      LOG(INFO) << std::format("Found magic for {} after {:6} attempts: {}",
-                               ToString(from), attempt, magic);
+      LOG(INFO) << "Found magic for " << ToString(from) << " after " << attempt
+                << " attempts: " << magic;
       for (int i = 0; i < placements.size(); ++i) {
         attack_table[attack_table_index + i] = placements[i];
       }

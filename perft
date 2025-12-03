@@ -3,4 +3,8 @@
 set -o errexit
 set -o nounset
 
-ctest --preset release -R Perft
+bazel test \
+    -c opt \
+    //engine:perft_test \
+    --test_arg=--gtest_color=yes \
+    --test_arg=--gtest_fail_if_no_test_linked
