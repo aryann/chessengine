@@ -1,17 +1,17 @@
-2025-11-30T17:26:44-08:00
-Running build2/release/benchmarks/attacks
+2025-12-02T20:32:40-08:00
+Running /private/var/tmp/_bazel_aryan/da5ded6585b5f0289d91e48210b8a75e/execroot/_main/bazel-out/darwin_arm64-opt/bin/benchmarks/attacks_benchmark
 Run on (10 X 24 MHz CPU s)
 CPU Caches:
   L1 Data 64 KiB
   L1 Instruction 128 KiB
   L2 Unified 4096 KiB (x10)
-Load Average: 4.03, 5.16, 5.55
+Load Average: 8.32, 6.60, 6.65
 ------------------------------------------------------------------------------
 Benchmark                                    Time             CPU   Iterations
 ------------------------------------------------------------------------------
-BM_GenerateAttacksOnTheFly<kBishop>       39.1 ns         39.1 ns     17932165
-BM_GenerateAttacksOnTheFly<kRook>         43.2 ns         43.1 ns     16275020
-BM_GenerateAttacksOnTheFly<kQueen>        57.5 ns         57.4 ns     12180692
-BM_LookupAttacks<kBishop>                 15.9 ns         15.9 ns     44112272
-BM_LookupAttacks<kRook>                   16.1 ns         16.0 ns     43890449
-BM_LookupAttacks<kQueen>                  16.0 ns         16.0 ns     43732507
+BM_GenerateAttacksOnTheFly<kBishop>       44.5 ns         43.7 ns     15507654
+BM_GenerateAttacksOnTheFly<kRook>         45.9 ns         45.6 ns     15273538
+BM_GenerateAttacksOnTheFly<kQueen>        58.7 ns         58.5 ns     11614209
+BM_LookupAttacks<kBishop>                 16.0 ns         16.0 ns     43777361
+BM_LookupAttacks<kRook>                   16.5 ns         16.4 ns     43622948
+BM_LookupAttacks<kQueen>                  16.1 ns         16.1 ns     43087529
