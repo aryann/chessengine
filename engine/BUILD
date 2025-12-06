@@ -221,7 +221,6 @@ cc_test(
     name = "perft_test",
     srcs = ["perft_test.cc"],
     shard_count = 8,
-    tags = ["manual"],
     deps = [
         ":move",
         ":move_generator",
