@@ -51,10 +51,6 @@ class Bitboard {
 
   constexpr bool operator==(const Bitboard &other) const = default;
 
-  constexpr Bitboard operator+(const Bitboard &other) const {
-    return Bitboard(data_ - other.data_);
-  }
-
   constexpr Bitboard operator-(const Bitboard &other) const {
     return Bitboard(data_ - other.data_);
   }
@@ -124,8 +120,9 @@ class Bitboard {
   //
   // Precondition: The Bitboard must not be empty.
   [[nodiscard]] constexpr Square LeastSignificantBit() const {
-    DCHECK(data_ != 0ULL);
-    ;
+    if !consteval {
+      DCHECK(data_ != 0ULL);
+    }
     return static_cast<Square>(std::countr_zero(data_));
   }
 

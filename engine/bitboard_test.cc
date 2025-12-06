@@ -444,5 +444,48 @@ TEST(Bitboard, GetCount) {
   EXPECT_THAT(Bitboard(0b10011110).GetCount(), Eq(5));
 }
 
+TEST(Bitboard, Constexpr) {
+  [] consteval {
+    Bitboard board1;
+    Bitboard board2(0b10011110);
+    Bitboard board3(A1);
+    Bitboard board4(
+        "8: X . . . . . . ."
+        "7: X . . . . . . ."
+        "6: X . . . . . . ."
+        "5: X . . . . . . ."
+        "4: X . . . . . . ."
+        "3: X . . . . . . ."
+        "2: X . . . . . . ."
+        "1: X . . . . . . ."
+        "   a b c d e f g h");
+
+    (void)(board1 == board2);
+    (void)(board1 != board2);
+    (void)(board1 - board2);
+    (void)(board1 & board2);
+    (void)(board1 & A3);
+    (void)(board1 | board2);
+    (void)(board1 ^ board2);
+    (void)(~board1);
+    (void)(board1 &= board2);
+    (void)(board1 |= board3);
+    (void)(board1 ^= board4);
+    (void)(board1 << 1);
+    (void)(board1 >> 1);
+    (void)(board1 <<= 1);
+    (void)(board1 >>= 1);
+    (void)bool(board1);
+    (void)board1.Get(A1);
+    board1.Clear(A1);
+    board1.Set(A1);
+    (void)board1.LeastSignificantBit();
+    (void)board1.PopLeastSignificantBit();
+    (void)board1.GetCount();
+    (void)board1.Shift<kNorth>();
+    (void)board1.Data();
+  }();
+}
+
 }  // namespace
 }  // namespace chessengine
