@@ -18,7 +18,8 @@ using namespace ::std::literals;
 std::string TestPositionToFen(std::string_view input) {
   std::vector<std::string_view> parts =
       absl::StrSplit(input, "a b c d e f g h");
-  CHECK(parts.size() == 2) << "Invalid position input: " << input;
+
+  CHECK_EQ(parts.size(), 2) << "Invalid position input: " << input;
 
   std::string fen_board;
 

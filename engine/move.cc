@@ -45,7 +45,12 @@ std::optional<Move::Flags> ParseFlags(std::string_view input) {
 
 std::expected<Move, std::string> Move::FromUCI(std::string_view input) {
   auto error = std::unexpected(std::format("Invalid UCI move: {}", input));
-  std::vector<std::string_view> parts = absl::StrSplit(input, '#');
+  if (input.empty()) {
+    return error;
+  }
+  auto parts = std::views::split(input, '#') |
+               std::ranges::to<std::vector<std::string>>();
+
   if (parts.size() > 2) {
     return error;
   }

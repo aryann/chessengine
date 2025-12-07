@@ -3,8 +3,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "absl/strings/str_split.h"
-
 namespace chessengine {
 namespace {
 
@@ -25,7 +23,8 @@ std::size_t CountLeadingSpaces(std::string_view input) {
 }
 
 std::string Dedent(std::string_view input) {
-  std::vector<std::string_view> lines = absl::StrSplit(input, '\n');
+  auto lines = std::views::split(input, '\n') |
+               std::ranges::to<std::vector<std::string>>();
 
   // Remove the first line since it doesn't contain any part of the expected
   // output.
