@@ -9,8 +9,6 @@
 #include <string>
 #include <variant>
 
-#include "absl/strings/str_cat.h"
-#include "absl/strings/str_split.h"
 #include "bitboard.h"
 #include "position.h"
 
@@ -39,10 +37,12 @@ MATCHER_P(EqualsBitboard, expected,
     return true;
   }
 
-  std::vector<std::string> expected_parts =
-      absl::StrSplit(std::format("{}", expected_bitboard), '\n');
-  std::vector<std::string> actual_parts =
-      absl::StrSplit(std::format("{}", actual_bitboard), '\n');
+  auto expected_parts =
+      std::views::split(std::format("{}", expected_bitboard), '\n') |
+      std::ranges::to<std::vector<std::string>>();
+  auto actual_parts =
+      std::views::split(std::format("{}", actual_bitboard), '\n') |
+      std::ranges::to<std::vector<std::string>>();
 
   *result_listener << "\n\n"
                    << "      Expected:                Actual:\n"
@@ -73,10 +73,12 @@ MATCHER_P(EqualsPosition, expected, "") {
     return true;
   }
 
-  std::vector<std::string> expected_parts =
-      absl::StrSplit(std::format("{:k}", expected_position), '\n');
-  std::vector<std::string> actual_parts =
-      absl::StrSplit(std::format("{:k}", actual_position), '\n');
+  auto expected_parts =
+      std::views::split(std::format("{:k}", expected_position), '\n') |
+      std::ranges::to<std::vector<std::string>>();
+  auto actual_parts =
+      std::views::split(std::format("{:k}", actual_position), '\n') |
+      std::ranges::to<std::vector<std::string>>();
 
   *result_listener << "\n\n"
                    << "      Expected:                  Actual:\n"
