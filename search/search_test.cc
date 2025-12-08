@@ -14,7 +14,7 @@ namespace {
 
 using ::testing::ElementsAreArray;
 
-constexpr int kMaxMovesAllowed = 256;
+constexpr int kMaxMovesAllowed = 10;
 
 [[nodiscard]] bool GameOver(Position position) {
   for (Move move : GenerateMoves(position)) {
@@ -31,7 +31,7 @@ std::vector<Move> Play(Game& game) {
   std::vector<Move> moves;
 
   while (!GameOver(game.GetPosition())) {
-    Move move = Search(game, SearchOptions().SetDepth(3));
+    Move move = Search(game, SearchOptions().SetDepth(6));
     game.Do(move);
     moves.push_back(move);
 
@@ -62,21 +62,21 @@ TEST(Search, SimpleEndGames) {
   }
 
   {
-    // Game game(
-    //     MakePosition("8: . . . K . . . ."
-    //                  "7: . . . . . . . ."
-    //                  "6: . . . . . . . ."
-    //                  "5: . R . . . . . ."
-    //                  "4: . . R . . . . ."
-    //                  "3: . . . . . . . ."
-    //                  "2: . . . . . . . ."
-    //                  "1: . . . . . . . k"
-    //                  "   a b c d e f g h"
-    //                  //
-    //                  "   w - - 0 1"));
-    //
-    // std::vector<Move> moves = Play(game);
-    // EXPECT_THAT(moves, testing::SizeIs(testing::Lt(8)));
+    Game game(
+        MakePosition("8: . . . K . . . ."
+                     "7: . . . . . . . ."
+                     "6: . . . . . . . ."
+                     "5: . R . . . . . ."
+                     "4: . . R . . . . ."
+                     "3: . . . . . . . ."
+                     "2: . . . . . . . ."
+                     "1: . . . . . . . k"
+                     "   a b c d e f g h"
+                     //
+                     "   w - - 0 1"));
+
+    std::vector<Move> moves = Play(game);
+    EXPECT_THAT(moves, testing::SizeIs(testing::Lt(8)));
   }
 }
 
