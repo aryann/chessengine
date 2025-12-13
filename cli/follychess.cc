@@ -6,8 +6,19 @@
 #include "cli.h"
 
 [[noreturn]] int main(int argc, char **argv) {
-  std::println("Welcome!");
-  std::println();
+  std::println(R"(
+        ,,
+      ,/  \
+     / 'O  |
+    (   < _|
+     \___/
+     /   \
+    /_____\
+   /_______\
+   (________)
+
+   FollyChess
+)");
 
   using ::follychess::Command;
   using ::follychess::CommandDispatcher;

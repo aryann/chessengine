@@ -1,13 +1,3 @@
-cc_binary(
-    name = "chessengine",
-    srcs = ["chessengine.cc"],
-    deps = [
-        ":cli",
-        ":command",
-        "@abseil-cpp//absl/strings",
-    ],
-)
-
 cc_library(
     name = "cli",
     srcs = ["cli.cc"],
@@ -47,6 +37,16 @@ cc_library(
     deps = [
         "//engine:perft",
         "//engine:position",
+        "@abseil-cpp//absl/strings",
+    ],
+)
+
+cc_binary(
+    name = "follychess",
+    srcs = ["follychess.cc"],
+    deps = [
+        ":cli",
+        ":command",
         "@abseil-cpp//absl/strings",
     ],
 )
