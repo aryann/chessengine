@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
     fen = argv[1];
   }
 
-  auto result = chessengine::Position::FromFen(fen);
+  auto result = follychess::Position::FromFen(fen);
   if (!result.has_value()) {
     std::println("{}", result.error());
     return 1;

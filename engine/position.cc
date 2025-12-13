@@ -7,7 +7,7 @@
 #include "bitboard.h"
 #include "engine/castling.h"
 
-namespace chessengine {
+namespace follychess {
 
 namespace {
 
@@ -444,4 +444,4 @@ void Position::InitKey() {
   zobrist_key_.ToggleCastlingRights(castling_rights_);
 }
 
-}  // namespace chessengine
+}  // namespace follychess

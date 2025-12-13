@@ -7,7 +7,7 @@
 
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -117,4 +117,4 @@ TEST(GetQueenSideCastlingPath, Black) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

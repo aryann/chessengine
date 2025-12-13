@@ -8,7 +8,7 @@
 #include <variant>
 #include <vector>
 
-namespace chessengine {
+namespace follychess {
 
 class Command {
  public:
@@ -36,6 +36,6 @@ class CommandDispatcher {
       command_map_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_COMMAND_H_

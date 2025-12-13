@@ -7,7 +7,7 @@
 #include "engine/castling.h"
 #include "engine/types.h"
 
-namespace chessengine {
+namespace follychess {
 
 struct ZobristKeys {
   ZobristKeys();
@@ -83,6 +83,6 @@ class ZobristKey {
   std::uint64_t key_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_ZOBRIST_H_

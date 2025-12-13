@@ -6,10 +6,10 @@
 #include "engine/move.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 void OrderMoves(const Position& position, std::vector<Move>& moves);
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_SEARCH_MOVE_ORDERING_H_

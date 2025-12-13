@@ -5,7 +5,7 @@
 #include "engine/scoped_move.h"
 #include "engine/types.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 void MakeMoves(std::size_t depth, Position& position) {
@@ -51,6 +51,6 @@ BENCHMARK_CAPTURE(
     ->DenseRange(/* start = */ 1, /* limit = */ 5, /* step = */ 1);
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess
 
 BENCHMARK_MAIN();

@@ -6,7 +6,7 @@
 #include "engine/position.h"
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::AllOf;
@@ -938,4 +938,4 @@ TEST(Evasion, CheckResolvedViaKnightCapture) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

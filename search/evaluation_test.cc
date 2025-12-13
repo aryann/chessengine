@@ -6,7 +6,7 @@
 #include "engine/position.h"
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -148,4 +148,4 @@ TEST(Evaluation, GetPlacementScore) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

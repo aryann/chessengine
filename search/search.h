@@ -5,7 +5,7 @@
 #include "engine/move.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 struct SearchOptions {
   SearchOptions& SetDepth(int depth) {
@@ -25,6 +25,6 @@ struct SearchOptions {
 
 Move Search(const Game& game, const SearchOptions& options = SearchOptions());
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_SEARCH_SEARCH_H_

@@ -6,7 +6,7 @@
 #include "bitboard.h"
 #include "types.h"
 
-namespace chessengine {
+namespace follychess {
 
 template <Side Side>
 constexpr Bitboard GetKingSideCastlingPath() {
@@ -107,19 +107,19 @@ using enum CastlingRights::Flags;
 
 constexpr std::size_t kNumCastlingCombinations = 1 << 4;
 
-}  // namespace chessengine
+}  // namespace follychess
 
 template <>
-struct std::formatter<chessengine::CastlingRights>
+struct std::formatter<follychess::CastlingRights>
     : std::formatter<std::string> {
-  static auto format(chessengine::CastlingRights rights,
+  static auto format(follychess::CastlingRights rights,
                      std::format_context &context) {
     auto out = context.out();
     if (!rights) {
       return std::format_to(out, "-");
     }
 
-    using enum chessengine::Side;
+    using enum follychess::Side;
 
     std::format_to(out, "{}", rights.HasKingSide<kWhite>() ? "K" : "");
     std::format_to(out, "{}", rights.HasQueenSide<kWhite>() ? "Q" : "");

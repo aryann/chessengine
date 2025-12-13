@@ -12,7 +12,7 @@
 #include "bitboard.h"
 #include "position.h"
 
-namespace chessengine {
+namespace follychess {
 
 std::expected<Position, std::string> TryMakePosition(std::string_view input);
 
@@ -101,6 +101,6 @@ MATCHER_P(EqualsPosition, expected, "") {
   return false;
 }
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_TESTING_H_

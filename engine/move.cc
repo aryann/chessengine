@@ -4,7 +4,7 @@
 
 #include "absl/strings/str_split.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 std::optional<Move::Flags> ParsePromotionPiece(char c) {
@@ -95,4 +95,4 @@ std::ostream &operator<<(std::ostream &os, const Move &move) {
   return os;
 }
 
-}  // namespace chessengine
+}  // namespace follychess

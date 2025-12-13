@@ -6,7 +6,7 @@
 #include "engine/move.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 [[nodiscard]] int MoveKey(const Position& position, Move move) {
@@ -29,4 +29,4 @@ void OrderMoves(const Position& position, std::vector<Move>& moves) {
   std::ranges::sort(moves, std::less(), std::bind_front(MoveKey, position));
 }
 
-}  // namespace chessengine
+}  // namespace follychess

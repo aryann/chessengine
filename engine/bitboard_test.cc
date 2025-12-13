@@ -6,7 +6,7 @@
 #include "absl/strings/str_split.h"
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -488,4 +488,4 @@ TEST(Bitboard, Constexpr) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

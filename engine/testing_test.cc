@@ -5,7 +5,7 @@
 
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -62,4 +62,4 @@ TEST(MakePosition, Failures) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

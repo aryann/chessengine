@@ -5,7 +5,7 @@
 
 #include "engine/castling.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -100,4 +100,4 @@ TEST(ZobristKey, Castling) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

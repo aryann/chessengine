@@ -3,7 +3,7 @@
 #include <format>
 #include <string>
 
-namespace chessengine {
+namespace follychess {
 
 std::optional<Square> ParseSquare(std::string_view input) {
   if (input.size() != 2) {
@@ -29,4 +29,4 @@ std::string ToString(Square square) {
   return file + std::to_string(rank);
 }
 
-}  // namespace chessengine
+}  // namespace follychess

@@ -2,7 +2,7 @@
 #include "engine/attacks.h"
 #include "engine/types.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 [[nodiscard]] Bitboard GenerateBishopAttacksOnTheFly(Square square,
@@ -75,6 +75,6 @@ BENCHMARK(BM_LookupAttacks<kRook>);
 BENCHMARK(BM_LookupAttacks<kQueen>);
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess
 
 BENCHMARK_MAIN();

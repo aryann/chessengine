@@ -7,13 +7,13 @@
 #include "position.h"
 #include "types.h"
 
-namespace chessengine {
+namespace follychess {
 
 template <MoveType MoveType>
 std::vector<Move> GenerateMoves(const Position &position);
 
 std::vector<Move> GenerateMoves(const Position &position);
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_MOVE_GENERATOR_H_

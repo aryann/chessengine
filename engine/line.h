@@ -4,7 +4,7 @@
 #include "bitboard.h"
 #include "engine/types.h"
 
-namespace chessengine {
+namespace follychess {
 
 template <Direction Direction>
 consteval void FillFromOrigin(Square from,
@@ -52,6 +52,6 @@ constexpr Bitboard GetLine(const Square from, const Square to) {
   return kLineTable[from][to];
 }
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_LINE_H_

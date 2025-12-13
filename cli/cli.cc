@@ -10,7 +10,7 @@
 #include "engine/move_generator.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 CommandDispatcher MakeCommandDispatcher(CommandState& state) {
   Game& game = state.game;
@@ -33,4 +33,4 @@ CommandDispatcher MakeCommandDispatcher(CommandState& state) {
   return dispatcher;
 }
 
-}  // namespace chessengine
+}  // namespace follychess

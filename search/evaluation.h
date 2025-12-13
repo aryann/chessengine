@@ -3,7 +3,7 @@
 
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 [[nodiscard]] int GetMaterialScore(const Position& position);
 
@@ -11,6 +11,6 @@ namespace chessengine {
 
 [[nodiscard]] int Evaluate(const Position& position);
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_SEARCH_EVALUATION_H_

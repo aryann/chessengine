@@ -3,7 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -49,4 +49,4 @@ TEST(GetRepetitionCount, NoRepetition) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

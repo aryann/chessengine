@@ -9,7 +9,7 @@
 #include "absl/log/check.h"
 #include "engine/types.h"
 
-namespace chessengine {
+namespace follychess {
 
 // Represents an 8x8 chess board.
 //
@@ -216,22 +216,22 @@ constexpr Bitboard Bitboard::Shift() const {
   return kEmptyBoard;
 }
 
-}  // namespace chessengine
+}  // namespace follychess
 
 // A std::formatter specialization for printing a Bitboard.
 //
 // See https://en.cppreference.com/w/cpp/utility/format/formatter.html for
 // more details.
 template <>
-struct std::formatter<chessengine::Bitboard> : std::formatter<std::string> {
-  static auto format(chessengine::Bitboard bitboard,
+struct std::formatter<follychess::Bitboard> : std::formatter<std::string> {
+  static auto format(follychess::Bitboard bitboard,
                      std::format_context &context) {
     auto out = context.out();
 
     for (int row = 0; row < 8; ++row) {
       out = std::format_to(out, "{}:", 8 - row);
       for (int col = 0; col < 8; ++col) {
-        auto square = static_cast<chessengine::Square>(row * 8 + col);
+        auto square = static_cast<follychess::Square>(row * 8 + col);
         if (bitboard.Get(square)) {
           out = std::format_to(out, " X");
         } else {

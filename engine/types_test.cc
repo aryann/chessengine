@@ -7,7 +7,7 @@
 
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -45,4 +45,4 @@ TEST(Square, Reflect) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

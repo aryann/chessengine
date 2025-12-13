@@ -6,7 +6,7 @@
 #include "engine/position.h"
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::ElementsAreArray;
@@ -46,4 +46,4 @@ TEST(MoveOrdering, All) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

@@ -10,7 +10,7 @@
 #include "move.h"
 #include "position.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::ElementsAreArray;
@@ -169,4 +169,4 @@ INSTANTIATE_TEST_SUITE_P(Perft, PerftTest, testing::ValuesIn(kTestCases),
                          GetTestName);
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

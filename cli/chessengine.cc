@@ -9,12 +9,12 @@
   std::println("Welcome!");
   std::println();
 
-  using ::chessengine::Command;
-  using ::chessengine::CommandDispatcher;
-  using ::chessengine::CommandState;
+  using ::follychess::Command;
+  using ::follychess::CommandDispatcher;
+  using ::follychess::CommandState;
 
   CommandState state;
-  CommandDispatcher dispatcher = chessengine::MakeCommandDispatcher(state);
+  CommandDispatcher dispatcher = follychess::MakeCommandDispatcher(state);
 
   std::string command;
   while (true) {

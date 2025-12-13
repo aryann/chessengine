@@ -3,7 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -305,4 +305,4 @@ TEST(Move, String) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

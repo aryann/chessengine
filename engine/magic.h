@@ -7,7 +7,7 @@
 #include "absl/log/log.h"
 #include "bitboard.h"
 
-namespace chessengine {
+namespace follychess {
 
 // Returns a bitboard representing a ray from the `from` square in the given
 // `Direction`. The ray extends to the edge of the board, but the `from`
@@ -192,6 +192,6 @@ constexpr SlidingAttackTables GenerateSlidingAttackTables() {
   return sliding_attacks;
 }
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_ENGINE_MAGIC_H_

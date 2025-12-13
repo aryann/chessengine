@@ -3,7 +3,7 @@
 
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 class Game {
  public:
@@ -37,6 +37,6 @@ class Game {
   std::vector<State> history_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_ENGINE_GAME_H_

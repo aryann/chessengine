@@ -2,7 +2,7 @@
 #include "engine/position.h"
 #include "search/search.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 template <class... Args>
@@ -33,6 +33,6 @@ BENCHMARK_CAPTURE(BM_Search, HighTransposition,
     ->DenseRange(/* start = */ 1, /* limit = */ 8, /* step = */ 1);
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess
 
 BENCHMARK_MAIN();

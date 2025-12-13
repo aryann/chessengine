@@ -8,7 +8,7 @@
 #include "engine/testing.h"
 #include "scoped_move.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::Eq;
@@ -1306,4 +1306,4 @@ TEST(Position, Key) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

@@ -5,7 +5,7 @@
 
 #include "testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 TEST(GetLine, Vertical) {
@@ -154,4 +154,4 @@ TEST(GetLine, NotOnALine) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

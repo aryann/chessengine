@@ -5,9 +5,9 @@
 #include "magic.h"
 
 namespace {
-using ::chessengine::kNumSquares;
-using ::chessengine::MagicEntry;
-using ::chessengine::SlidingAttackTables;
+using ::follychess::kNumSquares;
+using ::follychess::MagicEntry;
+using ::follychess::SlidingAttackTables;
 
 void AddInclude(std::string_view file, std::ofstream& output) {
   std::println(output, R"(#include "{}")", file);
@@ -24,7 +24,7 @@ void AddMagicEntry(const MagicEntry& entry, std::ofstream& output) {
 }
 
 void AddTable(std::ofstream& output) {
-  SlidingAttackTables table = chessengine::GenerateSlidingAttackTables();
+  SlidingAttackTables table = follychess::GenerateSlidingAttackTables();
 
   std::println(output,
                "constexpr SlidingAttackTables kSlidingAttackTables = {{");
@@ -72,13 +72,13 @@ int main(int argc, char** argv) {
   AddInclude("engine/magic.h", output);
   AddInclude("engine/types.h", output);
   std::println(output);
-  std::println(output, "namespace chessengine {{");
+  std::println(output, "namespace follychess {{");
   std::println(output);
 
   AddTable(output);
 
   std::println(output);
-  std::println(output, "}}  // namespace chessengine");
+  std::println(output, "}}  // namespace follychess");
   std::println(output);
   std::println(output, "#endif  // CHESS_ENGINE_ENGINE_MAGIC_GENERATED_H_");
 

@@ -9,7 +9,7 @@
 #include "engine/scoped_move.h"
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using ::testing::ElementsAreArray;
@@ -81,4 +81,4 @@ TEST(Search, SimpleEndGames) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

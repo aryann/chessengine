@@ -8,7 +8,7 @@
 
 #include "absl/log/check.h"
 
-namespace chessengine {
+namespace follychess {
 
 // See `Bitboard` comment.
 enum Square : std::uint8_t {
@@ -107,11 +107,11 @@ enum class MoveType : std::uint8_t {
 
 using enum MoveType;
 
-}  // namespace chessengine
+}  // namespace follychess
 
 template <>
-struct std::formatter<chessengine::Square> : std::formatter<std::string> {
-  static auto format(chessengine::Square square, std::format_context &context) {
+struct std::formatter<follychess::Square> : std::formatter<std::string> {
+  static auto format(follychess::Square square, std::format_context &context) {
     return std::format_to(context.out(), "{}", ToString(square));
   }
 };

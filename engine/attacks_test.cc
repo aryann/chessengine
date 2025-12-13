@@ -5,7 +5,7 @@
 
 #include "engine/testing.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using testing::Eq;
@@ -971,4 +971,4 @@ TEST(MakePowerSet, RookMask) {
 }
 
 }  // namespace
-}  // namespace chessengine
+}  // namespace follychess

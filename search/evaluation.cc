@@ -2,7 +2,7 @@
 
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 // Piece placement value source:
@@ -137,4 +137,4 @@ template <Side Side>
   return GetMaterialScore(position) + GetPlacementScore(position);
 }
 
-}  // namespace chessengine
+}  // namespace follychess

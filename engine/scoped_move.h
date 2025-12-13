@@ -5,7 +5,7 @@
 #include "engine/move.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 // A RAII class to make a move on a Position.
 //
@@ -50,6 +50,6 @@ class ScopedMove2 {
   Game &game_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_SCOPED_MOVE_H_

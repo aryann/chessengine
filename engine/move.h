@@ -9,7 +9,7 @@
 #include "engine/castling.h"
 #include "engine/types.h"
 
-namespace chessengine {
+namespace follychess {
 
 class Move {
  public:
@@ -155,10 +155,10 @@ static_assert(alignof(UndoInfo) == 2,
               "UndoInfo alignment is not 2 bytes! "
               "Check for new members with larger alignment.");
 
-}  // namespace chessengine
+}  // namespace follychess
 
 template <>
-struct std::formatter<chessengine::Move> : std::formatter<std::string> {
+struct std::formatter<follychess::Move> : std::formatter<std::string> {
  public:
   template <class ParseContext>
   constexpr auto parse(ParseContext &context) {
@@ -174,13 +174,13 @@ struct std::formatter<chessengine::Move> : std::formatter<std::string> {
 
     if (it != context.end() && *it != '}') {
       throw std::format_error(
-          "Invalid format specifier for chessengine::Move: Expected {} or "
+          "Invalid format specifier for follychess::Move: Expected {} or "
           "{:f}.");
     }
     return it;
   }
 
-  auto format(const chessengine::Move &move,
+  auto format(const follychess::Move &move,
               std::format_context &context) const {
     return move.FormatTo(context.out(), full);
   }

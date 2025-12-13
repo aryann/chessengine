@@ -7,7 +7,7 @@
 #include "engine/types.h"
 #include "line.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 void AddPawnMoves(Bitboard destinations, int offset, Move::Flags flag,
@@ -287,4 +287,4 @@ std::vector<Move> GenerateMoves(const Position &position) {
   return moves;
 }
 
-}  // namespace chessengine
+}  // namespace follychess

@@ -1,6 +1,6 @@
 #include "engine/game.h"
 
-namespace chessengine {
+namespace follychess {
 
 [[nodiscard]] int Game::GetRepetitionCount() const {
   const std::size_t search_depth =
@@ -19,4 +19,4 @@ namespace chessengine {
   return repetitions;
 }
 
-}  // namespace chessengine
+}  // namespace follychess

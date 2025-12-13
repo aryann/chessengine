@@ -7,7 +7,7 @@
 #include "cli/command.h"
 #include "search/search.h"
 
-namespace chessengine {
+namespace follychess {
 
 class Uci : public Command {
  public:
@@ -56,6 +56,6 @@ class Go : public Command {
   Game& game_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_

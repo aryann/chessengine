@@ -10,7 +10,7 @@
 #include "engine/game.h"
 #include "engine/perft.h"
 
-namespace chessengine {
+namespace follychess {
 
 class PerftCommand : public Command {
  public:
@@ -42,6 +42,6 @@ class PerftCommand : public Command {
   Game &game_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_COMMANDS_PERFT_COMMAND_H_

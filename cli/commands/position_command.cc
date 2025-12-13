@@ -5,7 +5,7 @@
 #include "engine/move.h"
 #include "engine/move_generator.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 std::optional<Move> FindMove(std::string_view uci_move,
@@ -68,4 +68,4 @@ std::expected<void, std::string> FenPos::Run(
   return ApplyMoves({args.begin() + 6, args.end()}, game_);
 }
 
-}  // namespace chessengine
+}  // namespace follychess

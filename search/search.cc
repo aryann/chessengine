@@ -12,7 +12,7 @@
 #include "search/move_ordering.h"
 #include "transposition.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 class AlphaBetaSearcher {
@@ -195,4 +195,4 @@ Move Search(const Game& game, const SearchOptions& options) {
   return searcher.GetBestMove();
 }
 
-}  // namespace chessengine
+}  // namespace follychess

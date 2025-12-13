@@ -6,7 +6,7 @@
 
 #include "cli/command.h"
 
-namespace chessengine {
+namespace follychess {
 
 class IsReady : public Command {
  public:
@@ -21,6 +21,6 @@ class IsReady : public Command {
   }
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_COMMANDS_ISREADY_COMMAND_H_

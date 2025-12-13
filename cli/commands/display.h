@@ -9,7 +9,7 @@
 #include "cli/command.h"
 #include "engine/game.h"
 
-namespace chessengine {
+namespace follychess {
 class Position;
 
 class Display : public Command {
@@ -28,6 +28,6 @@ class Display : public Command {
   const Game &game_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_

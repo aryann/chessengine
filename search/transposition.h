@@ -7,7 +7,7 @@
 #include "absl/container/flat_hash_map.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 class TranspositionTable {
  public:
@@ -82,6 +82,6 @@ constexpr void TranspositionTable::Record(int score, int depth,
   };
 }
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_SEARCH_TRANSPOSITION_H_

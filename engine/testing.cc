@@ -10,7 +10,7 @@
 #include "absl/strings/str_split.h"
 #include "bitboard.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 using namespace ::std::literals;
@@ -96,4 +96,4 @@ void PrintTo(const Bitboard &bitboard, std::ostream *os) {
   *os << std::format("Bitboard(0x{:})", bitboard.Data());
 }
 
-}  // namespace chessengine
+}  // namespace follychess

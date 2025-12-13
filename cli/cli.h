@@ -5,7 +5,7 @@
 #include "engine/game.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 struct CommandState {
   Game game;
@@ -13,6 +13,6 @@ struct CommandState {
 
 CommandDispatcher MakeCommandDispatcher(CommandState& state);
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_CLI_H_

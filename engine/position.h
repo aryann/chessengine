@@ -11,7 +11,7 @@
 #include "engine/types.h"
 #include "engine/zobrist.h"
 
-namespace chessengine {
+namespace follychess {
 
 class Position {
  public:
@@ -97,10 +97,10 @@ class Position {
   ZobristKey zobrist_key_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 template <>
-struct std::formatter<chessengine::Position> : std::formatter<std::string> {
+struct std::formatter<follychess::Position> : std::formatter<std::string> {
   template <class ParseContext>
   constexpr auto parse(ParseContext &context) {
     auto it = context.begin();
@@ -115,19 +115,19 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
 
     if (it != context.end() && *it != '}') {
       throw std::format_error(
-          "Invalid format specifier for chessengine::Position: Expected {} or "
+          "Invalid format specifier for follychess::Position: Expected {} or "
           "{:k}.");
     }
     return it;
   }
 
-  auto format(const chessengine::Position &position,
+  auto format(const follychess::Position &position,
               std::format_context &context) const {
-    auto GetSquare = [&](chessengine::Square square) {
+    auto GetSquare = [&](follychess::Square square) {
       static char kPieceChars[] = {'P', 'N', 'B', 'R', 'Q', 'K', '.', '.'};
       char result = kPieceChars[static_cast<int>(position.GetPiece(square))];
 
-      if (position.GetSide(square) == chessengine::kBlack) {
+      if (position.GetSide(square) == follychess::kBlack) {
         result = std::tolower(result);
       }
       return result;
@@ -138,7 +138,7 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
     for (int row = 0; row < 8; ++row) {
       out = std::format_to(out, "{}:", 8 - row);
       for (int col = 0; col < 8; ++col) {
-        auto square = static_cast<chessengine::Square>(row * 8 + col);
+        auto square = static_cast<follychess::Square>(row * 8 + col);
         out = std::format_to(out, " {}", GetSquare(square));
       }
 
@@ -151,7 +151,7 @@ struct std::formatter<chessengine::Position> : std::formatter<std::string> {
     }
     out = std::format_to(out, "\n\n");
 
-    char side = position.SideToMove() == chessengine::kWhite ? 'w' : 'b';
+    char side = position.SideToMove() == follychess::kWhite ? 'w' : 'b';
     std::string en_passant_target = "-";
     if (position.GetEnPassantTarget()) {
       en_passant_target = ToString(position.GetEnPassantTarget().value());

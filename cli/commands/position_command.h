@@ -9,7 +9,7 @@
 #include "engine/game.h"
 #include "engine/position.h"
 
-namespace chessengine {
+namespace follychess {
 
 class StartPos : public Command {
  public:
@@ -37,6 +37,6 @@ class FenPos : public Command {
   Game& game_;
 };
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_CLI_COMMANDS_POSITION_COMMAND_H_

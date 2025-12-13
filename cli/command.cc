@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 template <class... Ts>
@@ -51,4 +51,4 @@ CommandDispatcher &CommandDispatcher::Add(std::string arg,
                     it->second);
 }
 
-}  // namespace chessengine
+}  // namespace follychess

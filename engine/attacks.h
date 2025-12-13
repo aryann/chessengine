@@ -9,7 +9,7 @@
 #include "engine/magic.generated.h"
 #include "engine/magic.h"
 
-namespace chessengine {
+namespace follychess {
 
 template <Direction... Directions>
 consteval void MakePawnAttacks(std::array<Bitboard, kNumSquares> &attacks) {
@@ -128,6 +128,6 @@ template <Piece Piece>
   return kEmptyBoard;
 }
 
-}  // namespace chessengine
+}  // namespace follychess
 
 #endif  // CHESS_ENGINE_ATTACKS_H_

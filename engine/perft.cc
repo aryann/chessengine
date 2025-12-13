@@ -10,7 +10,7 @@
 #include "position.h"
 #include "scoped_move.h"
 
-namespace chessengine {
+namespace follychess {
 namespace {
 
 std::size_t RunPerft(std::size_t depth, std::size_t current_depth,
@@ -87,4 +87,4 @@ void RunPerft(std::size_t depth, const Position &position,
   }
 }
 
-}  // namespace chessengine
+}  // namespace follychess
