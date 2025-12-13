@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_PERFT_H_
-#define CHESS_ENGINE_PERFT_H_
+#ifndef FOLLYCHESS_PERFT_H_
+#define FOLLYCHESS_PERFT_H_
 
 #include <map>
 
@@ -14,4 +14,4 @@ void RunPerft(std::size_t depth, const Position &position,
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_PERFT_H_
+#endif  // FOLLYCHESS_PERFT_H_

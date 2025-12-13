@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_SCOPED_MOVE_H_
-#define CHESS_ENGINE_SCOPED_MOVE_H_
+#ifndef FOLLYCHESS_SCOPED_MOVE_H_
+#define FOLLYCHESS_SCOPED_MOVE_H_
 
 #include "engine/game.h"
 #include "engine/move.h"
@@ -52,4 +52,4 @@ class ScopedMove2 {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_SCOPED_MOVE_H_
+#endif  // FOLLYCHESS_SCOPED_MOVE_H_

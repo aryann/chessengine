@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_MOVE_H_
-#define CHESS_ENGINE_MOVE_H_
+#ifndef FOLLYCHESS_MOVE_H_
+#define FOLLYCHESS_MOVE_H_
 
 #include <expected>
 #include <format>
@@ -189,4 +189,4 @@ struct std::formatter<follychess::Move> : std::formatter<std::string> {
   bool full = false;
 };
 
-#endif  // CHESS_ENGINE_MOVE_H_
+#endif  // FOLLYCHESS_MOVE_H_

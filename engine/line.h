@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_LINE_H_
-#define CHESS_ENGINE_LINE_H_
+#ifndef FOLLYCHESS_LINE_H_
+#define FOLLYCHESS_LINE_H_
 
 #include "bitboard.h"
 #include "engine/types.h"
@@ -54,4 +54,4 @@ constexpr Bitboard GetLine(const Square from, const Square to) {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_LINE_H_
+#endif  // FOLLYCHESS_LINE_H_

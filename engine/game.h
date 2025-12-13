@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_ENGINE_GAME_H_
-#define CHESS_ENGINE_ENGINE_GAME_H_
+#ifndef FOLLYCHESS_ENGINE_GAME_H_
+#define FOLLYCHESS_ENGINE_GAME_H_
 
 #include "engine/position.h"
 
@@ -39,4 +39,4 @@ class Game {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_ENGINE_GAME_H_
+#endif  // FOLLYCHESS_ENGINE_GAME_H_

@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_ATTACKS_H_
-#define CHESS_ENGINE_ATTACKS_H_
+#ifndef FOLLYCHESS_ATTACKS_H_
+#define FOLLYCHESS_ATTACKS_H_
 
 #include <array>
 #include <random>
@@ -130,4 +130,4 @@ template <Piece Piece>
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_ATTACKS_H_
+#endif  // FOLLYCHESS_ATTACKS_H_

@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_ENGINE_MAGIC_H_
-#define CHESS_ENGINE_ENGINE_MAGIC_H_
+#ifndef FOLLYCHESS_ENGINE_MAGIC_H_
+#define FOLLYCHESS_ENGINE_MAGIC_H_
 
 #include <array>
 #include <random>
@@ -194,4 +194,4 @@ constexpr SlidingAttackTables GenerateSlidingAttackTables() {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_ENGINE_MAGIC_H_
+#endif  // FOLLYCHESS_ENGINE_MAGIC_H_

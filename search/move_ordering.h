@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_SEARCH_MOVE_ORDERING_H_
-#define CHESS_ENGINE_SEARCH_MOVE_ORDERING_H_
+#ifndef FOLLYCHESS_SEARCH_MOVE_ORDERING_H_
+#define FOLLYCHESS_SEARCH_MOVE_ORDERING_H_
 
 #include <vector>
 
@@ -12,4 +12,4 @@ void OrderMoves(const Position& position, std::vector<Move>& moves);
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_SEARCH_MOVE_ORDERING_H_
+#endif  // FOLLYCHESS_SEARCH_MOVE_ORDERING_H_

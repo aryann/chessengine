@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_MOVE_GENERATOR_H_
-#define CHESS_ENGINE_MOVE_GENERATOR_H_
+#ifndef FOLLYCHESS_MOVE_GENERATOR_H_
+#define FOLLYCHESS_MOVE_GENERATOR_H_
 
 #include <vector>
 
@@ -16,4 +16,4 @@ std::vector<Move> GenerateMoves(const Position &position);
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_MOVE_GENERATOR_H_
+#endif  // FOLLYCHESS_MOVE_GENERATOR_H_

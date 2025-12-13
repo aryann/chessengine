@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_CLI_CLI_H_
-#define CHESS_ENGINE_CLI_CLI_H_
+#ifndef FOLLYCHESS_CLI_CLI_H_
+#define FOLLYCHESS_CLI_CLI_H_
 
 #include "command.h"
 #include "engine/game.h"
@@ -15,4 +15,4 @@ CommandDispatcher MakeCommandDispatcher(CommandState& state);
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_CLI_CLI_H_
+#endif  // FOLLYCHESS_CLI_CLI_H_

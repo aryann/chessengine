@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_CLI_COMMAND_H_
-#define CHESS_ENGINE_CLI_COMMAND_H_
+#ifndef FOLLYCHESS_CLI_COMMAND_H_
+#define FOLLYCHESS_CLI_COMMAND_H_
 
 #include <expected>
 #include <map>
@@ -38,4 +38,4 @@ class CommandDispatcher {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_CLI_COMMAND_H_
+#endif  // FOLLYCHESS_CLI_COMMAND_H_

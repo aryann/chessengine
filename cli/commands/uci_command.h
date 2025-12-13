@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_
-#define CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_
+#ifndef FOLLYCHESS_CLI_COMMANDS_UCI_COMMAND_H_
+#define FOLLYCHESS_CLI_COMMANDS_UCI_COMMAND_H_
 
 #include <iostream>
 #include <print>
@@ -58,4 +58,4 @@ class Go : public Command {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_CLI_COMMANDS_UCI_COMMAND_H_
+#endif  // FOLLYCHESS_CLI_COMMANDS_UCI_COMMAND_H_

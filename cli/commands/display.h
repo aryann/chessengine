@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_
-#define CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_
+#ifndef FOLLYCHESS_CLI_COMMANDS_DISPLAY_H_
+#define FOLLYCHESS_CLI_COMMANDS_DISPLAY_H_
 
 #include <iostream>
 #include <string>
@@ -30,4 +30,4 @@ class Display : public Command {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_CLI_COMMANDS_DISPLAY_H_
+#endif  // FOLLYCHESS_CLI_COMMANDS_DISPLAY_H_

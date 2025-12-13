@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_TYPES_H_
-#define CHESS_ENGINE_TYPES_H_
+#ifndef FOLLYCHESS_TYPES_H_
+#define FOLLYCHESS_TYPES_H_
 
 #include <format>
 #include <optional>
@@ -116,4 +116,4 @@ struct std::formatter<follychess::Square> : std::formatter<std::string> {
   }
 };
 
-#endif  // CHESS_ENGINE_TYPES_H_
+#endif  // FOLLYCHESS_TYPES_H_

@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_SEARCH_TRANSPOSITION_H_
-#define CHESS_ENGINE_SEARCH_TRANSPOSITION_H_
+#ifndef FOLLYCHESS_SEARCH_TRANSPOSITION_H_
+#define FOLLYCHESS_SEARCH_TRANSPOSITION_H_
 
 #include <array>
 #include <optional>
@@ -84,4 +84,4 @@ constexpr void TranspositionTable::Record(int score, int depth,
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_SEARCH_TRANSPOSITION_H_
+#endif  // FOLLYCHESS_SEARCH_TRANSPOSITION_H_

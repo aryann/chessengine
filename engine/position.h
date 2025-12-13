@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_POSITION_H_
-#define CHESS_ENGINE_POSITION_H_
+#ifndef FOLLYCHESS_POSITION_H_
+#define FOLLYCHESS_POSITION_H_
 
 #include <expected>
 #include <format>
@@ -171,4 +171,4 @@ struct std::formatter<follychess::Position> : std::formatter<std::string> {
   bool show_key = false;
 };
 
-#endif  // CHESS_ENGINE_POSITION_H_
+#endif  // FOLLYCHESS_POSITION_H_

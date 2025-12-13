@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_CASTLING_RIGHTS_H_
-#define CHESS_ENGINE_CASTLING_RIGHTS_H_
+#ifndef FOLLYCHESS_CASTLING_RIGHTS_H_
+#define FOLLYCHESS_CASTLING_RIGHTS_H_
 
 #include <format>
 
@@ -129,4 +129,4 @@ struct std::formatter<follychess::CastlingRights>
   }
 };
 
-#endif  // CHESS_ENGINE_CASTLING_RIGHTS_H_
+#endif  // FOLLYCHESS_CASTLING_RIGHTS_H_

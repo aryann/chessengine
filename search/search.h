@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_SEARCH_SEARCH_H_
-#define CHESS_ENGINE_SEARCH_SEARCH_H_
+#ifndef FOLLYCHESS_SEARCH_SEARCH_H_
+#define FOLLYCHESS_SEARCH_SEARCH_H_
 
 #include "engine/game.h"
 #include "engine/move.h"
@@ -27,4 +27,4 @@ Move Search(const Game& game, const SearchOptions& options = SearchOptions());
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_SEARCH_SEARCH_H_
+#endif  // FOLLYCHESS_SEARCH_SEARCH_H_

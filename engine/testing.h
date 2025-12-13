@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_TESTING_H_
-#define CHESS_ENGINE_TESTING_H_
+#ifndef FOLLYCHESS_TESTING_H_
+#define FOLLYCHESS_TESTING_H_
 
 #include <gmock/gmock.h>
 
@@ -103,4 +103,4 @@ MATCHER_P(EqualsPosition, expected, "") {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_TESTING_H_
+#endif  // FOLLYCHESS_TESTING_H_

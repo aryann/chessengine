@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_ZOBRIST_H_
-#define CHESS_ENGINE_ZOBRIST_H_
+#ifndef FOLLYCHESS_ZOBRIST_H_
+#define FOLLYCHESS_ZOBRIST_H_
 
 #include <optional>
 #include <random>
@@ -85,4 +85,4 @@ class ZobristKey {
 
 }  // namespace follychess
 
-#endif  // CHESS_ENGINE_ZOBRIST_H_
+#endif  // FOLLYCHESS_ZOBRIST_H_

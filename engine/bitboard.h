@@ -1,5 +1,5 @@
-#ifndef CHESS_ENGINE_BITBOARD_H_
-#define CHESS_ENGINE_BITBOARD_H_
+#ifndef FOLLYCHESS_BITBOARD_H_
+#define FOLLYCHESS_BITBOARD_H_
 
 #include <bit>
 #include <format>
@@ -251,4 +251,4 @@ struct std::formatter<follychess::Bitboard> : std::formatter<std::string> {
   }
 };
 
-#endif  // CHESS_ENGINE_BITBOARD_H_
+#endif  // FOLLYCHESS_BITBOARD_H_
