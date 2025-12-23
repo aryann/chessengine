@@ -53,14 +53,7 @@ jobs:
         with:
           version: 10
           cache: true
-          cache_dependency_path: './site/package-lock.json'
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-          cache-dependency-path: './site/pnpm-lock.yaml'
+          cache_dependency_path: './site/pnpm-lock.yaml'
 
       - name: Setup Pages
         id: pages
@@ -77,10 +70,7 @@ jobs:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
           TZ: America/Los_Angeles
-        run: |
-          pnpm run build \
-            -- \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: pnpm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
