@@ -1,5 +1,5 @@
 title = "My Docs"
-baseurl = "http://localhost/"
+baseurl = "https://follychess.com/"
 disableAliases = true
 disableHugoGeneratorInject = true
 # disableKinds = ["taxonomy", "term"]
