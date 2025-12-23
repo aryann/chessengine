@@ -26,7 +26,6 @@ concurrency:
 defaults:
   run:
     shell: bash
-    working-directory: ./site
 
 jobs:
   # Build job:
@@ -57,6 +56,7 @@ jobs:
       - name: Install dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Build production website
+        working-directory: ./site
         env:
           # For maximum backward compatibility with Hugo modules:
           HUGO_ENVIRONMENT: production
@@ -69,7 +69,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./site/public
 
   # Deployment job:
   deploy:
