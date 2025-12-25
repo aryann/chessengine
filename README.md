@@ -1,4 +1,4 @@
-# FollyChess
+# [FollyChess](https://follychess.com)
 
 ```
        ,,
@@ -39,6 +39,7 @@ The binary will be written to `bazel-bin/cli/follychess`.
 ## Usage
 
 ### Using with a GUI (Recommended)
+
 To play against FollyChess, install a UCI-compatible GUI such as:
 
 * [Arena](http://www.playwitharena.de/)

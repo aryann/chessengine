@@ -1,6 +1,6 @@
 [[main]]
-  name = "Docs"
-  url = "/docs/guides/example-guide/"
+  name = "Documentation"
+  url = "/docs/guides/installation/"
   weight = 10
 
 [[social]]
