@@ -35,8 +35,10 @@ execute the following command in your terminal:
 bazel build --compilation_mode=opt //cli:follychess
 ```
 
-Note: Using `--config=opt` ensures the compiler applies optimizations necessary
-for engine performance.
+{{< callout note >}}
+Using `--compilation_mode=opt` ensures the compiler applies performance-critical
+optimizations.
+{{< /callout >}}
 
 Once the build is complete, the executable binary will be located at
 `bazel-bin/cli/follychess`.

@@ -58,11 +58,9 @@ it has finished internal setup and is ready to receive move or search commands.
 
 ### `d`
 
-**Custom Command.** Displays a representation of the current position.
+**Custom Command.** Displays the current position:
 
-Example:
-
-```text
+```text {hl_lines=1}
 d
 8: r n b q k b n r
 7: p p p p p p p p
@@ -85,7 +83,7 @@ formats:
 * **Starting Position**: `position startpos` sets the board to the starting
   position:
 
-  ```text
+  ```text {hl_lines=1}
     position startpos
     d
     8: r n b q k b n r
@@ -104,7 +102,7 @@ formats:
 * **FEN String:** `position fen <fenstring>` sets the board to a specific state
   using [Forsyth-Edwards Notation](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation):
 
-  ```text
+  ```text {hl_lines=1}
     position fen 8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1
     d
     8: . . . . . . . .
@@ -124,7 +122,7 @@ formats:
   `position [startpos | fen <fenstring>] moves <move1> <move2> ...` applies a
   sequence of moves to the specified position:
 
-  ```text
+  ```text {hl_lines=1}
   position startpos moves e2e4 e7e5 g1f3
   d
   8: r n b q k b n r
@@ -153,7 +151,7 @@ use [long algebraic notation](https://www.chessprogramming.org/Algebraic_Chess_N
 
 Calculates the best move with a user-specified depth:
 
-```text
+```text {hl_lines=1}
 go depth 3
 info depth 3 seldepth 3 nodes 1024 nps 175402 tbhits 36
 info depth 3 seldepth 4 nodes 2048 nps 241766 tbhits 133
