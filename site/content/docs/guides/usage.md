@@ -94,7 +94,7 @@ formats:
     3: . . . . . . . .
     2: P P P P P P P P
     1: R N B Q K B N R
-    a b c d e f g h
+       a b c d e f g h
     
     w KQkq - 0 1
   ```
@@ -113,7 +113,7 @@ formats:
     3: . . . . . . . .
     2: . . . . P . P .
     1: . . . . . . . .
-    a b c d e f g h
+       a b c d e f g h
     
     w - - 0 1
     ```
@@ -133,7 +133,7 @@ formats:
   3: . . . . . N . .
   2: P P P P . P P P
   1: R N B Q K B . R
-  a b c d e f g h
+     a b c d e f g h
   
   b KQkq - 3 2
   ```
