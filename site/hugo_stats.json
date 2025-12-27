@@ -239,11 +239,13 @@
     ],
     "ids": [
       "TableOfContents",
+      "bitboards",
       "building-from-source",
       "buttonColorMode",
       "compiling",
       "d",
       "doks-docs-nav",
+      "examples",
       "go",
       "isready",
       "offcanvasNavMain",
@@ -262,6 +264,9 @@
       "searchToggleDesktop",
       "searchToggleMobile",
       "socialMenu",
+      "the-bitboard-class",
+      "the-position-class",
+      "the-square-enum",
       "toc",
       "uci",
       "using-with-a-chess-gui"
